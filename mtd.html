@@ -128,83 +128,114 @@
 
         <!-- FILTER -->
 
-        <div class="filter-grid">
-
-            <div class="filter-item">
-
-                <label>Division Manager</label>
-
-                <select id="dm"></select>
-
-            </div>
-
-            <div class="filter-item">
-
-                <label>Branch Manager</label>
-
-                <select id="bm"></select>
-
-            </div>
-
-            <div class="filter-item">
-
-                <label>Assistant Branch Manager</label>
-
-                <select id="abm"></select>
-
-            </div>
-
-            <div class="filter-item">
-
-                <label>Store</label>
-
-                <select id="store"></select>
-
-            </div>
-
-        </div>
-
+        
         <!-- KPI -->
 
-        <div class="cards">
+<!-- KPI -->
 
-            <div class="card">
+<div class="mtd-kpi">
 
-                <h3>Total MTD</h3>
+    <div class="mtd-card">
 
-                <h2 id="mtdSales">Rp 0</h2>
-
-            </div>
-
-            <div class="card">
-
-                <h3>Achievement</h3>
-
-                <h2 id="achievement">0%</h2>
-
-            </div>
-
-            <div class="card">
-
-                <h3>Average / Day</h3>
-
-                <h2 id="avgDay">Rp 0</h2>
-
-            </div>
-
-            <div class="card">
-
-                <h3>Sales / Day Must Hit</h3>
-
-                <h2 id="mustHit">Rp 0</h2>
-
-            </div>
-
+        <div class="kpi-icon">
+            💰
         </div>
-        <!-- ========================= -->
-<!-- TARGET PROGRESS -->
-<!-- ========================= -->
 
+        <span>Total Area Sales</span>
+
+        <h2 id="mtdSales">Rp 0</h2>
+
+    </div>
+
+    <div class="mtd-card">
+
+        <div class="kpi-icon">
+            🎯
+        </div>
+
+        <span>Achievement</span>
+
+        <h2 id="achievement">0%</h2>
+
+    </div>
+
+    <div class="mtd-card">
+
+        <div class="kpi-icon">
+            📈
+        </div>
+
+        <span>Average / Day</span>
+
+        <h2 id="avgDay">Rp 0</h2>
+
+    </div>
+
+    <div class="mtd-card">
+
+        <div class="kpi-icon">
+            🔥
+        </div>
+
+        <span>Need / Day</span>
+
+        <h2 id="mustHit">Rp 0</h2>
+
+    </div>
+
+</div>
+
+
+<h2 class="section-title">
+
+Store Performance
+
+</h2>
+
+
+
+<div id="storeContainer" class="store-grid">
+
+</div>
+
+
+
+<h2 class="section-title">
+
+Today's Ranking
+
+</h2>
+
+<div class="ranking-grid">
+
+    <div class="ranking-card">
+
+        <h3>🏆 Top Achievement</h3>
+
+        <div id="topRanking"></div>
+
+    </div>
+
+    <div class="ranking-card">
+
+        <h3>⚠ Need Attention</h3>
+
+        <div id="lowRanking"></div>
+
+    </div>
+
+</div>
+
+
+<h2 class="section-title">
+
+Same Store Sales Growth
+
+</h2>
+
+<div id="sssgContainer" class="store-grid">
+
+</div>
 <div class="table-box">
 
     <h3>🎯 Sales Target Progress</h3>
@@ -213,17 +244,20 @@
 
         <thead>
 
-            <tr>
+    <tr>
 
-                <th>Store</th>
-                <th>MTD Sales</th>
-                <th>Target Lv1</th>
-                <th>Achievement</th>
-                <th>Sales / Day</th>
-                <th>Must Hit</th>
-                <th>Remarks</th>
+    <th>Store</th>
+    <th>MTD Sales</th>
+    <th class="lv1-header">🥉 Level 1</th>
+<th class="lv2-header">🥈 Level 2</th>
+<th class="lv3-header">🥇 Level 3</th>
+<th class="lv4-header">👑 Level 4</th>
+    <th>Achievement</th>
+    <th>Sales / Day</th>
+    <th>Must Hit / Day</th>
+    <th>Remarks</th>
 
-            </tr>
+</tr>
 
         </thead>
 
