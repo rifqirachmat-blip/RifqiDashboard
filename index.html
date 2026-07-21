@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rifqi Dashboard</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<!-- ========================= -->
+<!-- SIDEBAR -->
+<!-- ========================= -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+    <h2>BM Rifqi DR</h2>
+
+    <span>Performance Dashboard</span>
+
+</div>
+
+    <ul>
+
+        <li class="active">
+            <i class="fa-solid fa-chart-column"></i>
+            Dashboard Sales KPI
+        </li>
+
+        <li>
+            <i class="fa-solid fa-chart-line"></i>
+            Sales Month To Date
+        </li>
+
+        <li>
+            <i class="fa-solid fa-boxes-stacked"></i>
+            Stock Loss & ST Incentive
+        </li>
+
+        <li>
+            <i class="fa-solid fa-headset"></i>
+            Complaint Customer Recap
+        </li>
+
+        <li>
+            <i class="fa-solid fa-users"></i>
+            Data Manpower
+        </li>
+
+        <li>
+            <i class="fa-solid fa-store"></i>
+            Monitoring Keepstock
+        </li>
+
+    </ul>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- MAIN -->
+<!-- ========================= -->
+
+<div class="main">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>Dashboard Sales KPI</h1>
+
+            <p>Area Performance Dashboard</p>
+
+        </div>
+
+<div class="today">
+
+    <div class="today-icon">
+        <i class="fa-solid fa-calendar-days"></i>
+    </div>
+
+    <div class="today-info">
+
+        <span id="todayDate"></span>
+
+        <small id="todayTime"></small>
+
+    </div>
+
+</div>
+    </div>
+
+
+
+<div class="filter-grid">
+
+    <div class="filter-item">
+        <label>Financial Year</label>
+        <select id="fy"></select>
+    </div>
+
+    <div class="filter-item">
+        <label>Month</label>
+        <select id="month"></select>
+    </div>
+
+    <div class="filter-item">
+        <label>Dvision Manager</label>
+        <select id="dm"></select>
+    </div>
+
+    <div class="filter-item">
+        <label>Branch Manager</label>
+        <select id="bm"></select>
+    </div>
+
+    <div class="filter-item">
+        <label>Assistant Branch Manager</label>
+        <select id="abm"></select>
+    </div>
+
+    <div class="filter-item">
+        <label>Store</label>
+        <select id="store"></select>
+    </div>
+
+</div>
+
+
+
+    <!-- KPI -->
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>Total Sales</h3>
+
+            <h2 id="salesCard">Rp0</h2>
+
+        </div>
+
+        <div class="card">
+
+            <h3>Growth</h3>
+
+            <h2 id="growthCard">0%</h2>
+
+        </div>
+
+        <div class="card">
+
+            <h3>Transaction</h3>
+
+            <h2 id="trxCard">0</h2>
+
+        </div>
+
+        <div class="card">
+
+            <h3>ATV</h3>
+
+            <h2 id="atvCard">Rp0</h2>
+
+        </div>
+
+    </div>
+<!-- CHART -->
+
+<div class="chart-section">
+
+    <div class="chart-box">
+
+        <h3>Sales Trend</h3>
+
+        <canvas id="salesChart"></canvas>
+
+    </div>
+
+</div>
+
+
+<!-- DETAIL -->
+
+<div class="table-box">
+
+    <h3>Detail Sales</h3>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Store</th>
+                <th>DM</th>
+                <th>BM</th>
+                <th>ABM</th>
+                <th>Sales</th>
+                <th>Transaction</th>
+                <th>ATV</th>
+                <th>Growth</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="detailTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<script src="js/helper.js"></script>
+<script src="js/filter.js"></script>
+<script src="js/kpi.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/app.js"></script>

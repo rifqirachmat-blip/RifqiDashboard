@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sales Month To Date</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!-- ========================= -->
+    <!-- SIDEBAR -->
+    <!-- ========================= -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+
+            <h2>BM Rifqi DR</h2>
+
+            <span>Performance Dashboard</span>
+
+        </div>
+
+        <ul>
+
+            <li onclick="location.href='index.html'">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                Dashboard Sales KPI
+
+            </li>
+
+            <li class="active">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Sales Month To Date
+
+            </li>
+
+            <li>
+
+                <i class="fa-solid fa-boxes-stacked"></i>
+
+                Stock Loss & ST Incentive
+
+            </li>
+
+            <li>
+
+                <i class="fa-solid fa-headset"></i>
+
+                Complaint Customer Recap
+
+            </li>
+
+            <li>
+
+                <i class="fa-solid fa-users"></i>
+
+                Data Manpower
+
+            </li>
+
+            <li>
+
+                <i class="fa-solid fa-store"></i>
+
+                Monitoring Keepstock
+
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- MAIN -->
+    <!-- ========================= -->
+
+    <div class="main">
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div>
+
+                <h1>Sales Month To Date</h1>
+
+                <p>MTD Performance Dashboard</p>
+
+            </div>
+
+            <div class="today">
+
+                <div class="today-icon">
+
+                    <i class="fa-solid fa-calendar-days"></i>
+
+                </div>
+
+                <div class="today-info">
+
+                    <span id="todayDate"></span>
+
+                    <small id="todayTime"></small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FILTER -->
+
+        <div class="filter-grid">
+
+            <div class="filter-item">
+
+                <label>Division Manager</label>
+
+                <select id="dm"></select>
+
+            </div>
+
+            <div class="filter-item">
+
+                <label>Branch Manager</label>
+
+                <select id="bm"></select>
+
+            </div>
+
+            <div class="filter-item">
+
+                <label>Assistant Branch Manager</label>
+
+                <select id="abm"></select>
+
+            </div>
+
+            <div class="filter-item">
+
+                <label>Store</label>
+
+                <select id="store"></select>
+
+            </div>
+
+        </div>
+
+        <!-- KPI -->
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Total MTD</h3>
+
+                <h2 id="mtdSales">Rp 0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Achievement</h3>
+
+                <h2 id="achievement">0%</h2>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Average / Day</h3>
+
+                <h2 id="avgDay">Rp 0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Sales / Day Must Hit</h3>
+
+                <h2 id="mustHit">Rp 0</h2>
+
+            </div>
+
+        </div>
+        <!-- ========================= -->
+<!-- TARGET PROGRESS -->
+<!-- ========================= -->
+
+<div class="table-box">
+
+    <h3>🎯 Sales Target Progress</h3>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Store</th>
+                <th>MTD Sales</th>
+                <th>Target Lv1</th>
+                <th>Achievement</th>
+                <th>Sales / Day</th>
+                <th>Must Hit</th>
+                <th>Remarks</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="targetTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+
+<!-- ========================= -->
+<!-- ESTIMATE -->
+<!-- ========================= -->
+
+<div class="table-box">
+
+    <h3>📈 End Of Month Estimate</h3>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Store</th>
+                <th>AVG / Day</th>
+                <th>Est Sales</th>
+                <th>Est MTD</th>
+                <th>ACV</th>
+                <th>Incentive</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="estimateTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+
+<!-- ========================= -->
+<!-- SSSG -->
+<!-- ========================= -->
+
+<div class="table-box">
+
+    <h3>📊 Same Store Sales Growth (SSSG)</h3>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Store</th>
+                <th>MTD 2026</th>
+                <th>MTD 2025</th>
+                <th>Difference</th>
+                <th>Growth</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="sssgTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+        <!-- ========================= -->
+        <!-- FOOTER -->
+        <!-- ========================= -->
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- SCRIPT -->
+    <!-- ========================= -->
+
+    <script src="js/helper.js"></script>
+
+    <!-- Script khusus halaman MTD -->
+    <script src="js/mtd.js"></script>
+
+</body>
+
+</html>
