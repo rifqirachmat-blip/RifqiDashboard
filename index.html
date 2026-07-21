@@ -18,7 +18,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 </head>
 
 <body>
+<div id="loadingScreen">
 
+    <div class="loader-box">
+
+        <div class="loader"></div>
+
+        <h2>Performance Dashboard</h2>
+
+        <p>Memuat data...</p>
+
+    </div>
+
+</div>
 <!-- ========================= -->
 <!-- SIDEBAR -->
 <!-- ========================= -->
@@ -35,22 +47,57 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
     <ul>
 
-        <li class="active">
-            <i class="fa-solid fa-chart-column"></i>
-            Dashboard Sales KPI
-        </li>
+        <ul>
 
-        <li>
-            <i class="fa-solid fa-chart-line"></i>
-            Sales Month To Date
-        </li>
+    <li class="active" onclick="location.href='index.html'">
 
-        <li>
-            <i class="fa-solid fa-boxes-stacked"></i>
-            Stock Loss & ST Incentive
-        </li>
+        <i class="fa-solid fa-chart-column"></i>
 
-        <li>
+        Dashboard Sales KPI
+
+    </li>
+
+    <li onclick="location.href='mtd.html'">
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        Sales Month To Date
+
+    </li>
+
+    <li onclick="location.href='stockloss.html'">
+
+        <i class="fa-solid fa-boxes-stacked"></i>
+
+        Stock Loss & ST Incentive
+
+    </li>
+
+    <li onclick="location.href='complaint.html'">
+
+        <i class="fa-solid fa-headset"></i>
+
+        Complaint Customer Recap
+
+    </li>
+
+    <li onclick="location.href='manpower.html'">
+
+        <i class="fa-solid fa-users"></i>
+
+        Data Manpower
+
+    </li>
+
+    <li onclick="location.href='keepstock.html'">
+
+        <i class="fa-solid fa-store"></i>
+
+        Monitoring Keepstock
+
+    </li>
+
+</ul>
             <i class="fa-solid fa-headset"></i>
             Complaint Customer Recap
         </li>

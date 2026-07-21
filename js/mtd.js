@@ -36,6 +36,7 @@ async function loadData(){
         const response = await fetch(WEB_APP_URL);
 
         stores = await response.json();
+        document.getElementById("loadingScreen").style.display="none";
 
        console.log(stores[0]);
 
