@@ -120,11 +120,13 @@ body{
 
 .main{
 
-    margin-left:270px;
+    margin-left:260px;
 
-    width:calc(100% - 270px);
+    padding:28px;
 
-    padding:35px;
+    background:#f5f7fb;
+
+    min-height:100vh;
 
 }
 
@@ -661,10 +663,15 @@ gap:15px;
 =========================================== */
 
 .mtd-kpi{
+
     display:grid;
+
     grid-template-columns:repeat(4,1fr);
+
     gap:20px;
-    margin-bottom:35px;
+
+    margin:30px 0;
+
 }
 
 .mtd-card{
@@ -673,9 +680,29 @@ gap:15px;
 
     border-radius:18px;
 
-    padding:25px;
+    padding:22px;
 
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    box-shadow:0 8px 22px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.mtd-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
 
 }
 
@@ -685,18 +712,21 @@ gap:15px;
 
     font-size:14px;
 
+    margin-top:8px;
+
 }
 
 .mtd-card h2{
 
-    margin-top:12px;
+    margin-top:10px;
 
-    font-size:34px;
+    font-size:30px;
 
-    color:#111;
+    font-weight:700;
+
+    color:#1976d2;
 
 }
-
 .section-title{
 
     margin:35px 0 20px;
@@ -1194,21 +1224,247 @@ gap:15px;
     font-weight:700;
 
 }
-/* ==========================
-   LOADING SCREEN
-========================== */
+/* ===========================================
+   FIX & IMPROVEMENT UNTUK MTD DASHBOARD
+=========================================== */
 
-#loadingScreen{
+/* 1. Merapikan Section Title & Subtitle */
+.main h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111;
+    margin-top: 25px;
+    margin-bottom: 5px;
+}
 
-    position:fixed;
+.main p.subtitle {
+    color: #777;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
 
-    top:0;
-    left:0;
+/* 2. Memastikan Grid MTD KPI Tampil Pas 4 Kolom */
+.mtd-kpi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+/* 3. Merapikan Container Store Performance & Today's Ranking */
+.store-grid, 
+.ranking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* 4. Fix Tampilan Card Store Performance */
+.store-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 5. Merapikan Tampilan Progress Bar & Multi-color Bar */
+.progress-container {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.stacked-bar {
+    display: flex;
+    height: 16px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #e5e7eb;
+    margin-top: 10px;
+}
+
+.stacked-bar .bar-segment {
+    height: 100%;
+    transition: width 0.4s ease;
+}
+
+/* 6. Penyesuaian Flex Layout pada Header Ranking Card */
+.ranking-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+/* ===========================================
+   STORE PERFORMANCE CARD
+=========================================== */
+
+.store-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:15px;
+
+}
+
+.store-title h3{
+
+    margin:0;
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:#1f2937;
+
+}
+
+.store-sales{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:#1976d2;
+
+    margin-bottom:18px;
+
+}
+
+.progress{
 
     width:100%;
+
+    height:10px;
+
+    background:#e5e7eb;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    margin-bottom:12px;
+
+}
+
+.progress-bar{
+
     height:100%;
 
-    background:white;
+    border-radius:30px;
+
+    transition:.4s;
+
+}
+
+.achievement-text{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin-bottom:18px;
+
+}
+
+.info-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:12px;
+
+}
+
+.info-box{
+
+    background:#f8fafc;
+
+    border-radius:10px;
+
+    padding:12px;
+
+    border:1px solid #edf2f7;
+
+}
+
+.info-box small{
+
+    display:block;
+
+    color:#6b7280;
+
+    font-size:12px;
+
+    margin-bottom:5px;
+
+}
+
+.info-box b{
+
+    font-size:15px;
+
+    color:#111827;
+
+}
+
+.badge{
+
+    background:#1976d2;
+
+    color:#fff;
+
+    padding:6px 12px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+.store-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:22px;
+
+    box-shadow:0 8px 22px rgba(0,0,0,.08);
+
+    transition:.25s;
+
+}
+
+.store-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 14px 30px rgba(0,0,0,.12);
+
+}
+.kpi-icon{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:14px;
+
+    background:#1976d2;
 
     display:flex;
 
@@ -1216,60 +1472,69 @@ gap:15px;
 
     align-items:center;
 
-    z-index:99999;
+    color:#fff;
+
+    font-size:24px;
+
+    margin-bottom:10px;
+
+}
+.rank-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:14px 0;
+
+    border-bottom:1px solid #eee;
 
 }
 
-.loader-box{
+.rank-left{
 
-    text-align:center;
+    display:flex;
 
-}
+    align-items:center;
 
-.loader{
-
-    width:70px;
-    height:70px;
-
-    border:8px solid #e5e7eb;
-
-    border-top:8px solid #facc15;
-
-    border-radius:50%;
-
-    animation:spin .8s linear infinite;
-
-    margin:auto;
-    margin-bottom:20px;
+    gap:14px;
 
 }
 
-.loader-box h2{
+.medal{
 
-    color:#1f2937;
-
-    margin-bottom:8px;
+    font-size:24px;
 
 }
 
-.loader-box p{
+.rank-left b{
 
-    color:#6b7280;
+    display:block;
+
+    font-size:15px;
 
 }
 
-@keyframes spin{
+.rank-left small{
 
-    from{
+    color:#888;
 
-        transform:rotate(0deg);
+}
 
-    }
+.rank-value{
 
-    to{
+    font-size:18px;
 
-        transform:rotate(360deg);
+    font-weight:700;
 
-    }
+    color:#22c55e;
+
+}
+
+.rank-value.red{
+
+    color:#ef4444;
 
 }

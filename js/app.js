@@ -40,31 +40,34 @@ document.addEventListener("DOMContentLoaded", () => {
 // =========================================
 // LOAD DATA
 // =========================================
+async function loadData(){
 
-async function loadData() {
-
-    try {
+    try{
 
         const response = await fetch(API_URL);
 
+        if(!response.ok){
+
+            throw new Error("Gagal mengambil data");
+
+        }
+
         salesData = await response.json();
+console.table(salesData);
+console.log(salesData[0]);
+        filteredData = [...salesData];
 
         populateFilters();
-        
-        addFilterEvents();
-console.log("Filtered:", filteredData.length);
-console.log("Compare:", compareData.length);
-        applyFilters();
-        updateKPI();
-        updateGrowth();
-        updateSalesChart();
-        updateDetailTable();
 
-    } catch (error) {
+        addFilterEvents();
+
+        applyFilters();
+
+    }catch(error){
 
         console.error(error);
 
-        alert("Gagal mengambil data dari Google Apps Script");
+        alert("Gagal mengambil data dari Google Sheet");
 
     }
 
