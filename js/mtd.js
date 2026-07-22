@@ -1,8 +1,8 @@
 // =====================================================
 // BM RIFQI DR
 // SALES MONTH TO DATE
-// Version 3.0
-// PART 1
+// Version 4.0
+// PART A
 // =====================================================
 
 // =====================================================
@@ -36,30 +36,27 @@ async function loadMTDData(){
 
     try{
 
-        console.log("Loading MTD...");
+        console.log("Loading MTD Dashboard...");
 
         const response = await fetch(WEB_APP_URL);
 
         if(!response.ok){
 
-            throw new Error("Fetch Error");
+            throw new Error("Tidak dapat mengambil data.");
 
         }
 
-        stores = await response.json();
+        const json = await response.json();
 
-        console.log(stores);
+        stores = Array.isArray(json) ? json : [];
 
-        renderKPICards();
+        console.log("Total Store :",stores.length);
 
+        // Render Dashboard
         renderStoreGrid();
-
         renderRankings();
-
         renderTargetTable();
-
         renderEstimateTable();
-
         renderSSSGTable();
 
     }
@@ -68,7 +65,7 @@ async function loadMTDData(){
 
         console.error(err);
 
-        alert("Gagal mengambil data Apps Script.");
+        alert("Gagal memuat data MTD.");
 
     }
 
@@ -82,7 +79,7 @@ function updateDateTime(){
 
     const now = new Date();
 
-    document.getElementById("todayDate").innerHTML =
+    const date =
     now.toLocaleDateString("id-ID",{
 
         weekday:"long",
@@ -92,7 +89,7 @@ function updateDateTime(){
 
     });
 
-    document.getElementById("todayTime").innerHTML =
+    const time =
     now.toLocaleTimeString("id-ID",{
 
         hour:"2-digit",
@@ -101,191 +98,188 @@ function updateDateTime(){
 
     });
 
+    const d=document.getElementById("todayDate");
+
+    const t=document.getElementById("todayTime");
+
+    if(d) d.innerHTML=date;
+
+    if(t) t.innerHTML=time;
+
 }
 
 // =====================================================
-// FORMAT
+// FORMATTER
 // =====================================================
 
-function formatRp(number){
+function formatRp(value){
 
     return "Rp " +
 
-    Number(number || 0).toLocaleString("id-ID");
+    Number(value || 0).toLocaleString("id-ID");
 
 }
 
-function formatPercent(number){
+function formatPct(value){
 
-    return Number(number || 0).toFixed(1) + "%";
-
-}
-
-function badgeText(value){
-
-    if(value>=100) return "Excellent";
-
-    if(value>=90) return "On Track";
-
-    return "Need Action";
+    return Number(value || 0).toFixed(1)+"%";
 
 }
 
-function badgeColor(value){
+function getBadge(value){
 
-    if(value>=100) return "#22c55e";
+    if(value>=100){
 
-    if(value>=90) return "#f59e0b";
+        return{
 
-    return "#ef4444";
+            text:"Excellent",
+            color:"#22c55e"
+
+        };
+
+    }
+
+    if(value>=90){
+
+        return{
+
+            text:"On Track",
+            color:"#f59e0b"
+
+        };
+
+    }
+
+    return{
+
+        text:"Need Action",
+        color:"#ef4444"
+
+    };
 
 }
 
+// =====================================================
+// SAFE ELEMENT
+// =====================================================
+
+function setText(id,value){
+
+    const el=document.getElementById(id);
+
+    if(el){
+
+        el.textContent=value;
+
+    }
+
+}
 // =====================================================
 // KPI CARD
 // =====================================================
 
-function renderKPICards(){
-
-    if(stores.length===0) return;
-
-    const totalSales =
-    stores.reduce((a,b)=>a+Number(b.mtd),0);
-
-    const totalTarget =
-    stores.reduce((a,b)=>a+Number(b.target),0);
-
-    const totalAvg =
-    stores.reduce((a,b)=>a+Number(b.avg),0);
-
-    const totalNeed =
-    stores.reduce((a,b)=>a+Number(b.need),0);
-
-    const achievement =
-    totalTarget==0
-    ?0
-    :(totalSales/totalTarget)*100;
-
-    document.getElementById("mtdSales").innerHTML =
-    formatRp(totalSales);
-
-    document.getElementById("achievement").innerHTML =
-    formatPercent(achievement);
-
-    document.getElementById("avgDay").innerHTML =
-    formatRp(totalAvg);
-
-    document.getElementById("mustHit").innerHTML =
-    formatRp(totalNeed);
-
-}
 
 // =====================================================
-// STORE CARD
+// STORE PERFORMANCE
 // =====================================================
-
 function renderStoreGrid(){
 
-    const container =
-    document.getElementById("storeContainer");
+    const container = document.getElementById("storeContainer");
 
-    container.innerHTML="";
+    if(!container) return;
 
-    const sorted =
-    [...stores].sort((a,b)=>b.achievement-a.achievement);
+    container.innerHTML = "";
+
+    const sorted = [...stores].sort((a,b)=>b.achievement-a.achievement);
 
     sorted.forEach(item=>{
+        const badge = getBadge(item.achievement);
+
+        const ach = getAchievementBadge(item.achievement);
+        
 
         container.innerHTML += `
 
-<div class="store-card">
+<div class="store-card"
+     style="--cardColor:${ach.color};">
 
-<div class="store-title">
+    <div class="store-header">
 
-<h3>${item.store}</h3>
+        <h3>${item.store}</h3>
 
-<span class="badge">
+        <span class="badge"
+              style="
+                background:${ach.color};
+                color:#fff;
+              ">
+            ${ach.text}
+        </span>
 
-${badgeText(item.achievement)}
+    </div>
 
-</span>
+    <div class="store-sales">
 
-</div>
+        ${formatRp(item.mtd)}
 
-<div class="store-sales">
+    </div>
 
-${formatRp(item.mtd)}
+    <div class="progress">
 
-</div>
+        <div class="progress-bar"
 
-<div class="progress">
+             style="
+                width:${Math.min(item.achievement,100)}%;
+                background:${ach.color};
+             ">
 
-<div class="progress-bar"
+        </div>
 
-style="width:${Math.min(item.achievement,100)}%;
-background:${badgeColor(item.achievement)};">
+    </div>
 
-</div>
+    <div class="achievement-text">
 
-</div>
+    <span class="achievement-badge"
 
-<div class="achievement-text">
+    style="background:${ach.color};">
 
-${formatPercent(item.achievement)}
+        ${ach.text}
 
-</div>
-
-<div class="info-grid">
-
-<div class="info-box">
-
-<small>Need / Day</small>
-
-<b>${formatRp(item.need)}</b>
-
-</div>
-
-<div class="info-box">
-
-<small>AVG / Day</small>
-
-<b>${formatRp(item.avg)}</b>
+    </span>
 
 </div>
+    <div class="info-grid">
 
-<div class="info-box">
+        <div class="info-box">
+            <small>Need / Day</small>
+            <b>${formatRp(item.need)}</b>
+        </div>
 
-<small>Estimate</small>
+        <div class="info-box">
+            <small>AVG / Day</small>
+            <b>${formatRp(item.avg)}</b>
+        </div>
 
-<b>${formatRp(item.estimate)}</b>
+        <div class="info-box">
+            <small>Estimate</small>
+            <b>${formatRp(item.estimate)}</b>
+        </div>
 
-</div>
+        <div class="info-box">
+            <small>ACV</small>
+            <b>${formatPct(item.acv)}</b>
+        </div>
 
-<div class="info-box">
+        <div class="info-box">
+            <small>Incentive</small>
+            <b>${item.level}</b>
+        </div>
 
-<small>ACV</small>
+        <div class="info-box">
+            <small>Remarks</small>
+            <b>${item.remarks}</b>
+        </div>
 
-<b>${formatPercent(item.acv)}</b>
-
-</div>
-
-<div class="info-box">
-
-<small>Incentive</small>
-
-<b>${item.level}</b>
-
-</div>
-
-<div class="info-box">
-
-<small>Remarks</small>
-
-<b>${item.remarks}</b>
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
@@ -294,18 +288,147 @@ ${formatPercent(item.achievement)}
     });
 
 }
+// RANKING
 // =====================================================
-// 4. SALES TARGET TABLE
+
+function renderRankings(){
+
+    const topDiv =
+    document.getElementById("topRanking");
+
+    const lowDiv =
+    document.getElementById("lowRanking");
+
+    if(!topDiv || !lowDiv) return;
+
+    topDiv.innerHTML="";
+    lowDiv.innerHTML="";
+
+    const sorted =
+    [...stores].sort((a,b)=>b.achievement-a.achievement);
+
+    const medals = [
+
+        "🥇",
+        "🥈",
+        "🥉",
+        "🏅",
+        "🏅"
+
+    ];
+
+    // ============================
+    // TOP 5
+    // ============================
+
+    sorted.slice(0,5).forEach((item,index)=>{
+
+        topDiv.innerHTML += `
+
+        <div class="rank-item">
+
+            <div class="rank-left">
+
+                <span class="medal">
+
+                    ${medals[index]}
+
+                </span>
+
+                <div>
+
+                    <b>${item.store}</b>
+
+                    <small>
+
+                        ${formatRp(item.mtd)}
+
+                    </small>
+
+                </div>
+
+            </div>
+
+            <div
+            class="rank-value"
+
+            style="color:#22c55e;">
+
+                ${formatPct(item.achievement)}
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    // ============================
+    // BOTTOM 5
+    // ============================
+
+    [...sorted]
+    .reverse()
+    .slice(0,5)
+    .forEach(item=>{
+
+        lowDiv.innerHTML += `
+
+        <div class="rank-item">
+
+            <div class="rank-left">
+
+                <span class="medal">
+
+                    ⚠️
+
+                </span>
+
+                <div>
+
+                    <b>${item.store}</b>
+
+                    <small>
+
+                        ${formatRp(item.minus)}
+
+                    </small>
+
+                </div>
+
+            </div>
+
+            <div
+            class="rank-value"
+
+            style="color:#ef4444;">
+
+                ${formatPct(item.achievement)}
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
 // =====================================================
+// SALES TARGET TABLE
+// =====================================================
+
 function renderTargetTable(){
 
     const tbody = document.getElementById("targetTable");
 
     if(!tbody) return;
 
-    tbody.innerHTML = "";
+    tbody.innerHTML="";
 
-    const sorted = [...stores].sort((a,b)=>b.achievement-a.achievement);
+    const sorted =
+    [...stores].sort((a,b)=>b.achievement-a.achievement);
 
     sorted.forEach(item=>{
 
@@ -339,7 +462,7 @@ function renderTargetTable(){
 
             <td>${formatRp(item.need)}</td>
 
-            <td>${item.remarks}</td>
+            <td>${item.remarks || "-"}</td>
 
         </tr>
 
@@ -350,18 +473,22 @@ function renderTargetTable(){
 }
 
 
+
 // =====================================================
-// 5. ESTIMATE TABLE
+// END OF MONTH ESTIMATE
 // =====================================================
+
 function renderEstimateTable(){
 
-    const tbody = document.getElementById("estimateTable");
+    const tbody =
+    document.getElementById("estimateTable");
 
     if(!tbody) return;
 
-    tbody.innerHTML = "";
+    tbody.innerHTML="";
 
-    const sorted = [...stores].sort((a,b)=>b.estimate-a.estimate);
+    const sorted =
+    [...stores].sort((a,b)=>b.estimate-a.estimate);
 
     sorted.forEach(item=>{
 
@@ -379,8 +506,15 @@ function renderEstimateTable(){
 
             <td>${formatPct(item.acv)}</td>
 
-            <td>${item.level}</td>
+ <td>
 
+    <span class="${getLevelClass(item.level)}">
+
+        ${item.level}
+
+    </span>
+
+</td>
         </tr>
 
         `;
@@ -388,25 +522,26 @@ function renderEstimateTable(){
     });
 
 }
-
-
 // =====================================================
-// 6. SSSG TABLE
+// SSSG TABLE
 // =====================================================
+
 function renderSSSGTable(){
 
-    const tbody = document.getElementById("sssgTable");
+    const tbody =
+    document.getElementById("sssgTable");
 
     if(!tbody) return;
 
-    tbody.innerHTML = "";
+    tbody.innerHTML="";
 
     stores.forEach(item=>{
+        
 
         const color =
         item.sssg >= 0
-        ? "#16a34a"
-        : "#dc2626";
+        ? "#22c55e"
+        : "#ef4444";
 
         tbody.innerHTML += `
 
@@ -433,179 +568,57 @@ function renderSSSGTable(){
     });
 
 }
+function getAchievementBadge(value){
 
+    if(value >= 100){
 
-// =====================================================
-// HELPER
-// =====================================================
-function setElementText(id,text){
-
-    const el = document.getElementById(id);
-
-    if(el){
-
-        el.textContent = text;
+        return {
+            color:"#16a34a",
+            text:formatPct(value)
+        };
 
     }
 
-}
-// =====================================================
-// 6. SSSG TABLE
-// =====================================================
-
-function renderSSSGTable(){
-
-    const tbody = document.getElementById("sssgTable");
-
-    if(!tbody) return;
-
-    tbody.innerHTML="";
-
-    stores.forEach(item=>{
-
-        const growthColor =
-            item.sssg >= 0
-            ? "#22c55e"
-            : "#ef4444";
-
-        tbody.innerHTML += `
-
-        <tr>
-
-            <td>${item.store}</td>
-
-            <td>${formatRp(item.mtd2026)}</td>
-
-            <td>${formatRp(item.mtd2025)}</td>
-
-            <td>${formatRp(item.difference)}</td>
-
-            <td style="
-                color:${growthColor};
-                font-weight:700;
-            ">
-                ${formatPct(item.sssg)}
-            </td>
-
-        </tr>
-
-        `;
-
-    });
-
-}
-
-
-// =====================================================
-// SALES TARGET TABLE
-// =====================================================
-
-function renderTargetTable(){
-
-    const tbody = document.getElementById("targetTable");
-
-    if(!tbody) return;
-
-    tbody.innerHTML="";
-
-    const sorted=[...stores].sort((a,b)=>b.achievement-a.achievement);
-
-    sorted.forEach(item=>{
-
-        tbody.innerHTML += `
-
-        <tr>
-
-            <td>${item.store}</td>
-
-            <td>${formatRp(item.mtd)}</td>
-
-            <td>${formatRp(item.target1)}</td>
-
-            <td>${formatRp(item.target2)}</td>
-
-            <td>${formatRp(item.target3)}</td>
-
-            <td>${formatRp(item.target4)}</td>
-
-            <td>
-
-                <span class="badge">
-
-                    ${formatPct(item.achievement)}
-
-                </span>
-
-            </td>
-
-            <td>${formatRp(item.avg)}</td>
-
-            <td>${formatRp(item.need)}</td>
-
-            <td>${item.remarks}</td>
-
-        </tr>
-
-        `;
-
-    });
-
-}
-
-
-// =====================================================
-// ESTIMATE TABLE
-// =====================================================
-
-function renderEstimateTable(){
-
-    const tbody=document.getElementById("estimateTable");
-
-    if(!tbody) return;
-
-    tbody.innerHTML="";
-
-    const sorted=[...stores].sort((a,b)=>b.estimate-a.estimate);
-
-    sorted.forEach(item=>{
-
-        tbody.innerHTML += `
-
-        <tr>
-
-            <td>${item.store}</td>
-
-            <td>${formatRp(item.avg)}</td>
-
-            <td>${formatRp(item.estSales)}</td>
-
-            <td>${formatRp(item.estimate)}</td>
-
-            <td>${formatPct(item.acv)}</td>
-
-            <td>${item.level}</td>
-
-        </tr>
-
-        `;
-
-    });
-
-}
-
-
-// =====================================================
-// HELPER
-// =====================================================
-
-function setElementText(id,value){
-
-    const el=document.getElementById(id);
-
-    if(el){
-
-        el.textContent=value;
+    if(value >= 90){
+
+        return {
+            color:"#eab308",
+            text:formatPct(value)
+        };
 
     }
+
+    if(value >= 70){
+
+        return {
+            color:"#f97316",
+            text:formatPct(value)
+        };
+
+    }
+
+    return{
+
+        color:"#dc2626",
+        text:formatPct(value)
+
+    };
+
+}
+function getLevelClass(level){
+
+    level = String(level).toLowerCase();
+
+    if(level.includes("level 1")) return "level1";
+
+    if(level.includes("level 2")) return "level2";
+
+    if(level.includes("level 3")) return "level3";
+
+    if(level.includes("level 4")) return "level4";
+
+    if(level.includes("hadeuh")) return "levelHadeuh";
+
+    return "levelDefault";
 
 }
