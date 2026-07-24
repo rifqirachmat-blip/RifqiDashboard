@@ -250,3 +250,35 @@
 }
 
 }
+.badge-complete{
+
+    background:#22c55e;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+
+}
+
+.badge-pending{
+
+    background:#f59e0b;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+
+}
+
+.badge-today{
+
+    background:#3b82f6;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+
+}
