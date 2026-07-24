@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Stock Take Center</title>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Khusus Stock Take -->
+    <link rel="stylesheet" href="css/stockloss.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!-- ========================= -->
+    <!-- SIDEBAR -->
+    <!-- ========================= -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+
+            <h2>BM Rifqi DR</h2>
+
+            <span>Performance Dashboard</span>
+
+        </div>
+
+        <ul>
+
+            <li onclick="window.location.href='index.html'">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                Dashboard Sales KPI
+
+            </li>
+
+            <li onclick="window.location.href='mtd.html'">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Sales Month To Date
+
+            </li>
+
+            <li class="active">
+
+                <i class="fa-solid fa-boxes-stacked"></i>
+
+                Stock Take Center
+
+            </li>
+
+        </ul>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MAIN -->
+    <!-- ========================= -->
+
+    <div class="main">
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div>
+
+                <h1>📦 Stock Take Center</h1>
+
+                <p>Stock Take Result, Stock Loss Detail & ST Schedule</p>
+
+            </div>
+
+            <div class="today">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+                <span id="todayDate"></span>
+
+            </div>
+
+        </div>
+
+
+        <!-- KPI -->
+
+        <div class="cards">
+
+            <div class="card">
+
+                <small>Total Store</small>
+
+                <h2 id="totalStore">0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <small>Average Net Loss</small>
+
+                <h2 id="avgLoss">0%</h2>
+
+            </div>
+
+            <div class="card">
+
+                <small>Average ST Accuracy</small>
+
+                <h2 id="avgAccuracy">0%</h2>
+
+            </div>
+
+            <div class="card">
+
+                <small>Total Incentive</small>
+
+                <h2 id="totalIncentive">Rp0</h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- TAB MENU -->
+        <!-- ========================= -->
+
+        <div class="tab-menu">
+
+            <button class="tab-btn active" data-tab="result">
+
+                📊 ST Result
+
+            </button>
+
+            <button class="tab-btn" data-tab="loss">
+
+                📉 Stock Loss Detail
+
+            </button>
+<div class="tab-menu">
+
+    <button class="tab-btn active" data-tab="general">
+        📊 General
+    </button>
+
+    <button class="tab-btn" data-tab="missing">
+        📦 Missing & Extra
+    </button>
+
+    <button class="tab-btn" data-tab="loss">
+        💸 Net Loss
+    </button>
+
+    <button class="tab-btn" data-tab="accuracy">
+        🎯 ST Accuracy
+    </button>
+
+    <button class="tab-btn" data-tab="incentive">
+        💰 Incentive
+    </button>
+
+    <button class="tab-btn" data-tab="audit">
+        ✔ Audit
+    </button>
+
+    <button class="tab-btn" data-tab="organization">
+        👥 Organization
+    </button>
+
+</div>
+            <button class="tab-btn" data-tab="schedule">
+
+                📅 ST Schedule
+
+            </button>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- SEARCH -->
+        <!-- ========================= -->
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchStore"
+                placeholder="🔍 Search Store">
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- CONTENT -->
+        <!-- ========================= -->
+
+        <div id="tabContent">
+
+            <!-- Akan diisi oleh stockloss.js -->
+
+        </div>
+
+    </div>
+
+
+    <!-- JS -->
+
+    <script src="js/stockloss.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,252 @@
+/* ==========================================
+   STOCK TAKE CENTER
+========================================== */
+
+.tab-menu{
+
+    display:flex;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:25px;
+
+}
+
+.tab-btn{
+
+    border:none;
+
+    background:#e5e7eb;
+
+    color:#374151;
+
+    padding:12px 22px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.tab-btn:hover{
+
+    background:#FFD400;
+
+    color:#111;
+
+}
+
+.tab-btn.active{
+
+    background:#FFD400;
+
+    color:#111;
+
+}
+
+
+/* ==========================================
+   SEARCH
+========================================== */
+
+.search-box{
+
+    margin-bottom:25px;
+
+}
+
+.search-box input{
+
+    width:350px;
+
+    max-width:100%;
+
+    padding:13px 18px;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.25s;
+
+}
+
+.search-box input:focus{
+
+    border-color:#FFD400;
+
+    box-shadow:0 0 0 4px rgba(255,212,0,.15);
+
+}
+
+
+/* ==========================================
+   CONTENT
+========================================== */
+
+#tabContent{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    min-height:500px;
+
+}
+
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.stock-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.stock-table thead{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:5;
+
+    background:#FFD400;
+
+}
+
+.stock-table th{
+
+    padding:14px;
+
+    text-align:left;
+
+    font-size:14px;
+
+    color:#111;
+
+}
+
+.stock-table td{
+
+    padding:13px;
+
+    border-bottom:1px solid #eee;
+
+    font-size:14px;
+
+}
+
+.stock-table tbody tr:hover{
+
+    background:#fff8d6;
+
+}
+
+
+/* ==========================================
+   BADGE
+========================================== */
+
+.status-pass{
+
+    background:#16a34a;
+
+    color:#fff;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+}
+
+.status-review{
+
+    background:#f59e0b;
+
+    color:#fff;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+}
+
+.status-failed{
+
+    background:#dc2626;
+
+    color:#fff;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:768px){
+
+.tab-menu{
+
+    overflow-x:auto;
+
+    flex-wrap:nowrap;
+
+}
+
+.tab-btn{
+
+    white-space:nowrap;
+
+}
+
+.search-box input{
+
+    width:100%;
+
+}
+
+#tabContent{
+
+    padding:18px;
+
+}
+
+}
