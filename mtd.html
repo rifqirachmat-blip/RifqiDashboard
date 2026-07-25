@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>"Sales Month To Date"</title>
+    <title>Sales Month To Date</title>
 
     <link rel="stylesheet" href="css/style.css">
 
@@ -19,87 +19,75 @@
 </head>
 
 <body>
-    <div id="loadingScreen">
 
-    <div class="loader-box">
-
-        <div class="loader"></div>
-
-        <h2>Performance Dashboard</h2>
-
-        <p>Memuat data dari Google Sheet...</p>
-
-    </div>
-
-</div>
 
     <!-- ========================= -->
     <!-- SIDEBAR -->
     <!-- ========================= -->
 
-    <div class="sidebar">
+<div class="sidebar">
 
-        <div class="logo">
+    <div class="logo">
 
-            <h2>BM Rifqi DR</h2>
+        <h2>BM Rifqi DR</h2>
 
-            <span>Performance Dashboard</span>
-
-        </div>
-
-<ul>
-
-    <li onclick="window.location.href='index.html'">
-
-        <i class="fa-solid fa-chart-column"></i>
-
-        Dashboard Sales KPI
-
-    </li>
-
-    <li class="active" onclick="window.location.href='mtd.html'">
-
-        <i class="fa-solid fa-chart-line"></i>
-
-        Sales Month To Date
-
-    </li>
-
-    <li onclick="window.location.href='stockloss.html'">
-
-        <i class="fa-solid fa-boxes-stacked"></i>
-
-        Stock Loss & ST Incentive
-
-    </li>
-
-    <li onclick="window.location.href='complaint.html'">
-
-        <i class="fa-solid fa-headset"></i>
-
-        Complaint Customer Recap
-
-    </li>
-
-    <li onclick="window.location.href='manpower.html'">
-
-        <i class="fa-solid fa-users"></i>
-
-        Data Manpower
-
-    </li>
-
-    <li onclick="window.location.href='keepstock.html'">
-
-        <i class="fa-solid fa-store"></i>
-
-        Monitoring Keepstock
-
-    </li>
-
-</ul>
+        <span>Performance Dashboard</span>
 
     </div>
+
+    <ul>
+
+        <li onclick="location.href='index.html'">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            Dashboard Sales KPI
+
+        </li>
+
+        <li class="active" onclick="location.href='mtd.html'">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Sales Month To Date
+
+        </li>
+
+        <li onclick="location.href='stockloss.html'">
+
+            <i class="fa-solid fa-boxes-stacked"></i>
+
+            Stock Take Center
+
+        </li>
+
+        <li onclick="location.href='complaint.html'">
+
+            <i class="fa-solid fa-headset"></i>
+
+            Complaint Customer Recap
+
+        </li>
+
+        <li onclick="location.href='manpower.html'">
+
+            <i class="fa-solid fa-users"></i>
+
+            Data Manpower
+
+        </li>
+
+        <li onclick="location.href='keepstock.html'">
+
+            <i class="fa-solid fa-store"></i>
+
+            Monitoring Keepstock
+
+        </li>
+
+    </ul>
+
+</div>
 
     <!-- ========================= -->
     <!-- MAIN -->
@@ -113,7 +101,7 @@
 
             <div>
 
-                <h1>Sales Month To Date</h1>
+                <h1>📊 Sales Month To Date</h1>
 
                 <p>MTD Performance Dashboard</p>
 
@@ -294,6 +282,39 @@ Same Store Sales Growth
         </thead>
 
         <tbody id="sssgTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+<!-- ========================= -->
+<!-- UPT TARGET -->
+<!-- ========================= -->
+
+<div class="table-box">
+
+    <h3>🎯 UPT Target Achievement</h3>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Store</th>
+                <th>Avg UPT</th>
+                <th>% Achv Lv 1</th>
+                <th>Target 1</th>
+                <th>Target 2</th>
+                <th>Target 3</th>
+                <th>Remarks</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="uptTable">
 
         </tbody>
 

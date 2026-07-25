@@ -282,3 +282,73 @@
     font-weight:600;
 
 }
+/* ==========================================
+   MAIN TAB MENU
+========================================== */
+
+.main-tab-menu{
+
+    display:flex;
+    gap:18px;
+    margin:20px 0 25px;
+
+}
+
+.main-tab-btn{
+
+    flex:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+
+    padding:15px 20px;
+
+    background:#fff;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#555;
+
+    transition:.25s;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+
+}
+
+.main-tab-btn i{
+
+    font-size:20px;
+
+}
+
+.main-tab-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+
+}
+
+.main-tab-btn.active{
+
+    background:#FFD500;
+
+    color:#111;
+
+}
+
+.main-tab-btn.active i{
+
+    color:#111;
+
+}

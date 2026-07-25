@@ -400,17 +400,16 @@ function updateSalesChart(){
     if(!canvas) return;
 
     if(salesChart){
-
         salesChart.destroy();
-
     }
 
-const fy = document.getElementById("fy").value || "FY2026";
+    const fy = document.getElementById("fy").value || "FY2026";
 
-    const compareFY =
-fy === "FY2026"
-? "FY2025"
-: "FY2024";
+    // Ambil angka tahunnya
+    const currentYear = parseInt(fy.replace("FY",""));
+
+    const compareFY1 = "FY" + (currentYear - 1);
+    const compareFY2 = "FY" + (currentYear - 2);
 
     salesChart = new Chart(canvas,{
 
@@ -445,13 +444,31 @@ fy === "FY2026"
 
                 {
 
-                    label:compareFY,
+                    label:compareFY1,
 
-                    data:getSeries(compareFY),
+                    data:getSeries(compareFY1),
 
                     borderColor:"#f4b400",
 
                     backgroundColor:"rgba(244,180,0,.15)",
+
+                    borderWidth:3,
+
+                    tension:.35,
+
+                    fill:false
+
+                },
+
+                {
+
+                    label:compareFY2,
+
+                    data:getSeries(compareFY2),
+
+                    borderColor:"#9ca3af",
+
+                    backgroundColor:"rgba(156,163,175,.15)",
 
                     borderWidth:3,
 
@@ -470,9 +487,10 @@ fy === "FY2026"
             responsive:true,
 
             maintainAspectRatio:false,
+
             layout:{
-    padding:8
-},
+                padding:8
+            },
 
             interaction:{
                 mode:"index",
@@ -487,40 +505,39 @@ fy === "FY2026"
 
             },
 
- scales:{
+            scales:{
 
-    x:{
-        ticks:{
-            font:{
-                size:10
+                x:{
+                    ticks:{
+                        font:{
+                            size:10
+                        }
+                    }
+                },
+
+                y:{
+                    ticks:{
+
+                        font:{
+                            size:10
+                        },
+
+                        callback:function(value){
+
+                            return (value/1000000).toFixed(0) + "M";
+
+                        }
+
+                    }
+                }
+
             }
-        }
-    },
-
-    y:{
-        ticks:{
-
-            font:{
-                size:10
-            },
-
-            callback:function(value){
-
-                return (value/1000000).toFixed(0) + "M";
-
-            }
-
-        }
-    }
-
-}
 
         }
 
     });
 
 }
-
 function addFilterEvents(){
 
     document.getElementById("fy").addEventListener("change", applyFilters);

@@ -13,6 +13,7 @@ const WEB_APP_URL =
 "https://script.google.com/macros/s/AKfycby6mW_B_zy5DwVHprwS2QLkARmn7mRTgwJPJlo6a6VQ_c9_rQhB1XcjDne_AsP42ge2dg/exec";
 
 let stores = [];
+let uptStores = [];
 
 // =====================================================
 // START
@@ -48,7 +49,9 @@ async function loadMTDData(){
 
         const json = await response.json();
 
-        stores = Array.isArray(json) ? json : [];
+        stores = json.filter(x => x.type !== "UPT");
+
+uptStores = json.filter(x => x.type === "UPT");
 
         console.log("Total Store :",stores.length);
 
@@ -58,6 +61,7 @@ async function loadMTDData(){
         renderTargetTable();
         renderEstimateTable();
         renderSSSGTable();
+        renderUPTTable();
 
     }
 
@@ -568,6 +572,56 @@ function renderSSSGTable(){
     });
 
 }
+function renderUPTTable(){
+
+    const tbody = document.getElementById("uptTable");
+
+    if(!tbody) return;
+
+    tbody.innerHTML = uptStores.map(item=>{
+
+        const achv = Number(item.achv) * 100;
+
+        let color = "#ef4444";
+
+        if(achv >= 100){
+
+            color = "#16a34a";
+
+        }else if(achv >= 90){
+
+            color = "#f59e0b";
+
+        }
+
+        return `
+
+        <tr>
+
+            <td><b>${item.store}</b></td>
+
+            <td>${Number(item.avgUPT).toFixed(2)}</td>
+
+            <td style="color:${color};font-weight:700;">
+                ${achv.toFixed(1)}%
+            </td>
+
+            <td>${Number(item.target1).toFixed(2)}</td>
+
+            <td>${Number(item.target2).toFixed(2)}</td>
+
+            <td>${Number(item.target3).toFixed(2)}</td>
+
+            <td>${item.remarks}</td>
+
+        </tr>
+
+        `;
+
+    }).join("");
+
+}
+
 function getAchievementBadge(value){
 
     if(value >= 100){

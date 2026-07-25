@@ -30,48 +30,69 @@
     <!-- ========================= -->
     <!-- SIDEBAR -->
     <!-- ========================= -->
+<div class="sidebar">
 
-    <div class="sidebar">
+    <div class="logo">
 
-        <div class="logo">
+        <h2>BM Rifqi DR</h2>
 
-            <h2>BM Rifqi DR</h2>
-
-            <span>Performance Dashboard</span>
-
-        </div>
-
-        <ul>
-
-            <li onclick="window.location.href='index.html'">
-
-                <i class="fa-solid fa-chart-column"></i>
-
-                Dashboard Sales KPI
-
-            </li>
-
-            <li onclick="window.location.href='mtd.html'">
-
-                <i class="fa-solid fa-chart-line"></i>
-
-                Sales Month To Date
-
-            </li>
-
-            <li class="active">
-
-                <i class="fa-solid fa-boxes-stacked"></i>
-
-                Stock Take Center
-
-            </li>
-
-        </ul>
+        <span>Performance Dashboard</span>
 
     </div>
 
+    <ul>
 
+        <li onclick="location.href='index.html'">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            Dashboard Sales KPI
+
+        </li>
+
+        <li onclick="location.href='mtd.html'">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Sales Month To Date
+
+        </li>
+
+        <li class="active" onclick="location.href='stockloss.html'">
+
+            <i class="fa-solid fa-boxes-stacked"></i>
+
+            Stock Take Center
+
+        </li>
+
+        <li onclick="location.href='complaint.html'">
+
+            <i class="fa-solid fa-headset"></i>
+
+            Complaint Customer Recap
+
+        </li>
+
+        <li onclick="location.href='manpower.html'">
+
+            <i class="fa-solid fa-users"></i>
+
+            Data Manpower
+
+        </li>
+
+        <li onclick="location.href='keepstock.html'">
+
+            <i class="fa-solid fa-store"></i>
+
+            Monitoring Keepstock
+
+        </li>
+
+    </ul>
+
+</div>
     <!-- ========================= -->
     <!-- MAIN -->
     <!-- ========================= -->
@@ -79,26 +100,33 @@
     <div class="main">
 
         <!-- HEADER -->
+<div class="header">
 
-        <div class="header">
+    <div>
 
-            <div>
+        <h1>📦 Stock Take Center</h1>
 
-                <h1>📦 Stock Take Center</h1>
+        <p>Stock Loss & ST Incentive Dashboard</p>
 
-                <p>Stock Take Result, Stock Loss Detail & ST Schedule</p>
+    </div>
 
-            </div>
+    <div class="today">
 
-            <div class="today">
+        <div class="today-icon">
+            <i class="fa-solid fa-calendar-days"></i>
+        </div>
 
-                <i class="fa-solid fa-calendar-days"></i>
+        <div class="today-info">
 
-                <span id="todayDate"></span>
+            <span id="todayDate"></span>
 
-            </div>
+            <small id="todayTime"></small>
 
         </div>
+
+    </div>
+
+</div>
 
 
         <!-- KPI -->
@@ -147,15 +175,27 @@
 <div class="main-tab-menu">
 
     <button class="main-tab-btn active" data-main="result">
-        📊 ST Result
+
+        <i class="fa-solid fa-chart-column"></i>
+
+        <span>📊 ST Result</span>
+
     </button>
 
     <button class="main-tab-btn" data-main="lossdetail">
-        📉 Stock Loss Detail
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        <span>📉 Stock Loss Detail</span>
+
     </button>
 
     <button class="main-tab-btn" data-main="schedule">
-        📅 ST Schedule
+
+        <i class="fa-solid fa-calendar-check"></i>
+
+        <span>📅 ST Schedule</span>
+
     </button>
 
 </div>

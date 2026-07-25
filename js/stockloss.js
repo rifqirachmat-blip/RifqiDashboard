@@ -6,6 +6,7 @@ const API_BASE =
 "https://script.google.com/macros/s/AKfycbwORZ8BP7ORnc-lsp1tSM01ZDPQ1v1aAvcq3H0zpc_VYKyBVPdyu0lzRfBUKD4C3L54/exec";
 
 let stockData = [];
+let filteredData = [];
 let scheduleData = [];
 // ==========================================
 // TAB MENU
@@ -14,6 +15,7 @@ let scheduleData = [];
 const tabButtons = document.querySelectorAll(".tab-btn");
 
 const tableContent = document.getElementById("tabContent");
+let activeTab = "general";
 
 tabButtons.forEach(btn=>{
 
@@ -24,7 +26,9 @@ tabButtons.forEach(btn=>{
 
         btn.classList.add("active");
 
-        loadTable(btn.dataset.tab);
+        activeTab = btn.dataset.tab;
+
+        loadTable(activeTab);
 
     });
 
@@ -99,7 +103,7 @@ tableContent.innerHTML=`
 
 <tbody>
 
-${stockData.map((item,index)=>`
+${filteredData.map((item,index)=>`
 
 <tr>
 
@@ -169,7 +173,7 @@ function renderMissing(){
 
         <tbody>
 
-        ${stockData.map((item,index)=>`
+        ${filteredData.map((item,index)=>`
 
         <tr>
 
@@ -263,7 +267,7 @@ function renderLoss(){
 
         <tbody>
 
-        ${stockData.map((item,index)=>{
+        ${filteredData.map((item,index)=>{
 
             const netLoss = Number(item["Net Loss Amt"]) || 0;
 
@@ -367,7 +371,7 @@ function renderAccuracy(){
 
         <tbody>
 
-        ${stockData.map((item,index)=>{
+        ${filteredData.map((item,index)=>{
 
             const target = Number(item["Target % ST Accuracy"]) || 0;
 
@@ -481,7 +485,7 @@ function renderIncentive(){
 
         <tbody>
 
-        ${stockData.map((item,index)=>{
+        ${filteredData.map((item,index)=>{
 
             const meet = item["Meet 1st Criteria?"];
 
@@ -588,7 +592,7 @@ function renderAudit(){
 
         <tbody>
 
-        ${stockData.map((item,index)=>{
+        ${filteredData.map((item,index)=>{
 
             const audit = (Number(item["%100 SKU Check"]) || 0) * 100;
 
@@ -665,6 +669,9 @@ async function loadData(){
         const res = await fetch(API_BASE + "?action=stresult");
 
         stockData = await res.json();
+
+        // Tambahkan ini
+        filteredData = [...stockData];
 
         updateSummaryCards();
 
@@ -762,7 +769,7 @@ stockData.forEach(item => {
 
     if (!isNaN(value)) {
 
-        incentive += value * 1000000;
+        incentive += Math.floor(value);
 
     }
 
@@ -774,13 +781,14 @@ formatCurrency(incentive);
 }
 function formatCurrency(value){
 
-    if(value==null || value=="") return "-";
+    if(value == null || value === "") return "-";
 
     return new Intl.NumberFormat("id-ID",{
         style:"currency",
         currency:"IDR",
+        minimumFractionDigits:0,
         maximumFractionDigits:0
-    }).format(Number(value));
+    }).format(Math.trunc(Number(value)));
 
 }
 function formatMonthYear(date){
@@ -1128,3 +1136,84 @@ function renderStockLoss(){
     `;
 
 }
+// ==========================================
+// TODAY DATE & TIME
+// ==========================================
+
+function updateToday(){
+
+    const now = new Date();
+
+    const dateOptions = {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+    };
+
+    const timeOptions = {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+    };
+
+    document.getElementById("todayDate").innerHTML =
+        now.toLocaleDateString("id-ID", dateOptions);
+
+    document.getElementById("todayTime").innerHTML =
+        now.toLocaleTimeString("id-ID", timeOptions);
+
+}
+
+updateToday();
+
+setInterval(updateToday,1000);
+
+const searchInput = document.getElementById("searchStore");
+
+searchInput.addEventListener("input", function () {
+
+    const keyword = this.value.toLowerCase().trim();
+
+    filteredData = stockData.filter(item => {
+
+        const code = (item["Store Code"] || "").toLowerCase();
+        const name = (item["Store Name"] || "").toLowerCase();
+
+        return code.includes(keyword) || name.includes(keyword);
+
+    });
+
+    switch(activeTab){
+
+        case "general":
+            renderGeneral();
+            break;
+
+        case "missing":
+            renderMissing();
+            break;
+
+        case "loss":
+            renderLoss();
+            break;
+
+        case "accuracy":
+            renderAccuracy();
+            break;
+
+        case "incentive":
+            renderIncentive();
+            break;
+
+        case "audit":
+            renderAudit();
+            break;
+
+        case "schedule":
+            renderSchedule();
+            break;
+
+    }
+
+});
