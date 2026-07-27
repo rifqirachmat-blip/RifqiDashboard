@@ -732,7 +732,9 @@ async function loadStockLossDetail() {
         criteriaData = await resCriteria.json();
 
         console.log("Stock Loss Detail :", stockLossDetail);
+        console.log(stockLossDetail[0]);
         console.log("Criteria :", criteriaData);
+        
 
         initStoreSearch();
 
@@ -1059,54 +1061,7 @@ else{
 // MAIN MENU
 // ==========================================
 
-const mainButtons = document.querySelectorAll(".main-tab-btn");
 
-mainButtons.forEach(btn=>{
-
-    btn.addEventListener("click",()=>{
-
-        document.querySelector(".main-tab-btn.active")
-        .classList.remove("active");
-
-        btn.classList.add("active");
-
-        const menu = btn.dataset.main;
-
-        switch(menu){
-
-            case "result":
-
-                document.querySelector(".sub-tabs").style.display="block";
-
-                renderGeneral();
-
-                break;
-
-            case "lossdetail":
-
-                document.querySelector(".sub-tabs").style.display="none";
-
-                tableContent.innerHTML=`
-                    <h2 style="padding:30px;text-align:center;">
-                        🚧 Stock Loss Detail (Coming Soon)
-                    </h2>
-                `;
-
-                break;
-
-            case "schedule":
-
-                document.querySelector(".sub-tabs").style.display="none";
-
-                loadSchedule();
-
-                break;
-
-        }
-
-    });
-
-});
 // ==========================================
 // MAIN TAB MENU
 // ==========================================
@@ -1134,11 +1089,26 @@ mainTabButtons.forEach(btn=>{
 
         else if(menu=="lossdetail"){
 
-    document.getElementById("stResultTabs").style.display="none";
+    document.getElementById("stResultTabs").style.display = "none";
 
     loadStockLossDetail();
 
-    renderStockLoss();
+    tableContent.innerHTML = `
+        <div class="table-box">
+
+            <h3>📉 Stock Loss Detail</h3>
+
+            <div style="
+                padding:40px;
+                text-align:center;
+                color:#666;
+                font-size:16px;
+            ">
+                🔍 Cari Store terlebih dahulu...
+            </div>
+
+        </div>
+    `;
 
 }
 
@@ -1153,80 +1123,150 @@ mainTabButtons.forEach(btn=>{
     });
 
 });
-function renderStockLoss(){
+function renderStockLoss(storeCode){
+    console.log("Store dipilih :", storeCode);
 
-    // Ambil daftar store unik
-    const stores = [...new Set(stockLossDetail.map(item => item.storeCode))];
+    const dataStore = stockLossDetail
+    .filter(x => x.storeCode === storeCode)
+    .sort((a,b) => new Date(a.month) - new Date(b.month));
 
+     console.log("Jumlah data :", dataStore.length);
+    console.log(dataStore);
+
+if(dataStore.length === 0){
+
+    tableContent.innerHTML = `
+        <div class="table-box">
+            <h3>📉 Stock Loss Detail</h3>
+            <p>Tidak ada data.</p>
+        </div>
+    `;
+
+    return;
+
+}
     tableContent.innerHTML = `
 
     <div class="table-box">
 
         <h3>📉 Stock Loss Detail</h3>
 
-        <table class="stock-table">
+        <div class="table-box">
 
-            <thead>
+<h3>📉 Stock Loss Detail</h3>
+
+<div class="store-info">
+
+    <p><b>Store</b> : ${storeCode}</p>
+
+    <p><b>Store Name</b> : ${dataStore[0].storeName}</p>
+
+${(() => {
+
+    const firstMonth = getFirstSTMonth(storeCode);
+
+    return `
+        <p><b>First ST Month</b> :
+            ${
+                firstMonth
+                ? firstMonth.toLocaleDateString("en-US",{
+                    month:"short",
+                    year:"2-digit"
+                })
+                : "-"
+            }
+        </p>
+    `;
+
+})()}
+    </p>
+
+</div>
+
+<table class="stock-table">
+
+<thead>
 
 <tr>
 
 <th>No</th>
-<th>Store</th>
-<th>Store Name</th>
-<th>First ST Month</th>
+
+<th>Month</th>
+
+<th>Sales</th>
+
+<th>Sales - PPN 11%</th>
+
+<th>Incentive ST</th>
+
+<th>Damage</th>
+
+<th>%</th>
+
+<th>Missing</th>
+
+<th>%</th>
+
+<th>Extra</th>
+
+<th>%</th>
+
+<th>Net Missing B4 ST</th>
+
+<th>%</th>
 
 </tr>
 
 </thead>
 
-            <tbody>
+<tbody>
 
-                ${stores.map((store,index)=>{
+${dataStore.map((item,index)=>{
 
-                    const data = stockLossDetail.find(x=>x.storeCode===store);
-                    const firstMonth = getFirstSTMonth(store);
-                    const months=getRollingMonths(firstMonth);  
+const c = calculateRow(item);
 
-                    return `
+return `
 
 <tr>
 
-    <td>${index+1}</td>
+<td>${index+1}</td>
 
-    <td>${store}</td>
+<td>
+${new Date(item.month).toLocaleDateString("en-US",{
+month:"short",
+year:"2-digit"
+})}
+</td>
 
-    <td>${data.storeName}</td>
+<td>${formatCurrency(c.sales)}</td>
 
-    <td>${months[0].label}</td>
+<td>${formatCurrency(c.salesPPN)}</td>
 
-    ${months.map(m=>{
+<td>${formatCurrency(c.incentive)}</td>
 
-    const monthData = getMonthData(store,m.label);
+<td>${formatCurrency(c.damage)}</td>
 
-    return `
+<td>${(c.damagePct*100).toFixed(2)}%</td>
 
-        <td>
+<td>${formatCurrency(c.missing)}</td>
 
-            ${
-                monthData
-                ? formatCurrency(monthData.sales)
-                : "-"
-            }
+<td>${(c.missingPct*100).toFixed(2)}%</td>
 
-        </td>
+<td>${formatCurrency(c.extra)}</td>
 
-    `;
+<td>${(c.extraPct*100).toFixed(2)}%</td>
 
-}).join("")}
+<td>${formatCurrency(c.netMissing)}</td>
+
+<td>${(c.netPct*100).toFixed(2)}%</td>
 
 </tr>
 
 `;
 
-                }).join("")}
+}).join("")}
 
-            </tbody>
-
+</tbody>
         </table>
 
     </div>
@@ -1267,77 +1307,24 @@ updateToday();
 
 setInterval(updateToday,1000);
 
-const searchInput = document.getElementById("searchStore");
-const suggestionBox = document.getElementById("storeSuggestion");
-
-searchInput.addEventListener("input", function () {
-
-    const keyword = this.value.toLowerCase().trim();
-
-    filteredData = stockData.filter(item => {
-
-        const code = (item["Store Code"] || "").toLowerCase();
-        const name = (item["Store Name"] || "").toLowerCase();
-
-        return code.includes(keyword) || name.includes(keyword);
-
-    });
-
-    switch(activeTab){
-
-        case "general":
-            renderGeneral();
-            break;
-
-        case "missing":
-            renderMissing();
-            break;
-
-        case "loss":
-            renderLoss();
-            break;
-
-        case "accuracy":
-            renderAccuracy();
-            break;
-
-        case "incentive":
-            renderIncentive();
-            break;
-
-        case "audit":
-            renderAudit();
-            break;
-
-        case "schedule":
-            renderSchedule();
-            break;
-
-    }
-
-});
 function getFirstSTMonth(storeCode){
 
-    const data = stockLossDetail.filter(x=>x.storeCode===storeCode);
+    const today = new Date();
+    today.setHours(0,0,0,0);
 
-    let firstMonth = "-";
+    const store = stockData.find(x => x["Store Code"] === storeCode);
 
-    data.forEach(item=>{
+    if(!store) return null;
 
-        // kalau ada transaksi ST pada bulan tersebut
-        if(
-            item.dmo !== 0 ||
-            item.dpi !== 0 ||
-            item.dmp !== 0 ||
-            item.missing !== 0 ||
-            item.extra !== 0
-        ){
-            firstMonth = item.month;
-        }
+    const tyDate = new Date(store["TY ST Date"]);
+    tyDate.setHours(0,0,0,0);
 
-    });
+    // Kalau TY ST belum lewat
+    if(tyDate > today){
+        return null;
+    }
 
-    return firstMonth;
+    return tyDate;
 
 }
 function getRollingMonths(firstMonth){
@@ -1391,5 +1378,133 @@ function getMonthData(storeCode, monthLabel){
     });
 
     return item || null;
+
+}
+function calculateRow(item){
+
+    const sales = Number(item.sales) || 0;
+
+    const salesPPN = sales / 1.11;
+
+    const incentive = Number(item.incentive) || 0;
+
+    const damage =
+        (Number(item.dmo) || 0) +
+        (Number(item.dmc) || 0) +
+        (Number(item.dmp) || 0);
+
+    const damagePct =
+        salesPPN ? damage / salesPPN : 0;
+
+    const missing =
+        Number(item.missing) || 0;
+
+    const missingPct =
+        salesPPN ? missing / salesPPN : 0;
+
+    const extra =
+        Number(item.extra) || 0;
+
+    const extraPct =
+        salesPPN ? extra / salesPPN : 0;
+
+    const netMissing =
+        damage + missing - extra;
+
+    const netPct =
+        salesPPN ? netMissing / salesPPN : 0;
+
+    return{
+
+        sales,
+        salesPPN,
+
+        incentive,
+
+        damage,
+        damagePct,
+
+        missing,
+        missingPct,
+
+        extra,
+        extraPct,
+
+        netMissing,
+        netPct
+
+    };
+
+}
+function initStoreSearch(){
+    const searchStockLoss = document.getElementById("searchStockLoss");
+    const suggestionBox = document.getElementById("storeSuggestion");
+
+    console.log("initStoreSearch jalan");
+
+    const stores = [...new Map(
+        stockLossDetail.map(x=>[
+            x.storeCode,
+            {
+                code:x.storeCode,
+                name:x.storeName
+            }
+        ])
+
+    ).values()];
+    console.log(stores);
+
+    searchStockLoss.oninput = function(){
+
+        const keyword = this.value.toLowerCase().trim();
+
+        suggestionBox.innerHTML = "";
+
+        if(keyword===""){
+
+            suggestionBox.style.display="none";
+            return;
+
+        }
+
+        const result = stores.filter(store=>
+
+            store.code.toLowerCase().includes(keyword) ||
+
+            store.name.toLowerCase().includes(keyword)
+
+        );
+        console.log(result);
+
+        result.forEach(store=>{
+
+            const div=document.createElement("div");
+
+            div.className="suggestion-item";
+
+            div.innerHTML=`${store.code} - ${store.name}`;
+
+            div.onclick=function(){
+
+                searchStockLoss.value=store.code;
+
+                suggestionBox.style.display="none";
+
+                console.log("Dipilih :",store.code);
+
+                renderStockLoss(store.code);
+
+            };
+
+            suggestionBox.appendChild(div);
+
+        });
+        console.log(result.length);
+        suggestionBox.style.display = "block";
+        
+
+        suggestionBox.style.display=result.length ? "block":"none";
+
+    };
 
 }

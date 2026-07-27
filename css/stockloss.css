@@ -355,34 +355,197 @@
 .suggestion-box{
 
     position:absolute;
+    top:100%;
+    left:0;
+
     width:100%;
+
     background:#fff;
-    border:1px solid #ddd;
-    border-radius:8px;
-    max-height:250px;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:12px;
+
+    margin-top:6px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+
+    overflow:hidden;
+
+    max-height:260px;
+
     overflow-y:auto;
-    z-index:999;
+
+    z-index:9999;
+
     display:none;
 
 }
 
 .suggestion-item{
 
-    padding:10px 15px;
+    padding:12px 16px;
+
     cursor:pointer;
+
+    font-size:14px;
+
+    transition:.2s;
+
+    border-bottom:1px solid #f3f4f6;
+
+}
+
+.suggestion-item:last-child{
+
+    border-bottom:none;
 
 }
 
 .suggestion-item:hover{
 
-    background:#1976d2;
-    color:#fff;
+    background:#FFD500;
+
+    color:#111;
+
+    font-weight:600;
 
 }
+
 
 .search-box{
 
     position:relative;
     width:350px;
+
+}
+.store-info{
+
+    display:flex;
+    gap:40px;
+    flex-wrap:wrap;
+
+    margin-bottom:20px;
+
+    padding:15px 20px;
+
+    background:#f8fafc;
+
+    border-radius:12px;
+
+}
+
+.store-info p{
+
+    margin:0;
+
+    font-size:14px;
+
+}
+@media(max-width:768px){
+
+    .sidebar{
+
+        width:70px;
+
+    }
+
+    .sidebar .logo h2,
+    .sidebar .logo span{
+
+        display:none;
+
+    }
+
+    .sidebar ul li{
+
+        justify-content:center;
+        padding:18px 0;
+        font-size:0;
+
+    }
+
+    .sidebar ul li i{
+
+        display:block;
+        font-size:20px;
+        margin:0;
+
+    }
+
+    .main{
+
+        margin-left:70px;
+        padding:15px;
+
+    }
+
+    .cards{
+
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:12px;
+
+    }
+
+    .main-tab-menu{
+
+        overflow-x:auto;
+        gap:10px;
+
+    }
+
+    .main-tab-btn{
+
+        min-width:180px;
+        flex:none;
+
+    }
+
+    .tab-menu{
+
+        overflow-x:auto;
+        flex-wrap:nowrap;
+
+    }
+
+    .tab-btn{
+
+        flex:none;
+        white-space:nowrap;
+
+    }
+
+    .search-box{
+
+        width:100%;
+
+    }
+
+    .search-box input{
+
+        width:100%;
+
+    }
+
+    .store-info{
+
+        flex-direction:column;
+        gap:8px;
+
+    }
+
+    #tabContent{
+
+        overflow-x:auto;
+        padding:15px;
+
+    }
+
+    .stock-table{
+
+        min-width:1300px;
+
+    }
 
 }
