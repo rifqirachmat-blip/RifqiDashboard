@@ -8,6 +8,11 @@ const API_BASE =
 let stockData = [];
 let filteredData = [];
 let scheduleData = [];
+let stockLossDetail = [];
+let criteriaData = [];
+
+const DETAIL_API =
+"https://script.google.com/macros/s/AKfycbx33o-mgqtLjSRnyMnRTtDYbu7QsHnDjSVpzY9H-7fF5XRPTN2RYmQV0k43XF7wyo-k/exec";
 // ==========================================
 // TAB MENU
 // ==========================================
@@ -711,6 +716,38 @@ async function loadSchedule(){
 }
 
 loadData();
+
+// ==========================================
+// LOAD STOCK LOSS DETAIL
+// ==========================================
+
+async function loadStockLossDetail() {
+
+    try {
+
+        const resLoss = await fetch(DETAIL_API + "?action=stockloss");
+        stockLossDetail = await resLoss.json();
+
+        const resCriteria = await fetch(DETAIL_API + "?action=criteria");
+        criteriaData = await resCriteria.json();
+
+        console.log("Stock Loss Detail :", stockLossDetail);
+        console.log("Criteria :", criteriaData);
+
+        initStoreSearch();
+
+    }
+
+    catch(err){
+
+        console.error(err);
+
+        alert("Gagal mengambil data Stock Loss Detail");
+
+    }
+
+}
+
 function updateSummaryCards(){
 
     // ==========================
@@ -1097,11 +1134,13 @@ mainTabButtons.forEach(btn=>{
 
         else if(menu=="lossdetail"){
 
-            document.getElementById("stResultTabs").style.display="none";
+    document.getElementById("stResultTabs").style.display="none";
 
-            renderStockLoss();
+    loadStockLossDetail();
 
-        }
+    renderStockLoss();
+
+}
 
         else if(menu=="schedule"){
 
@@ -1116,22 +1155,81 @@ mainTabButtons.forEach(btn=>{
 });
 function renderStockLoss(){
 
-    tableContent.innerHTML=`
+    // Ambil daftar store unik
+    const stores = [...new Set(stockLossDetail.map(item => item.storeCode))];
 
-        <div style="
-            padding:80px;
-            text-align:center;
-            font-size:22px;
-            font-weight:600;
-            color:#888;
-        ">
+    tableContent.innerHTML = `
 
-            🚧 Stock Loss Detail
-            <br><br>
+    <div class="table-box">
 
-            Coming Soon
+        <h3>📉 Stock Loss Detail</h3>
 
-        </div>
+        <table class="stock-table">
+
+            <thead>
+
+<tr>
+
+<th>No</th>
+<th>Store</th>
+<th>Store Name</th>
+<th>First ST Month</th>
+
+</tr>
+
+</thead>
+
+            <tbody>
+
+                ${stores.map((store,index)=>{
+
+                    const data = stockLossDetail.find(x=>x.storeCode===store);
+                    const firstMonth = getFirstSTMonth(store);
+                    const months=getRollingMonths(firstMonth);  
+
+                    return `
+
+<tr>
+
+    <td>${index+1}</td>
+
+    <td>${store}</td>
+
+    <td>${data.storeName}</td>
+
+    <td>${months[0].label}</td>
+
+    ${months.map(m=>{
+
+    const monthData = getMonthData(store,m.label);
+
+    return `
+
+        <td>
+
+            ${
+                monthData
+                ? formatCurrency(monthData.sales)
+                : "-"
+            }
+
+        </td>
+
+    `;
+
+}).join("")}
+
+</tr>
+
+`;
+
+                }).join("")}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
     `;
 
@@ -1170,6 +1268,7 @@ updateToday();
 setInterval(updateToday,1000);
 
 const searchInput = document.getElementById("searchStore");
+const suggestionBox = document.getElementById("storeSuggestion");
 
 searchInput.addEventListener("input", function () {
 
@@ -1217,3 +1316,80 @@ searchInput.addEventListener("input", function () {
     }
 
 });
+function getFirstSTMonth(storeCode){
+
+    const data = stockLossDetail.filter(x=>x.storeCode===storeCode);
+
+    let firstMonth = "-";
+
+    data.forEach(item=>{
+
+        // kalau ada transaksi ST pada bulan tersebut
+        if(
+            item.dmo !== 0 ||
+            item.dpi !== 0 ||
+            item.dmp !== 0 ||
+            item.missing !== 0 ||
+            item.extra !== 0
+        ){
+            firstMonth = item.month;
+        }
+
+    });
+
+    return firstMonth;
+
+}
+function getRollingMonths(firstMonth){
+
+    if(!firstMonth) return [];
+
+    const months=[];
+
+    let date=new Date(firstMonth);
+
+    for(let i=0;i<12;i++){
+
+        months.push({
+
+            label:date.toLocaleDateString("en-US",{
+
+                month:"short",
+                year:"2-digit"
+
+            }),
+
+            month:date.toLocaleDateString("en-US",{
+
+                month:"long",
+                year:"numeric"
+
+            })
+
+        });
+
+        date.setMonth(date.getMonth()+1);
+
+    }
+
+    return months;
+
+}
+function getMonthData(storeCode, monthLabel){
+
+    const item = stockLossDetail.find(x=>{
+
+        const d = new Date(x.month);
+
+        const label = d.toLocaleDateString("en-US",{
+            month:"short",
+            year:"2-digit"
+        });
+
+        return x.storeCode===storeCode && label===monthLabel;
+
+    });
+
+    return item || null;
+
+}
