@@ -1131,7 +1131,35 @@ function renderStockLoss(storeCode){
     .sort((a,b) => new Date(a.month) - new Date(b.month));
 
      console.log("Jumlah data :", dataStore.length);
-    console.log(dataStore);
+    console.table(dataStore);
+    // =========================
+// GRAND TOTAL
+// =========================
+
+const total = dataStore.reduce((acc,item)=>{
+
+    console.log(item);   
+    const c = calculateRow(item);
+
+    acc.sales += c.sales;
+    acc.salesPPN += c.salesPPN;
+    acc.incentive += c.incentive;
+    acc.damage += c.damage;
+    acc.missing += c.missing;
+    acc.extra += c.extra;
+    acc.netMissing += c.netMissing;
+
+    return acc;
+
+},{
+    sales:0,
+    salesPPN:0,
+    incentive:0,
+    damage:0,
+    missing:0,
+    extra:0,
+    netMissing:0
+});
 
 if(dataStore.length === 0){
 
@@ -1195,7 +1223,7 @@ ${(() => {
 
 <th>Sales</th>
 
-<th>Sales - PPN 11%</th>
+<th>Sales - PPN 10%</th>
 
 <th>Incentive ST</th>
 
@@ -1265,6 +1293,33 @@ year:"2-digit"
 `;
 
 }).join("")}
+<tr class="total-row">
+
+<td colspan="2"><b>TOTAL</b></td>
+
+<td><b>${formatCurrency(total.sales)}</b></td>
+
+<td><b>${formatCurrency(total.salesPPN)}</b></td>
+
+<td><b>${formatCurrency(total.incentive)}</b></td>
+
+<td><b>${formatCurrency(total.damage)}</b></td>
+
+<td></td>
+
+<td><b>${formatCurrency(total.missing)}</b></td>
+
+<td></td>
+
+<td><b>${formatCurrency(total.extra)}</b></td>
+
+<td></td>
+
+<td><b>${formatCurrency(total.netMissing)}</b></td>
+
+<td></td>
+
+</tr>
 
 </tbody>
         </table>

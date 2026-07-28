@@ -56,7 +56,6 @@ uptStores = json.filter(x => x.type === "UPT");
         console.log("Total Store :",stores.length);
 
         // Render Dashboard
-        renderStoreGrid();
         renderRankings();
         renderTargetTable();
         renderEstimateTable();
@@ -183,115 +182,7 @@ function setText(id,value){
 // =====================================================
 
 
-// =====================================================
-// STORE PERFORMANCE
-// =====================================================
-function renderStoreGrid(){
 
-    const container = document.getElementById("storeContainer");
-
-    if(!container) return;
-
-    container.innerHTML = "";
-
-    const sorted = [...stores].sort((a,b)=>b.achievement-a.achievement);
-
-    sorted.forEach(item=>{
-        const badge = getBadge(item.achievement);
-
-        const ach = getAchievementBadge(item.achievement);
-        
-
-        container.innerHTML += `
-
-<div class="store-card"
-     style="--cardColor:${ach.color};">
-
-    <div class="store-header">
-
-        <h3>${item.store}</h3>
-
-        <span class="badge"
-              style="
-                background:${ach.color};
-                color:#fff;
-              ">
-            ${ach.text}
-        </span>
-
-    </div>
-
-    <div class="store-sales">
-
-        ${formatRp(item.mtd)}
-
-    </div>
-
-    <div class="progress">
-
-        <div class="progress-bar"
-
-             style="
-                width:${Math.min(item.achievement,100)}%;
-                background:${ach.color};
-             ">
-
-        </div>
-
-    </div>
-
-    <div class="achievement-text">
-
-    <span class="achievement-badge"
-
-    style="background:${ach.color};">
-
-        ${ach.text}
-
-    </span>
-
-</div>
-    <div class="info-grid">
-
-        <div class="info-box">
-            <small>Need / Day</small>
-            <b>${formatRp(item.need)}</b>
-        </div>
-
-        <div class="info-box">
-            <small>AVG / Day</small>
-            <b>${formatRp(item.avg)}</b>
-        </div>
-
-        <div class="info-box">
-            <small>Estimate</small>
-            <b>${formatRp(item.estimate)}</b>
-        </div>
-
-        <div class="info-box">
-            <small>ACV</small>
-            <b>${formatPct(item.acv)}</b>
-        </div>
-
-        <div class="info-box">
-            <small>Incentive</small>
-            <b>${item.level}</b>
-        </div>
-
-        <div class="info-box">
-            <small>Remarks</small>
-            <b>${item.remarks}</b>
-        </div>
-
-    </div>
-
-</div>
-
-`;
-
-    });
-
-}
 // RANKING
 // =====================================================
 
@@ -444,14 +335,37 @@ function renderTargetTable(){
 
             <td>${formatRp(item.mtd)}</td>
 
-            <td>${formatRp(item.target1)}</td>
+            <td>
+    ${formatRp(item.target1)}
+    <br>
+    <small style="color:${item.mtd >= item.target1 ? '#16a34a' : '#dc2626'};font-weight:600;">
+        (${formatRp(item.mtd - item.target1)})
+    </small>
+</td>
 
-            <td>${formatRp(item.target2)}</td>
+<td>
+    ${formatRp(item.target2)}
+    <br>
+    <small style="color:${item.mtd >= item.target2 ? '#16a34a' : '#dc2626'};font-weight:600;">
+        (${formatRp(item.mtd - item.target2)})
+    </small>
+</td>
 
-            <td>${formatRp(item.target3)}</td>
+<td>
+    ${formatRp(item.target3)}
+    <br>
+    <small style="color:${item.mtd >= item.target3 ? '#16a34a' : '#dc2626'};font-weight:600;">
+        (${formatRp(item.mtd - item.target3)})
+    </small>
+</td>
 
-            <td>${formatRp(item.target4)}</td>
-
+<td>
+    ${formatRp(item.target4)}
+    <br>
+    <small style="color:${item.mtd >= item.target4 ? '#16a34a' : '#dc2626'};font-weight:600;">
+        (${formatRp(item.mtd - item.target4)})
+    </small>
+</td>
             <td>
 
                 <span class="badge">
