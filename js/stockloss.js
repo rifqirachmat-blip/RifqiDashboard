@@ -12,7 +12,7 @@ let stockLossDetail = [];
 let criteriaData = [];
 
 const DETAIL_API =
-"https://script.google.com/macros/s/AKfycbx33o-mgqtLjSRnyMnRTtDYbu7QsHnDjSVpzY9H-7fF5XRPTN2RYmQV0k43XF7wyo-k/exec";
+"https://script.google.com/macros/s/AKfycbx33o-mgqtLjSRnyMnRTtDYbu7QsHnDjSVpzY9H-7fF5XRPTN2RYmQV0k43XF7wyo-k/exec"
 // ==========================================
 // TAB MENU
 // ==========================================
@@ -667,19 +667,27 @@ function renderAudit(){
 // LOAD DATA
 // =======================================
 
+let stockData = [];
+let filteredData = [];
+let scheduleData = [];
+
 async function loadData(){
 
     try{
 
+        // ST Result
         const res = await fetch(API_BASE + "?action=stresult");
-
         stockData = await res.json();
 
-        // Tambahkan ini
+        // ST Schedule
+        const resSchedule = await fetch(API_BASE + "?action=schedule");
+        scheduleData = await resSchedule.json();
+
+        console.log("Schedule :", scheduleData);
+
         filteredData = [...stockData];
 
         updateSummaryCards();
-
         renderGeneral();
 
     }
@@ -700,6 +708,7 @@ async function loadSchedule(){
         const res = await fetch(API_BASE + "?action=schedule");
 
         scheduleData = await res.json();
+        console.log("Schedule :", scheduleData);
 
         renderSchedule();
 
@@ -727,6 +736,9 @@ async function loadStockLossDetail() {
 
         const resLoss = await fetch(DETAIL_API + "?action=stockloss");
         stockLossDetail = await resLoss.json();
+        console.log(stockLossDetail.filter(x =>
+    x.storeCode === "JW2012"
+));
 
         const resCriteria = await fetch(DETAIL_API + "?action=criteria");
         criteriaData = await resCriteria.json();
@@ -1125,10 +1137,14 @@ mainTabButtons.forEach(btn=>{
 });
 function renderStockLoss(storeCode){
     console.log("Store dipilih :", storeCode);
+    const firstMonth = getFirstSTMonth(storeCode);
+
+console.log("First Month :", firstMonth);
 
     const dataStore = stockLossDetail
     .filter(x => x.storeCode === storeCode)
-    .sort((a,b) => new Date(a.month) - new Date(b.month));
+    .filter(x => new Date(x.month) >= firstMonth)
+    .sort((a,b)=>new Date(a.month)-new Date(b.month));
 
      console.log("Jumlah data :", dataStore.length);
     console.table(dataStore);
@@ -1138,7 +1154,7 @@ function renderStockLoss(storeCode){
 
 const total = dataStore.reduce((acc,item)=>{
 
-    console.log(item);   
+    console.log(item);2   
     const c = calculateRow(item);
 
     acc.sales += c.sales;
@@ -1364,22 +1380,24 @@ setInterval(updateToday,1000);
 
 function getFirstSTMonth(storeCode){
 
-    const today = new Date();
-    today.setHours(0,0,0,0);
+    const store = scheduleData.find(x =>
+        x.oldStoreCode === storeCode ||
+        x.newStoreCode === storeCode
+    );
 
-    const store = stockData.find(x => x["Store Code"] === storeCode);
-
-    if(!store) return null;
-
-    const tyDate = new Date(store["TY ST Date"]);
-    tyDate.setHours(0,0,0,0);
-
-    // Kalau TY ST belum lewat
-    if(tyDate > today){
+    if(!store){
+        console.log("Store tidak ditemukan :", storeCode);
         return null;
     }
 
-    return tyDate;
+    const today = new Date();
+
+    const ly = new Date(store.st2025);
+    const ty = new Date(store.st2026);
+
+    console.log(storeCode, ly, ty);
+
+    return today >= ty ? ty : ly;
 
 }
 function getRollingMonths(firstMonth){
@@ -1436,6 +1454,7 @@ function getMonthData(storeCode, monthLabel){
 
 }
 function calculateRow(item){
+    console.log(item);
 
     const sales = Number(item.sales) || 0;
 
