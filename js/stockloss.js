@@ -7,9 +7,9 @@ const API_BASE =
 
 let stockData = [];
 let filteredData = [];
-let scheduleData = [];
-let stockLossDetail = [];
-let criteriaData = [];
+let selectedSuggestion = -1;
+
+
 
 const DETAIL_API =
 "https://script.google.com/macros/s/AKfycbx33o-mgqtLjSRnyMnRTtDYbu7QsHnDjSVpzY9H-7fF5XRPTN2RYmQV0k43XF7wyo-k/exec"
@@ -83,64 +83,71 @@ function loadTable(tab){
 
 function renderGeneral(){
 
-tableContent.innerHTML=`
+    tableContent.innerHTML = `
 
-<table class="stock-table">
+    <div class="table-box">
 
-<thead>
+        <table class="stock-table">
 
-<tr>
+            <thead>
 
-<th>No</th>
-<th>Store Code</th>
-<th>Store Name</th>
-<th>SO Date</th>
-<th>LY ST Date</th>
-<th>TY ST Date</th>
-<th>ST Month</th>
-<th>Period Sales</th>
-<th>Total Sales</th>
-<th>Average Monthly Sales</th>
+                <tr>
 
-</tr>
+                    <th>No</th>
+                    <th>Store Code</th>
+                    <th>Store Name</th>
+                    <th>SO Date</th>
+                    <th>LY ST Date</th>
+                    <th>TY ST Date</th>
+                    <th>ST Month</th>
+                    <th>Period Sales</th>
+                    <th>Total Sales</th>
+                    <th>Average Monthly Sales</th>
 
-</thead>
+                </tr>
 
-<tbody>
+            </thead>
 
-${filteredData.map((item,index)=>`
+            <tbody>
 
-<tr>
+                ${filteredData.map((item,index)=>`
 
-<td>${index+1}</td>
+                <tr
+                    onclick="loadStockLossDetail('${item["Store Name"]}')"
+                    style="cursor:pointer;"
+                >
 
-<td>${item["Store Code"]}</td>
+                    <td>${index+1}</td>
 
-<td>${item["Store Name"]}</td>
+                    <td>${item["Store Code"]}</td>
 
-<td>${formatDate(item["SO Date"])}</td>
+                    <td>${item["Store Name"]}</td>
 
-<td>${formatDate(item["LY ST Date"])}</td>
+                    <td>${formatDate(item["SO Date"])}</td>
 
-<td>${formatDate(item["TY ST Date"])}</td>
+                    <td>${formatDate(item["LY ST Date"])}</td>
 
-<td>${formatMonthYear(item["ST Month"])}</td>
+                    <td>${formatDate(item["TY ST Date"])}</td>
 
-<td>${item["Period of Sales"]}</td>
+                    <td>${formatMonthYear(item["ST Month"])}</td>
 
-<td>${formatCurrency(item["Total Sales"] * 1000000)}</td>
+                    <td>${item["Period of Sales"]}</td>
 
-<td>${formatCurrency(item["Avrg Monthly Sales"])}</td>
+                    <td>${formatCurrency(item["Total Sales"] * 1000000)}</td>
 
-</tr>
+                    <td>${formatCurrency(item["Avrg Monthly Sales"])}</td>
 
-`).join("")}
+                </tr>
 
-</tbody>
+                `).join("")}
 
-</table>
+            </tbody>
 
-`;
+        </table>
+
+    </div>
+
+    `;
 
 }
 
@@ -667,8 +674,6 @@ function renderAudit(){
 // LOAD DATA
 // =======================================
 
-let stockData = [];
-let filteredData = [];
 let scheduleData = [];
 
 async function loadData(){
@@ -689,6 +694,7 @@ async function loadData(){
 
         updateSummaryCards();
         renderGeneral();
+        initStoreSearch();
 
     }
 
@@ -725,30 +731,25 @@ async function loadSchedule(){
 }
 
 loadData();
+async function loadStockLossDetail(store){
 
-// ==========================================
-// LOAD STOCK LOSS DETAIL
-// ==========================================
+    console.log("MASUK loadStockLossDetail", store);
 
-async function loadStockLossDetail() {
+    try{
 
-    try {
+        showLoading();
 
-        const resLoss = await fetch(DETAIL_API + "?action=stockloss");
-        stockLossDetail = await resLoss.json();
-        console.log(stockLossDetail.filter(x =>
-    x.storeCode === "JW2012"
-));
+        const res = await fetch(
+            DETAIL_API +
+            "?action=stocklossdetail&store=" +
+            encodeURIComponent(store)
+        );
 
-        const resCriteria = await fetch(DETAIL_API + "?action=criteria");
-        criteriaData = await resCriteria.json();
+        const data = await res.json();
 
-        console.log("Stock Loss Detail :", stockLossDetail);
-        console.log(stockLossDetail[0]);
-        console.log("Criteria :", criteriaData);
-        
+        console.log(data);
 
-        initStoreSearch();
+        renderStockLossDetail(data);
 
     }
 
@@ -756,11 +757,18 @@ async function loadStockLossDetail() {
 
         console.error(err);
 
-        alert("Gagal mengambil data Stock Loss Detail");
+        alert("Gagal mengambil Stock Loss Detail");
+
+    }
+
+    finally{
+
+        hideLoading();
 
     }
 
 }
+
 
 function updateSummaryCards(){
 
@@ -1103,8 +1111,7 @@ mainTabButtons.forEach(btn=>{
 
     document.getElementById("stResultTabs").style.display = "none";
 
-    loadStockLossDetail();
-
+    
     tableContent.innerHTML = `
         <div class="table-box">
 
@@ -1135,216 +1142,7 @@ mainTabButtons.forEach(btn=>{
     });
 
 });
-function renderStockLoss(storeCode){
-    console.log("Store dipilih :", storeCode);
-    const firstMonth = getFirstSTMonth(storeCode);
 
-console.log("First Month :", firstMonth);
-
-    const dataStore = stockLossDetail
-    .filter(x => x.storeCode === storeCode)
-    .filter(x => new Date(x.month) >= firstMonth)
-    .sort((a,b)=>new Date(a.month)-new Date(b.month));
-
-     console.log("Jumlah data :", dataStore.length);
-    console.table(dataStore);
-    // =========================
-// GRAND TOTAL
-// =========================
-
-const total = dataStore.reduce((acc,item)=>{
-
-    console.log(item);2   
-    const c = calculateRow(item);
-
-    acc.sales += c.sales;
-    acc.salesPPN += c.salesPPN;
-    acc.incentive += c.incentive;
-    acc.damage += c.damage;
-    acc.missing += c.missing;
-    acc.extra += c.extra;
-    acc.netMissing += c.netMissing;
-
-    return acc;
-
-},{
-    sales:0,
-    salesPPN:0,
-    incentive:0,
-    damage:0,
-    missing:0,
-    extra:0,
-    netMissing:0
-});
-
-if(dataStore.length === 0){
-
-    tableContent.innerHTML = `
-        <div class="table-box">
-            <h3>📉 Stock Loss Detail</h3>
-            <p>Tidak ada data.</p>
-        </div>
-    `;
-
-    return;
-
-}
-    tableContent.innerHTML = `
-
-    <div class="table-box">
-
-        <h3>📉 Stock Loss Detail</h3>
-
-        <div class="table-box">
-
-<h3>📉 Stock Loss Detail</h3>
-
-<div class="store-info">
-
-    <p><b>Store</b> : ${storeCode}</p>
-
-    <p><b>Store Name</b> : ${dataStore[0].storeName}</p>
-
-${(() => {
-
-    const firstMonth = getFirstSTMonth(storeCode);
-
-    return `
-        <p><b>First ST Month</b> :
-            ${
-                firstMonth
-                ? firstMonth.toLocaleDateString("en-US",{
-                    month:"short",
-                    year:"2-digit"
-                })
-                : "-"
-            }
-        </p>
-    `;
-
-})()}
-    </p>
-
-</div>
-
-<table class="stock-table">
-
-<thead>
-
-<tr>
-
-<th>No</th>
-
-<th>Month</th>
-
-<th>Sales</th>
-
-<th>Sales - PPN 10%</th>
-
-<th>Incentive ST</th>
-
-<th>Damage</th>
-
-<th>%</th>
-
-<th>Missing</th>
-
-<th>%</th>
-
-<th>Extra</th>
-
-<th>%</th>
-
-<th>Net Missing B4 ST</th>
-
-<th>%</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-${dataStore.map((item,index)=>{
-
-const c = calculateRow(item);
-
-return `
-
-<tr>
-
-<td>${index+1}</td>
-
-<td>
-${new Date(item.month).toLocaleDateString("en-US",{
-month:"short",
-year:"2-digit"
-})}
-</td>
-
-<td>${formatCurrency(c.sales)}</td>
-
-<td>${formatCurrency(c.salesPPN)}</td>
-
-<td>${formatCurrency(c.incentive)}</td>
-
-<td>${formatCurrency(c.damage)}</td>
-
-<td>${(c.damagePct*100).toFixed(2)}%</td>
-
-<td>${formatCurrency(c.missing)}</td>
-
-<td>${(c.missingPct*100).toFixed(2)}%</td>
-
-<td>${formatCurrency(c.extra)}</td>
-
-<td>${(c.extraPct*100).toFixed(2)}%</td>
-
-<td>${formatCurrency(c.netMissing)}</td>
-
-<td>${(c.netPct*100).toFixed(2)}%</td>
-
-</tr>
-
-`;
-
-}).join("")}
-<tr class="total-row">
-
-<td colspan="2"><b>TOTAL</b></td>
-
-<td><b>${formatCurrency(total.sales)}</b></td>
-
-<td><b>${formatCurrency(total.salesPPN)}</b></td>
-
-<td><b>${formatCurrency(total.incentive)}</b></td>
-
-<td><b>${formatCurrency(total.damage)}</b></td>
-
-<td></td>
-
-<td><b>${formatCurrency(total.missing)}</b></td>
-
-<td></td>
-
-<td><b>${formatCurrency(total.extra)}</b></td>
-
-<td></td>
-
-<td><b>${formatCurrency(total.netMissing)}</b></td>
-
-<td></td>
-
-</tr>
-
-</tbody>
-        </table>
-
-    </div>
-
-    `;
-
-}
 // ==========================================
 // TODAY DATE & TIME
 // ==========================================
@@ -1510,75 +1308,265 @@ function calculateRow(item){
     };
 
 }
-function initStoreSearch(){
-    const searchStockLoss = document.getElementById("searchStockLoss");
-    const suggestionBox = document.getElementById("storeSuggestion");
+function renderStockLossDetail(data){
 
-    console.log("initStoreSearch jalan");
+    if(!data.success){
 
-    const stores = [...new Map(
-        stockLossDetail.map(x=>[
-            x.storeCode,
-            {
-                code:x.storeCode,
-                name:x.storeName
-            }
-        ])
+        tableContent.innerHTML = "<p>Tidak ada data.</p>";
 
-    ).values()];
-    console.log(stores);
+        return;
 
-    searchStockLoss.oninput = function(){
+    }
 
-        const keyword = this.value.toLowerCase().trim();
+    let html = `
 
-        suggestionBox.innerHTML = "";
+<div style="margin-bottom:20px;">
 
-        if(keyword===""){
+    <button class="back-btn" onclick="renderGeneral()">
 
-            suggestionBox.style.display="none";
-            return;
+        ← Back to Summary
+
+    </button>
+
+</div>
+
+`;
+
+    /* ===========================
+       TABLE
+    =========================== */
+
+    html += `
+    <div class="table-box">
+
+        <table class="stock-table">
+    `;
+
+    data.table.forEach((row,index)=>{
+
+        if(index===0){
+
+            html += "<thead><tr>";
+
+            row.forEach(col=>{
+
+                html += `<th>${col}</th>`;
+
+            });
+
+            html += "</tr></thead><tbody>";
 
         }
 
-        const result = stores.filter(store=>
+        else{
 
-            store.code.toLowerCase().includes(keyword) ||
+            const isTotal = row[0] === "Total";
 
-            store.name.toLowerCase().includes(keyword)
+html += `
+<tr ${isTotal ? 'class="total-row"' : ""}>
+`;
+
+            row.forEach(col=>{
+
+                html += `<td>${col}</td>`;
+
+            });
+
+            html += "</tr>";
+
+        }
+
+    });
+
+    html += `
+        </tbody>
+        </table>
+
+    </div>
+    `;
+
+    /* ===========================
+       SUMMARY
+    =========================== */
+
+    html += `<br><br>`;
+
+    html += `
+    <div class="table-box">
+
+        <table class="stock-table">
+    `;
+
+    data.summary.forEach((row,index)=>{
+
+        if(index===1){
+
+            html += "<thead><tr>";
+
+            row.forEach(col=>{
+
+                html += `<th>${col}</th>`;
+
+            });
+
+            html += "</tr></thead><tbody>";
+
+        }
+
+        else{
+
+            const isTotal = row[0] === "Total";
+
+html += `
+<tr ${isTotal ? 'class="total-row"' : ""}>
+`;
+
+            row.forEach(col=>{
+
+                html += `<td>${col}</td>`;
+
+            });
+
+            html += "</tr>";
+
+        }
+
+    });
+
+    html += `
+        </tbody>
+        </table>
+
+    </div>
+    `;
+
+    tableContent.innerHTML = html;
+
+}
+function showLoading(){
+
+    document.getElementById("loadingOverlay").style.display="flex";
+
+}
+
+function hideLoading(){
+
+    document.getElementById("loadingOverlay").style.display="none";
+
+}
+function initStoreSearch(){
+
+    const input = document.getElementById("searchStockLoss");
+    const box = document.getElementById("storeSuggestion");
+
+    input.addEventListener("input", function(){
+
+        const keyword = this.value.trim().toLowerCase();
+
+        box.innerHTML = "";
+
+        if(keyword===""){
+
+    if(activeTab !== "stocklossdetail"){
+
+        filteredData = [...stockData];
+
+        renderActiveTab();
+
+    }
+
+    box.style.display="none";
+
+    return;
+
+}
+
+        const result = stockData.filter(item=>
+
+            item["Store Code"].toLowerCase().includes(keyword) ||
+
+            item["Store Name"].toLowerCase().includes(keyword)
 
         );
-        console.log(result);
+        
+if(activeTab !== "stocklossdetail"){
 
-        result.forEach(store=>{
+    filteredData = result;
 
-            const div=document.createElement("div");
+    renderActiveTab();
+
+}
+
+        result.slice(0,8).forEach(item=>{
+
+            const div = document.createElement("div");
 
             div.className="suggestion-item";
 
-            div.innerHTML=`${store.code} - ${store.name}`;
+            div.innerHTML=`
+                <b>${item["Store Code"]}</b><br>
+                <small>${item["Store Name"]}</small>
+            `;
 
-            div.onclick=function(){
+            div.onclick = function(){
 
-                searchStockLoss.value=store.code;
+    input.value = item["Store Name"];
 
-                suggestionBox.style.display="none";
+    box.style.display = "none";
 
-                console.log("Dipilih :",store.code);
+    if(activeTab === "stocklossdetail"){
 
-                renderStockLoss(store.code);
+        loadStockLossDetail(item["Store Name"]);
 
-            };
+    }
+    else{
 
-            suggestionBox.appendChild(div);
+        filteredData = [item];
+
+        renderActiveTab();
+
+    }
+
+};
+
+            box.appendChild(div);
 
         });
-        console.log(result.length);
-        suggestionBox.style.display = "block";
-        
 
-        suggestionBox.style.display=result.length ? "block":"none";
+        box.style.display=result.length?"block":"none";
 
-    };
+    });
+
+    document.addEventListener("click",function(e){
+
+        if(!box.contains(e.target) && e.target!==input){
+
+            box.style.display="none";
+
+        }
+
+    });
+
+}
+function renderActiveTab(){
+
+    switch(activeTab){
+
+        case "general":
+            renderGeneral();
+            break;
+
+        case "stocklossdetail":
+            break;    
+
+        case "schedule":
+            renderSchedule();
+            break;
+
+        case "audit":
+            renderAudit();
+            break;
+
+    }
 
 }
