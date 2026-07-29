@@ -20,7 +20,12 @@ const DETAIL_API =
 const tabButtons = document.querySelectorAll(".tab-btn");
 
 const tableContent = document.getElementById("tabContent");
-let activeTab = "general";
+// =========================
+// APP STATE
+// =========================
+
+let activeMain = "result";     // result | lossdetail | schedule
+let activeSub = "general";      // general | missing | loss | accuracy | incentive | audit
 
 tabButtons.forEach(btn=>{
 
@@ -31,9 +36,9 @@ tabButtons.forEach(btn=>{
 
         btn.classList.add("active");
 
-        activeTab = btn.dataset.tab;
+        activeSub = btn.dataset.tab;
 
-        loadTable(activeTab);
+loadTable(activeSub);
 
     });
 
@@ -1098,8 +1103,10 @@ mainTabButtons.forEach(btn=>{
         btn.classList.add("active");
 
         const menu = btn.dataset.main;
+        activeMain = menu;
 
         if(menu=="result"){
+            activeSub = "general";
 
             document.getElementById("stResultTabs").style.display="block";
 
@@ -1107,26 +1114,29 @@ mainTabButtons.forEach(btn=>{
 
         }
 
-        else if(menu=="lossdetail"){
+ else if(menu=="lossdetail"){
 
     document.getElementById("stResultTabs").style.display = "none";
 
-    
     tableContent.innerHTML = `
+
         <div class="table-box">
 
             <h3>📉 Stock Loss Detail</h3>
 
             <div style="
-                padding:40px;
+                padding:60px;
                 text-align:center;
-                color:#666;
+                color:#777;
                 font-size:16px;
             ">
+
                 🔍 Cari Store terlebih dahulu...
+
             </div>
 
         </div>
+
     `;
 
 }
@@ -1467,15 +1477,16 @@ function initStoreSearch(){
 
         if(keyword===""){
 
-    if(activeTab !== "stocklossdetail"){
+    box.innerHTML = "";
+    box.style.display = "none";
+
+    if(activeMain === "result"){
 
         filteredData = [...stockData];
 
-        renderActiveTab();
+        loadTable(activeSub);
 
     }
-
-    box.style.display="none";
 
     return;
 
@@ -1489,11 +1500,11 @@ function initStoreSearch(){
 
         );
         
-if(activeTab !== "stocklossdetail"){
+if(activeMain === "result"){
 
     filteredData = result;
 
-    renderActiveTab();
+    loadTable(activeSub);
 
 }
 
@@ -1508,22 +1519,23 @@ if(activeTab !== "stocklossdetail"){
                 <small>${item["Store Name"]}</small>
             `;
 
-            div.onclick = function(){
+div.onclick = function(){
 
     input.value = item["Store Name"];
 
     box.style.display = "none";
 
-    if(activeTab === "stocklossdetail"){
-
-        loadStockLossDetail(item["Store Name"]);
-
-    }
-    else{
+    if(activeMain === "result"){
 
         filteredData = [item];
 
-        renderActiveTab();
+        loadTable(activeSub);
+
+    }
+
+    else if(activeMain === "lossdetail"){
+
+        loadStockLossDetail(item["Store Name"]);
 
     }
 
