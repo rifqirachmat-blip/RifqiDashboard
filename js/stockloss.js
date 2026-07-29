@@ -1114,32 +1114,6 @@ mainTabButtons.forEach(btn=>{
 
         }
 
- else if(menu=="lossdetail"){
-
-    document.getElementById("stResultTabs").style.display = "none";
-
-    tableContent.innerHTML = `
-
-        <div class="table-box">
-
-            <h3>📉 Stock Loss Detail</h3>
-
-            <div style="
-                padding:60px;
-                text-align:center;
-                color:#777;
-                font-size:16px;
-            ">
-
-                🔍 Cari Store terlebih dahulu...
-
-            </div>
-
-        </div>
-
-    `;
-
-}
 
         else if(menu=="schedule"){
 
