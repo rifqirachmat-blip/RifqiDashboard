@@ -1,17 +1,33 @@
 /* ==========================================
+   DATA LOSS
+========================================== */
+
+console.log("data-loss.js loaded");
+
+/* ==========================================
    CONFIG
 ========================================== */
 
 const API_BASE =
 "https://script.google.com/macros/s/AKfycbxkRUqtmj7SqIMEZkwdJ6xha31uZ-a429dm4Pp7D0ETEsbD8vpfKKji-Ays4wsctnh9/exec";
 
+/* ==========================================
+   GLOBAL
+========================================== */
+
 let storeList = [];
 
-const searchInput = document.getElementById("searchLoss");
-const suggestionBox = document.getElementById("lossSuggestion");
-const content = document.getElementById("lossContent");
-const loading = document.getElementById("loadingLoss");
+const searchInput =
+document.getElementById("searchLoss");
 
+const suggestionBox =
+document.getElementById("lossSuggestion");
+
+const content =
+document.getElementById("lossContent");
+
+const loading =
+document.getElementById("loadingOverlay");
 
 /* ==========================================
    LOADING
@@ -19,7 +35,7 @@ const loading = document.getElementById("loadingLoss");
 
 function showLoading(){
 
-    loading.style.display = "block";
+    loading.style.display = "flex";
 
 }
 
@@ -29,9 +45,8 @@ function hideLoading(){
 
 }
 
-
 /* ==========================================
-   LOAD STORE LIST
+   LOAD STORE
 ========================================== */
 
 async function loadStoreList(){
@@ -40,11 +55,22 @@ async function loadStoreList(){
 
         showLoading();
 
-        const res = await fetch(API_BASE + "?action=stores");
+        const res =
+            await fetch(
+                API_BASE + "?action=stores"
+            );
 
-        const json = await res.json();
+        const json =
+            await res.json();
 
-        storeList = json.stores || [];
+        if(!json.success){
+
+            throw new Error(json.message);
+
+        }
+
+        storeList =
+            json.stores;
 
         console.log(storeList);
 
@@ -53,6 +79,8 @@ async function loadStoreList(){
     catch(err){
 
         console.error(err);
+
+        alert("Gagal mengambil daftar store.");
 
     }
 
@@ -65,15 +93,16 @@ async function loadStoreList(){
 }
 
 loadStoreList();
-
-
 /* ==========================================
    SEARCH STORE
 ========================================== */
 
 searchInput.addEventListener("input", function(){
 
-    const keyword = this.value.trim().toLowerCase();
+    const keyword =
+        this.value
+            .trim()
+            .toLowerCase();
 
     suggestionBox.innerHTML = "";
 
@@ -85,25 +114,33 @@ searchInput.addEventListener("input", function(){
 
     }
 
-    const result = storeList.filter(store=>
+    const result =
+        storeList.filter(store=>
 
-        store.toLowerCase().includes(keyword)
+            store
+                .toLowerCase()
+                .includes(keyword)
 
-    );
+        );
 
-    result.slice(0,8).forEach(store=>{
+    result.forEach(store=>{
 
-        const div=document.createElement("div");
+        const div =
+            document.createElement("div");
 
-        div.className="suggestion-item";
+        div.className =
+            "suggestion-item";
 
-        div.innerHTML=store;
+        div.innerHTML =
+            store;
 
-        div.onclick=function(){
+        div.onclick = function(){
 
-            searchInput.value=store;
+            searchInput.value =
+                store;
 
-            suggestionBox.style.display="none";
+            suggestionBox.style.display =
+                "none";
 
             loadDataLoss(store);
 
@@ -113,22 +150,31 @@ searchInput.addEventListener("input", function(){
 
     });
 
-    suggestionBox.style.display=result.length?"block":"none";
+    suggestionBox.style.display =
+        result.length
+            ? "block"
+            : "none";
 
 });
 
+/* ==========================================
+   HIDE SUGGESTION
+========================================== */
 
 document.addEventListener("click",function(e){
 
-    if(!suggestionBox.contains(e.target) && e.target!==searchInput){
+    if(
+
+        !searchInput.contains(e.target) &&
+        !suggestionBox.contains(e.target)
+
+    ){
 
         suggestionBox.style.display="none";
 
     }
 
 });
-
-
 /* ==========================================
    LOAD DATA LOSS
 ========================================== */
@@ -142,27 +188,44 @@ async function loadDataLoss(store){
         const res = await fetch(
 
             API_BASE +
-            "?action=datalossdetail&store=" +
+            "?action=dataloss&store=" +
             encodeURIComponent(store)
 
         );
 
         const json = await res.json();
 
+        console.log(json);
+
         if(!json.success){
 
-    content.innerHTML = json.message;
-    return;
+            content.innerHTML = `
+                <div class="table-box">
+                    <div style="padding:40px;text-align:center;color:red;">
+                        ${json.message}
+                    </div>
+                </div>
+            `;
 
-}
+            return;
 
-renderDataLoss(json);
+        }
+
+        renderDataLoss(json);
 
     }
 
     catch(err){
 
         console.error(err);
+
+        content.innerHTML = `
+            <div class="table-box">
+                <div style="padding:40px;text-align:center;color:red;">
+                    Gagal mengambil data.
+                </div>
+            </div>
+        `;
 
     }
 
@@ -173,21 +236,82 @@ renderDataLoss(json);
     }
 
 }
+/* ==========================================
+   FORMAT NUMBER
+========================================== */
 
+function formatMoney(value){
+
+    const num = Number(value);
+
+    if(isNaN(num)) return value;
+
+    return "Rp " + (num * 1000000).toLocaleString("id-ID");
+
+}
 
 /* ==========================================
-   RENDER
+   FORMAT VALUE
+   contoh:
+   0.4 (0.10%)
+   578.19 (0.11%)
+========================================== */
+
+function formatMixedValue(value){
+
+    if(value===null || value==="") return "";
+
+    value = String(value);
+
+    if(!value.includes("("))
+        return formatMoney(value);
+
+    const match = value.match(/^([\d.-]+)\s*\((.+)\)$/);
+
+    if(!match) return value;
+
+    return `${formatMoney(match[1])} (${match[2]})`;
+
+}
+
+/* ==========================================
+   SUMMARY FORMAT
+========================================== */
+
+function formatSummaryValue(value,index){
+
+    if(value==="" || value==null) return "";
+
+    const text = String(value);
+
+    // kolom persen
+    if(text.includes("%"))
+        return text;
+
+    // kolom net loss / missing
+    if(text.includes("("))
+        return formatMixedValue(text);
+
+    // angka biasa
+    if(!isNaN(Number(text)))
+        return formatMoney(text);
+
+    return text;
+
+}
+/* ==========================================
+   RENDER DATA LOSS
 ========================================== */
 
 function renderDataLoss(data){
 
-    let html="";
+    let html = "";
 
-    /* ===========================
+    /* =====================================
        TABLE
-    =========================== */
+    ===================================== */
 
-    html+=`
+    html += `
     <div class="table-box">
 
         <table class="stock-table">
@@ -195,140 +319,202 @@ function renderDataLoss(data){
 
     data.table.forEach((row,index)=>{
 
+        // HEADER
         if(index===0){
 
-            html+="<thead><tr>";
+            html += "<thead><tr>";
 
             row.forEach(col=>{
 
-                html+=`<th>${col}</th>`;
+                html += `<th>${col}</th>`;
 
             });
 
-            html+="</tr></thead><tbody>";
+            html += "</tr></thead><tbody>";
+
+            return;
 
         }
 
-        else{
+        // Skip row kosong (bulan yg belum ada data)
+        const hasValue =
+            row.slice(1).some(v=>String(v).trim()!="");
 
-            const total=row[0]==="Total";
+        if(!hasValue && row[0]!="Total"){
 
-            html+=`
-            <tr ${total?'class="total-row"':""}>
-            `;
-
-            row.forEach(col=>{
-
-                html+=`<td>${col}</td>`;
-
-            });
-
-            html+="</tr>";
+            return;
 
         }
 
-    });
+        const isTotal =
+            row[0]==="Total";
 
-    html+=`
-        </tbody>
-        </table>
+        html += `<tr ${isTotal ? 'class="total-row"' : ""}>`;
 
-    </div>
-    `;
+        row.forEach((col,colIndex)=>{
 
+            let value = col;
 
-    html+="<br><br>";
+            if(colIndex>0){
 
+                value = formatMixedValue(col);
 
-    /* ===========================
-       SUMMARY
-    =========================== */
+            }
 
-    html+=`
-    <div class="table-box">
-
-        <table class="stock-table">
-    `;
-
-    data.summary.forEach((row,index)=>{
-
-        if(index===1){
-
-            html+="<thead><tr>";
-
-            row.forEach(col=>{
-
-                html+=`<th>${col}</th>`;
-
-            });
-
-            html+="</tr></thead><tbody>";
-
-        }
-
-        else{
-
-            html+="<tr>";
-
-            row.forEach(col=>{
-
-                html+=`<td>${col}</td>`;
-
-            });
-
-            html+="</tr>";
-
-        }
-
-    });
-
-    html+=`
-        </tbody>
-        </table>
-
-    </div>
-    `;
-
-    content.innerHTML=html;
-
-}
-function renderDataLoss(data){
-
-    let html = `
-    <div class="table-box">
-        <table class="stock-table">
-    `;
-
-    // Header
-    html += "<thead><tr>";
-
-    data.table[0].forEach(col=>{
-
-        html += `<th>${col}</th>`;
-
-    });
-
-    html += "</tr></thead>";
-
-    // Body
-    html += "<tbody>";
-
-    for(let i=1;i<data.table.length;i++){
-
-        html += "<tr>";
-
-        data.table[i].forEach(col=>{
-
-            html += `<td>${col}</td>`;
+            html += `<td>${value}</td>`;
 
         });
 
         html += "</tr>";
 
-    }
+    });
 
-    html += "</tbody></table></div>";
+    html += `
+        </tbody>
+        </table>
+
+    </div>
+    `;
+
+    /* =====================================
+       SUMMARY
+    ===================================== */
+
+    html += `<br><br>`;
+
+    html += `
+
+    <div class="table-box">
+
+    <table class="stock-table">
+
+    <thead>
+
+<tr>
+
+    <th rowspan="2">Store Name</th>
+
+    <th rowspan="2">LY ST Date</th>
+
+    <th rowspan="2">TY ST Date</th>
+
+    <th rowspan="2">Period of Sales</th>
+
+    <th rowspan="2">Actual Sales - PPN 10%</th>
+
+    <th rowspan="2">Avrg Monthly Sales</th>
+        <th colspan="5" style="text-align:center">
+            Before ST
+        </th>
+
+        <th rowspan="2">Net Loss</th>
+
+        <th rowspan="2">Target % Missing</th>
+
+        <th rowspan="2">% Missing</th>
+
+        <th rowspan="2">Incentive Amt</th>
+
+    </tr>
+
+    <tr>
+
+        <th>DMO</th>
+        <th>DMC</th>
+        <th>DMP</th>
+        <th>MS</th>
+        <th>EX</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+    `;
+
+    data.summary.forEach((row,index)=>{
+
+        // Skip header bawaan spreadsheet
+        if(index<2) return;
+
+        html += "<tr>";
+
+        row.forEach((col,colIndex)=>{
+
+            let value = col;
+
+            // tanggal + period
+            if(colIndex<=1){
+
+                html += `<td>${value}</td>`;
+
+                return;
+
+            }
+
+            // Avg Monthly Sales
+            if(colIndex===3){
+
+                if(!isNaN(Number(col))){
+
+                    value =
+                        "Rp " +
+                        Number(col).toLocaleString("id-ID");
+
+                }
+
+                html += `<td>${value}</td>`;
+
+                return;
+
+            }
+
+            value =
+                formatSummaryValue(col,colIndex);
+
+            html += `<td>${value}</td>`;
+
+        });
+
+        html += "</tr>";
+
+    });
+
+    html += `
+    </tbody>
+
+    </table>
+
+    </div>
+    `;
 
     content.innerHTML = html;
 
 }
+
+/* ==========================================
+   DATE
+========================================== */
+
+function updateClock(){
+
+    const now = new Date();
+
+    document.getElementById("todayDate").innerHTML =
+        now.toLocaleDateString("id-ID",{
+
+            weekday:"long",
+            day:"2-digit",
+            month:"long",
+            year:"numeric"
+
+        });
+
+    document.getElementById("todayTime").innerHTML =
+        now.toLocaleTimeString("id-ID");
+
+}
+
+updateClock();
+
+setInterval(updateClock,1000);

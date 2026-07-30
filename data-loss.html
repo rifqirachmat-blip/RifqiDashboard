@@ -4,13 +4,24 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Data Loss</title>
 
-    <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/data-loss.css">
+    <!-- Global -->
+    <link rel="stylesheet"
+          href="css/style.css">
 
+    <!-- Khusus -->
+    <link rel="stylesheet"
+          href="css/data-loss.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -18,55 +29,141 @@
 
 <body>
 
-<!-- HEADER -->
+<!-- ===================================== -->
+<!-- SIDEBAR -->
+<!-- ===================================== -->
 
-<div class="page-header">
+<div class="sidebar">
 
-    <div>
+    <div class="logo">
 
-        <h2>📉 Data Loss</h2>
+        <h2>BM Rifqi DR</h2>
 
-        <small>Store Stock Loss Detail</small>
+        <span>Performance Dashboard</span>
 
     </div>
 
+    <ul>
+
+        <li onclick="location.href='index.html'">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            Dashboard Sales KPI
+
+        </li>
+
+        <li onclick="location.href='mtd.html'">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Sales Month To Date
+
+        </li>
+
+        <li onclick="location.href='stockloss.html'">
+
+            <i class="fa-solid fa-boxes-stacked"></i>
+
+            Stock Take Center
+
+        </li>
+
+        <li class="active">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Data Loss
+
+        </li>
+
+        <li onclick="location.href='manpower.html'">
+
+            <i class="fa-solid fa-users"></i>
+
+            Data Manpower
+
+        </li>
+
+        <li onclick="location.href='keepstock.html'">
+
+            <i class="fa-solid fa-store"></i>
+
+            Monitoring Keepstock
+
+        </li>
+
+    </ul>
+
 </div>
 
-<!-- SEARCH -->
+<!-- ===================================== -->
+<!-- MAIN -->
+<!-- ===================================== -->
 
-<div class="search-box">
+<div class="main">
 
-    <input
-        type="text"
-        id="searchLoss"
-        placeholder="🔍 Search Store..."
-        autocomplete="off">
+    <!-- HEADER -->
 
-    <div id="lossSuggestion" class="suggestion-box"></div>
+    <div class="header">
 
-</div>
+        <div>
 
-<!-- LOADING -->
+            <h1>📉 Data Loss</h1>
 
-<div id="loadingLoss" style="display:none">
+            <p>Store Stock Loss Detail</p>
 
-    Loading...
+        </div>
 
-</div>
+        <div class="today">
 
-<!-- CONTENT -->
+            <div class="today-icon">
 
-<div id="lossContent">
+                <i class="fa-solid fa-calendar-days"></i>
 
-    <div class="table-box">
+            </div>
 
-        <div style="
-            padding:60px;
-            text-align:center;
-            color:#777;
-        ">
+            <div class="today-info">
 
-            🔍 Cari Store terlebih dahulu
+                <span id="todayDate"></span>
+
+                <small id="todayTime"></small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input
+            id="searchLoss"
+            type="text"
+            placeholder="🔍 Search Store..."
+            autocomplete="off">
+
+        <div
+            id="lossSuggestion"
+            class="suggestion-box">
+
+        </div>
+
+    </div>
+
+    <!-- CONTENT -->
+
+    <div id="lossContent">
+
+        <div class="table-box">
+
+            <div class="empty-box">
+
+                🔍 Cari Store terlebih dahulu
+
+            </div>
 
         </div>
 
@@ -74,6 +171,27 @@
 
 </div>
 
+<!-- ===================================== -->
+<!-- LOADING -->
+<!-- ===================================== -->
+
+<div
+    id="loadingOverlay"
+    class="loading-overlay">
+
+    <div class="loading-card">
+
+        <div class="spinner"></div>
+
+        <p>Loading Data...</p>
+
+    </div>
+
+</div>
+
+<!-- JS -->
+
+<script src="js/helper.js"></script>
 <script src="js/data-loss.js"></script>
 
 </body>

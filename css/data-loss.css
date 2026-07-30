@@ -1,25 +1,296 @@
+/* ==========================================
+   SEARCH
+========================================== */
+
+.search-box{
+
+    position:relative;
+    max-width:450px;
+    margin:25px 0;
+
+}
+
+.search-box input{
+
+    width:100%;
+    padding:14px 18px;
+    border:none;
+    border-radius:14px;
+    background:#fff;
+    font-size:15px;
+    font-family:"Poppins",sans-serif;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    transition:.25s;
+
+}
+
+.search-box input:focus{
+
+    outline:none;
+    box-shadow:0 0 0 3px rgba(255,213,0,.35);
+
+}
+
+/* ==========================================
+   DROPDOWN
+========================================== */
+
 .suggestion-box{
 
     position:absolute;
     width:100%;
+    left:0;
+    top:100%;
+    margin-top:6px;
+
     background:#fff;
-    border:1px solid #ddd;
-    border-radius:8px;
-    max-height:250px;
-    overflow-y:auto;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    display:none;
+
     z-index:999;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
 
 }
 
 .suggestion-item{
 
-    padding:10px 14px;
+    padding:12px 16px;
+
     cursor:pointer;
+
+    transition:.2s;
 
 }
 
 .suggestion-item:hover{
 
-    background:#f3f4f6;
+    background:#FFD500;
+
+}
+
+/* ==========================================
+   CONTENT
+========================================== */
+
+#lossContent{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    min-height:500px;
+
+    overflow-x:auto;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.empty-box{
+
+    padding:70px;
+
+    text-align:center;
+
+    color:#777;
+
+    font-size:15px;
+
+}
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.table-box{
+
+    overflow:auto;
+
+}
+
+.stock-table{
+
+    width:max-content;
+
+    min-width:1100px;
+
+    border-collapse:collapse;
+
+}
+
+.stock-table thead{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:5;
+
+}
+
+.stock-table th{
+
+    background:#FFD500;
+
+    color:#111;
+
+    padding:14px;
+
+    font-size:14px;
+
+    text-align:left;
+
+    white-space:nowrap;
+
+}
+
+.stock-table td{
+
+    padding:12px;
+
+    font-size:14px;
+
+    border-bottom:1px solid #eee;
+
+    white-space:nowrap;
+
+}
+
+.stock-table tbody tr:nth-child(even){
+
+    background:#fafafa;
+
+}
+
+.stock-table tbody tr:hover{
+
+    background:#fff8d6;
+
+}
+
+/* ==========================================
+   TOTAL
+========================================== */
+
+.total-row{
+
+    background:#FFF7CC !important;
+
+    font-weight:700;
+
+}
+
+.total-row td{
+
+    border-top:2px solid #FFD500;
+
+}
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.loading-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(255,255,255,.82);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:99999;
+
+}
+
+.loading-card{
+
+    width:180px;
+
+    background:#fff;
+
+    padding:24px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+}
+
+.loading-card p{
+
+    margin-top:16px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
+
+.spinner{
+
+    width:46px;
+
+    height:46px;
+
+    margin:auto;
+
+    border:4px solid #eee;
+
+    border-top:4px solid #FFD500;
+
+    border-radius:50%;
+
+    animation:spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media screen and (max-width:768px){
+
+.search-box{
+
+    max-width:100%;
+
+}
+
+#lossContent{
+
+    padding:15px;
+
+}
+
+.stock-table{
+
+    min-width:1000px;
+
+}
 
 }
