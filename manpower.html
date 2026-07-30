@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Data Manpower</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/manpower.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- ========================= -->
+<!-- SIDEBAR -->
+<!-- ========================= -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <h2>BM Rifqi DR</h2>
+
+        <span>Performance Dashboard</span>
+
+    </div>
+
+    <ul>
+
+        <li onclick="location.href='index.html'">
+            <i class="fa-solid fa-chart-column"></i>
+            Dashboard Sales KPI
+        </li>
+
+        <li onclick="location.href='mtd.html'">
+            <i class="fa-solid fa-chart-line"></i>
+            Sales Month To Date
+        </li>
+
+        <li onclick="location.href='stockloss.html'">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            Stock Take Center
+        </li>
+
+        <li onclick="location.href='data-loss.html'">
+            <i class="fa-solid fa-chart-line"></i>
+            Data Loss
+        </li>
+
+        <li class="active">
+            <i class="fa-solid fa-users"></i>
+            Data Manpower
+        </li>
+
+        <li onclick="location.href='keepstock.html'">
+            <i class="fa-solid fa-store"></i>
+            Monitoring Keepstock
+        </li>
+
+    </ul>
+
+</div>
+
+<!-- ========================= -->
+<!-- MAIN -->
+<!-- ========================= -->
+
+<div class="main">
+
+<div class="header">
+
+    <div>
+
+        <h1>👥 Data Manpower</h1>
+
+        <p>Store Employee Dashboard</p>
+
+    </div>
+
+    <div class="today">
+
+        <div class="today-icon">
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+        </div>
+
+        <div class="today-info">
+
+            <span id="todayDate"></span>
+
+            <small id="todayTime"></small>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- KPI -->
+
+<div class="cards">
+
+    <div class="card">
+
+        <small>Total HC</small>
+
+        <h2 id="totalHC">0</h2>
+
+    </div>
+
+    <div class="card">
+
+        <small>Permanent</small>
+
+        <h2 id="permanentHC">0</h2>
+
+    </div>
+
+    <div class="card">
+
+        <small>1 Year Remaining</small>
+
+        <h2 id="contractHC">0</h2>
+
+    </div>
+
+    <div class="card">
+
+        <small>New Employee (< 1 Year)</small>
+
+        <h2 id="expiredHC">0</h2>
+
+    </div>
+
+</div>
+
+<!-- SEARCH -->
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchEmployee"
+placeholder="🔍 Employee name..."
+autocomplete="off">
+
+<div id="storeSuggestion"
+class="suggestion-box"></div>
+
+</div>
+
+<!-- TABLE -->
+
+<div id="manpowerContent">
+
+<div class="table-box">
+
+<div style="padding:60px;text-align:center;color:#777">
+
+🔍 Cari Store terlebih dahulu
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- LOADING -->
+
+<div id="loadingOverlay" class="loading-overlay">
+
+<div class="loading-card">
+
+<div class="spinner"></div>
+
+<p>Loading Data...</p>
+
+</div>
+
+</div>
+
+<script src="js/manpower.js"></script>
+
+</body>
+
+</html>

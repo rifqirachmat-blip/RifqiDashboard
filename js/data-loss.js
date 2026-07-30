@@ -249,6 +249,35 @@ function formatMoney(value){
     return "Rp " + (num * 1000000).toLocaleString("id-ID");
 
 }
+function formatMoneyMixed(value){
+
+    if(value === null || value === "") return "";
+
+    value = String(value).trim();
+
+    // contoh: 10.749142 (0.18%)
+    const m = value.match(/^([\d.]+)\s*\((.*?)\)$/);
+
+    if(m){
+
+        const nominal = Number(m[1]) * 1000000;
+
+        return "Rp " +
+            nominal.toLocaleString("id-ID") +
+            " (" + m[2] + ")";
+
+    }
+
+    // angka biasa
+    if(!isNaN(Number(value))){
+
+        return formatMoney(value);
+
+    }
+
+    return value;
+
+}
 
 /* ==========================================
    FORMAT VALUE
@@ -443,36 +472,32 @@ function renderDataLoss(data){
 
             let value = col;
 
-            // tanggal + period
-            if(colIndex<=1){
+            // 6 kolom pertama jangan diformat
+if(colIndex <= 5){
 
-                html += `<td>${value}</td>`;
+    // Avg Monthly Sales (index 5)
+    if(colIndex === 5 && !isNaN(Number(col))){
 
-                return;
+        value = formatMoney(col);
 
-            }
+    }
 
-            // Avg Monthly Sales
-            if(colIndex===3){
+    html += `<td>${value}</td>`;
 
-                if(!isNaN(Number(col))){
+    return;
 
-                    value =
-                        "Rp " +
-                        Number(col).toLocaleString("id-ID");
+}
 
-                }
+            
 
-                html += `<td>${value}</td>`;
+            // Kolom nominal setelah Avg Monthly Sales
+if(colIndex >= 6){
 
-                return;
+    value = formatMoneyMixed(col);
 
-            }
+}
 
-            value =
-                formatSummaryValue(col,colIndex);
-
-            html += `<td>${value}</td>`;
+html += `<td>${value}</td>`;
 
         });
 
