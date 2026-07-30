@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function loadMTDData(){
 
     try{
+        showLoading();
 
         console.log("Loading MTD Dashboard...");
 
@@ -69,6 +70,11 @@ uptStores = json.filter(x => x.type === "UPT");
         console.error(err);
 
         alert("Gagal memuat data MTD.");
+
+    }
+     finally{
+
+        hideLoading();
 
     }
 
@@ -588,5 +594,31 @@ function getLevelClass(level){
     if(level.includes("hadeuh")) return "levelHadeuh";
 
     return "levelDefault";
+
+}
+
+function showLoading(){
+
+    const loadingOverlay =
+        document.getElementById("loadingOverlay");
+
+    if(loadingOverlay){
+
+        loadingOverlay.style.display = "flex";
+
+    }
+
+}
+
+function hideLoading(){
+
+    const loadingOverlay =
+        document.getElementById("loadingOverlay");
+
+    if(loadingOverlay){
+
+        loadingOverlay.style.display = "none";
+
+    }
 
 }

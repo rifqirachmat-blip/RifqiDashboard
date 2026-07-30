@@ -57,41 +57,6 @@
    SEARCH
 ========================================== */
 
-.search-box{
-
-    margin-bottom:25px;
-
-}
-
-.search-box input{
-
-    width:350px;
-
-    max-width:100%;
-
-    padding:13px 18px;
-
-    border:1px solid #ddd;
-
-    border-radius:12px;
-
-    font-size:15px;
-
-    outline:none;
-
-    transition:.25s;
-
-}
-
-.search-box input:focus{
-
-    border-color:#FFD400;
-
-    box-shadow:0 0 0 4px rgba(255,212,0,.15);
-
-}
-
-
 /* ==========================================
    CONTENT
 ========================================== */
@@ -287,74 +252,11 @@
     color:#111;
 
 }
-.suggestion-box{
-
-    position:absolute;
-    top:100%;
-    left:0;
-
-    width:100%;
-
-    background:#fff;
-
-    border:1px solid #e5e7eb;
-
-    border-radius:12px;
-
-    margin-top:6px;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.12);
-
-    overflow:hidden;
-
-    max-height:260px;
-
-    overflow-y:auto;
-
-    z-index:9999;
-
-    display:none;
-
-}
-
-.suggestion-item{
-
-    padding:12px 16px;
-
-    cursor:pointer;
-
-    font-size:14px;
-
-    transition:.2s;
-
-    border-bottom:1px solid #f3f4f6;
-
-}
-
-.suggestion-item:last-child{
-
-    border-bottom:none;
-
-}
-
-.suggestion-item:hover{
-
-    background:#FFD500;
-
-    color:#111;
-
-    font-weight:600;
-
-}
 
 
-.search-box{
 
-    position:relative;
-    width:100%;
-    max-width:350px;
 
-}
+
 .store-info{
 
     display:flex;
@@ -463,14 +365,6 @@
 
 /* Search */
 
-.search-box{
-    width:100%;
-    max-width:none;
-}
-
-.search-box input{
-    width:100%;
-}
 
 /* Store Info */
 
@@ -613,5 +507,48 @@
     background:#f2f2f2;
 
     font-weight:bold;
+
+}
+.badge-complete{
+
+    background:#16a34a;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+
+}
+
+.badge-warning{
+
+    background:#facc15;
+    color:#222;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+
+}
+
+.badge-danger{
+
+    background:#dc2626;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+
+}
+
+.badge-today{
+
+    background:#2563eb;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
 
 }

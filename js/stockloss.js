@@ -6,10 +6,6 @@ const API_BASE =
 "https://script.google.com/macros/s/AKfycbwORZ8BP7ORnc-lsp1tSM01ZDPQ1v1aAvcq3H0zpc_VYKyBVPdyu0lzRfBUKD4C3L54/exec";
 
 let stockData = [];
-let filteredData = [];
-let selectedSuggestion = -1;
-
-
 
 const DETAIL_API =
 "https://script.google.com/macros/s/AKfycbx33o-mgqtLjSRnyMnRTtDYbu7QsHnDjSVpzY9H-7fF5XRPTN2RYmQV0k43XF7wyo-k/exec"
@@ -685,6 +681,8 @@ async function loadData(){
 
     try{
 
+        showLoading();
+
         // ST Result
         const res = await fetch(API_BASE + "?action=stresult");
         stockData = await res.json();
@@ -699,7 +697,6 @@ async function loadData(){
 
         updateSummaryCards();
         renderGeneral();
-        initStoreSearch();
 
     }
 
@@ -710,11 +707,17 @@ async function loadData(){
         alert("Gagal mengambil data ST Result.");
 
     }
+    finally{
+
+        hideLoading();
+
+    }
 
 }
 async function loadSchedule(){
 
     try{
+        showLoading();
 
         const res = await fetch(API_BASE + "?action=schedule");
 
@@ -732,40 +735,6 @@ async function loadSchedule(){
         alert("Gagal mengambil data ST Schedule.");
 
     }
-
-}
-
-loadData();
-async function loadStockLossDetail(store){
-
-    console.log("MASUK loadStockLossDetail", store);
-
-    try{
-
-        showLoading();
-
-        const res = await fetch(
-            DETAIL_API +
-            "?action=stocklossdetail&store=" +
-            encodeURIComponent(store)
-        );
-
-        const data = await res.json();
-
-        console.log(data);
-
-        renderStockLossDetail(data);
-
-    }
-
-    catch(err){
-
-        console.error(err);
-
-        alert("Gagal mengambil Stock Loss Detail");
-
-    }
-
     finally{
 
         hideLoading();
@@ -773,6 +742,10 @@ async function loadStockLossDetail(store){
     }
 
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadData();
+});
 
 
 function updateSummaryCards(){
@@ -1001,16 +974,24 @@ else if(diffDays === 0){
     `;
 
 }
-else{
+else if(diffDays <= 14){
 
     remarks = `
-        <span class="badge-pending">
+        <span class="badge-danger">
             ${diffDays} Days Left
         </span>
     `;
 
 }
+else{
 
+    remarks = `
+        <span class="badge-warning">
+            ${diffDays} Days Left
+        </span>
+    `;
+
+}
             return `
 
             <tr>
@@ -1427,113 +1408,8 @@ html += `
     tableContent.innerHTML = html;
 
 }
-function showLoading(){
 
-    document.getElementById("loadingOverlay").style.display="flex";
 
-}
-
-function hideLoading(){
-
-    document.getElementById("loadingOverlay").style.display="none";
-
-}
-function initStoreSearch(){
-
-    const input = document.getElementById("searchStockLoss");
-    const box = document.getElementById("storeSuggestion");
-
-    input.addEventListener("input", function(){
-
-        const keyword = this.value.trim().toLowerCase();
-
-        box.innerHTML = "";
-
-        if(keyword===""){
-
-    box.innerHTML = "";
-    box.style.display = "none";
-
-    if(activeMain === "result"){
-
-        filteredData = [...stockData];
-
-        loadTable(activeSub);
-
-    }
-
-    return;
-
-}
-
-        const result = stockData.filter(item=>
-
-            item["Store Code"].toLowerCase().includes(keyword) ||
-
-            item["Store Name"].toLowerCase().includes(keyword)
-
-        );
-        
-if(activeMain === "result"){
-
-    filteredData = result;
-
-    loadTable(activeSub);
-
-}
-
-        result.slice(0,8).forEach(item=>{
-
-            const div = document.createElement("div");
-
-            div.className="suggestion-item";
-
-            div.innerHTML=`
-                <b>${item["Store Code"]}</b><br>
-                <small>${item["Store Name"]}</small>
-            `;
-
-div.onclick = function(){
-
-    input.value = item["Store Name"];
-
-    box.style.display = "none";
-
-    if(activeMain === "result"){
-
-        filteredData = [item];
-
-        loadTable(activeSub);
-
-    }
-
-    else if(activeMain === "lossdetail"){
-
-        loadStockLossDetail(item["Store Name"]);
-
-    }
-
-};
-
-            box.appendChild(div);
-
-        });
-
-        box.style.display=result.length?"block":"none";
-
-    });
-
-    document.addEventListener("click",function(e){
-
-        if(!box.contains(e.target) && e.target!==input){
-
-            box.style.display="none";
-
-        }
-
-    });
-
-}
 function renderActiveTab(){
 
     switch(activeTab){
@@ -1552,6 +1428,31 @@ function renderActiveTab(){
         case "audit":
             renderAudit();
             break;
+
+    }
+
+}
+function showLoading(){
+
+    const loadingOverlay =
+        document.getElementById("loadingOverlay");
+
+    if(loadingOverlay){
+
+        loadingOverlay.style.display = "flex";
+
+    }
+
+}
+
+function hideLoading(){
+
+    const loadingOverlay =
+        document.getElementById("loadingOverlay");
+
+    if(loadingOverlay){
+
+        loadingOverlay.style.display = "none";
 
     }
 

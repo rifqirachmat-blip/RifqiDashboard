@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function loadData(){
 
     try{
+        showLoading();
 
         const response = await fetch(API_URL);
 
@@ -68,6 +69,11 @@ console.log(salesData[0]);
         console.error(error);
 
         alert("Gagal mengambil data dari Google Sheet");
+
+    }
+     finally{
+
+        hideLoading();   // ← selesai loading
 
     }
 
@@ -605,5 +611,30 @@ console.log(compareData);
             </tr>
         `;
     });
+
+}
+function showLoading(){
+
+    const loadingOverlay =
+        document.getElementById("loadingOverlay");
+
+    if(loadingOverlay){
+
+        loadingOverlay.style.display = "flex";
+
+    }
+
+}
+
+function hideLoading(){
+
+    const loadingOverlay =
+        document.getElementById("loadingOverlay");
+
+    if(loadingOverlay){
+
+        loadingOverlay.style.display = "none";
+
+    }
 
 }

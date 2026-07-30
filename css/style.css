@@ -1808,3 +1808,66 @@ gap:15px;
     }
 
 }
+.loading-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(255,255,255,.75);
+
+    backdrop-filter:blur(2px);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:99999;
+
+}
+
+.loading-card{
+
+    background:white;
+
+    padding:28px 40px;
+
+    border-radius:18px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+    text-align:center;
+
+}
+
+.spinner{
+
+    width:48px;
+
+    height:48px;
+
+    border:5px solid #eee;
+
+    border-top:5px solid #2563eb;
+
+    border-radius:50%;
+
+    animation:spin .8s linear infinite;
+
+    margin:auto;
+
+    margin-bottom:15px;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
