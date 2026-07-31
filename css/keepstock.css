@@ -1,0 +1,503 @@
+    /* ==========================================
+   HEADER
+========================================== */
+
+.header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+
+}
+
+.header h1{
+
+    font-size:34px;
+    margin-bottom:5px;
+
+}
+
+.header p{
+
+    color:#666;
+    font-size:15px;
+
+}
+
+/* ==========================================
+   TODAY
+========================================== */
+
+.today{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    background:#fff;
+
+    padding:12px 18px;
+
+    border-radius:14px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+
+}
+
+.today-icon{
+
+    width:45px;
+    height:45px;
+
+    border-radius:50%;
+
+    background:#FFD500;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:20px;
+    color:#111;
+
+}
+
+.today-info{
+
+    display:flex;
+    flex-direction:column;
+
+}
+
+.today-info span{
+
+    font-size:14px;
+    font-weight:600;
+
+}
+
+.today-info small{
+
+    font-size:12px;
+    color:#666;
+
+}
+
+/* ==========================================
+   KPI
+========================================== */
+
+.cards{
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+
+    margin-bottom:25px;
+
+}
+
+.card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.card small{
+
+    color:#777;
+    font-size:13px;
+
+}
+
+.card h2{
+
+    margin-top:8px;
+    font-size:34px;
+    color:#111;
+
+}
+
+/* ==========================================
+   SEARCH
+========================================== */
+
+.search-box{
+
+    margin-bottom:20px;
+
+}
+
+.search-box input{
+
+    width:420px;
+    max-width:100%;
+
+    padding:14px 18px;
+
+    border:1px solid #ddd;
+
+    border-radius:14px;
+
+    background:#fff;
+
+    font-size:15px;
+
+    transition:.25s;
+
+}
+
+.search-box input:focus{
+
+    outline:none;
+
+    border-color:#FFD500;
+
+    box-shadow:0 0 0 4px rgba(255,213,0,.2);
+
+}
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.table-box{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    overflow-x:auto;
+
+}
+
+.stock-table{
+
+    width:max-content;
+    min-width:1300px;
+
+    border-collapse:collapse;
+
+}
+
+.stock-table thead{
+
+    position:sticky;
+
+    top:0;
+
+    background:#FFD500;
+
+    z-index:10;
+
+}
+
+.stock-table th{
+
+    padding:14px;
+
+    text-align:left;
+
+    color:#111;
+
+    font-size:14px;
+
+    white-space:nowrap;
+
+}
+
+.stock-table td{
+
+    padding:13px;
+
+    border-bottom:1px solid #eee;
+
+    font-size:14px;
+
+    white-space:nowrap;
+
+}
+
+.stock-table tbody tr:hover{
+
+    background:#FFF8D6;
+
+}
+
+/* ==========================================
+   BADGE
+========================================== */
+
+.badge-ok{
+
+    width:28px;
+    height:28px;
+
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:50%;
+
+    background:#16a34a;
+
+    color:#fff;
+
+    font-size:13px;
+
+}
+
+.badge-danger{
+
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+
+    min-width:28px;
+    height:28px;
+
+    padding:0 10px;
+
+    border-radius:999px;
+
+    background:#dc2626;
+
+    color:#fff;
+
+    font-weight:700;
+
+    font-size:12px;
+
+}
+
+.badge-meet{
+
+    background:#16a34a;
+
+    color:#fff;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+.badge-nope{
+
+    background:#dc2626;
+
+    color:#fff;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.loading-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(255,255,255,.8);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+.loading-card{
+
+    background:#fff;
+
+    padding:30px 40px;
+
+    border-radius:18px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+    text-align:center;
+
+}
+
+.spinner{
+
+    width:48px;
+    height:48px;
+
+    margin:auto;
+
+    border:5px solid #eee;
+    border-top:5px solid #FFD500;
+
+    border-radius:50%;
+
+    animation:spin .8s linear infinite;
+
+}
+
+.loading-card p{
+
+    margin-top:15px;
+
+    font-size:15px;
+
+    color:#666;
+
+    font-weight:600;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:768px){
+
+.cards{
+
+    grid-template-columns:1fr;
+
+}
+
+.header{
+
+    flex-direction:column;
+    align-items:flex-start;
+    gap:15px;
+
+}
+
+.search-box input{
+
+    width:100%;
+
+}
+
+.table-box{
+
+    padding:15px;
+
+}
+
+.stock-table{
+
+    min-width:1200px;
+
+}
+
+}
+/* ==========================================
+   BADGES
+========================================== */
+
+.badge-ok{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    width:28px;
+    height:28px;
+
+    border-radius:50%;
+
+    background:#16a34a;
+
+    color:#fff;
+
+    font-size:14px;
+
+}
+
+.badge-danger{
+
+    display:inline-block;
+
+    min-width:34px;
+
+    text-align:center;
+
+    background:#dc2626;
+
+    color:#fff;
+
+    padding:5px 10px;
+
+    border-radius:999px;
+
+    font-weight:600;
+
+    font-size:12px;
+
+}
+
+.badge-meet{
+
+    background:#16a34a;
+
+    color:#fff;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+.badge-nope{
+
+    background:#dc2626;
+
+    color:#fff;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}

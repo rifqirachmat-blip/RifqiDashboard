@@ -5,7 +5,7 @@ console.log("keepstock.js loaded");
 ========================================== */
 
 const API_BASE =
-"https://script.google.com/macros/s/AKfycbyvhWky7msJ3FqhrZ4F_fvK9OSnF08ToWL9jzCAbmTYGA8ZXCToAUc_Wl42yOAGno0iLA/exec";
+"https://script.google.com/macros/s/AKfycbwM5keESxhCGfnZjlvUlwm9gPHqvWqu3qgSzmK7xIHNSJxWz-KkE3kFQ6TKhGKKDLm2/exec";
 
 /* ==========================================
    ELEMENT
@@ -231,7 +231,86 @@ function renderKeepstock(){
 
             }
 
-            html += `<td>${value}</td>`;
+            /* ==========================
+   QTY MINUS
+========================== */
+
+if(index===3){
+
+    const num = Number(col) || 0;
+
+    value =
+    num===0
+    ? `<span class="badge-ok">
+            <i class="fa-solid fa-check"></i>
+       </span>`
+    : `<span class="badge-danger">
+            ${num}
+       </span>`;
+
+}
+
+/* ==========================
+   WRONG SKU
+========================== */
+
+if(index===4){
+
+    const num = Number(col) || 0;
+
+    value =
+    num===0
+    ? `<span class="badge-ok">
+            <i class="fa-solid fa-check"></i>
+       </span>`
+    : `<span class="badge-danger">
+            ${num}
+       </span>`;
+
+}
+
+/* ==========================
+   WRONG RACK
+========================== */
+
+if(index===5){
+
+    const num = Number(col) || 0;
+
+    value =
+    num===0
+    ? `<span class="badge-ok">
+            <i class="fa-solid fa-check"></i>
+       </span>`
+    : `<span class="badge-danger">
+            ${num}
+       </span>`;
+
+}
+// Remarks
+if(index===8){
+
+    const remark =
+    String(col).toLowerCase();
+
+    if(remark.includes("meet")){
+
+        value =
+        `<span class="badge-meet">
+            Meet Criteria
+        </span>`;
+
+    }else{
+
+        value =
+        `<span class="badge-nope">
+            Nope
+        </span>`;
+
+    }
+
+}
+html += `<td>${value}</td>`;
 
         });
 
@@ -250,3 +329,61 @@ function renderKeepstock(){
     content.innerHTML = html;
 
 }
+/* ==========================================
+   SEARCH
+========================================== */
+
+function initSearch(){
+
+    const input =
+    document.getElementById("searchKeepstock");
+
+    if(!input) return;
+
+    input.onkeyup = function(){
+
+        const keyword =
+        this.value.toLowerCase().trim();
+
+        const rows =
+        document.querySelectorAll(".stock-table tbody tr");
+
+        rows.forEach(row=>{
+
+            const store =
+            row.cells[0].innerText.toLowerCase();
+
+            row.style.display =
+            store.includes(keyword)
+            ? ""
+            : "none";
+
+        });
+
+    };
+
+}
+
+/* ==========================================
+   START
+========================================== */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    loadKeepstock();
+
+});
+
+/* ==========================================
+   AFTER RENDER
+========================================== */
+
+const oldRender = renderKeepstock;
+
+renderKeepstock = function(){
+
+    oldRender();
+
+    initSearch();
+
+};
