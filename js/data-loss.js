@@ -472,13 +472,20 @@ function renderDataLoss(data){
 
             let value = col;
 
-            // 6 kolom pertama jangan diformat
+// 6 kolom pertama
 if(colIndex <= 5){
 
-    // Avg Monthly Sales (index 5)
+    // Avg Monthly Sales
     if(colIndex === 5 && !isNaN(Number(col))){
 
         value = formatMoney(col);
+
+    }
+
+    // Actual Sales - PPN 10%
+    if(colIndex === 4 && !isNaN(Number(col))){
+
+        value = formatMoneyMixed(col);
 
     }
 
@@ -487,7 +494,6 @@ if(colIndex <= 5){
     return;
 
 }
-
             
 
             // Kolom nominal setelah Avg Monthly Sales

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tools Center</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/tools.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- ===================================== -->
+<!-- SIDEBAR -->
+<!-- ===================================== -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <h2>BM Rifqi DR</h2>
+
+        <span>Performance Dashboard</span>
+
+    </div>
+
+    <ul>
+
+        <li onclick="location.href='index.html'">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            Dashboard Sales KPI
+
+        </li>
+
+        <li onclick="location.href='mtd.html'">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Sales Month To Date
+
+        </li>
+
+        <li onclick="location.href='stockloss.html'">
+
+            <i class="fa-solid fa-boxes-stacked"></i>
+
+            Stock Take Center
+
+        </li>
+
+        <li onclick="location.href='data-loss.html'">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Data Loss
+
+        </li>
+
+        <li onclick="location.href='manpower.html'">
+
+            <i class="fa-solid fa-users"></i>
+
+            Data Manpower
+
+        </li>
+
+        <li onclick="location.href='keepstock.html'">
+
+            <i class="fa-solid fa-store"></i>
+
+            Monitoring Keepstock
+
+        </li>
+
+        <li class="active">
+
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+
+            Tools
+
+        </li>
+
+    </ul>
+
+</div>
+
+<!-- ===================================== -->
+<!-- MAIN -->
+<!-- ===================================== -->
+
+<div class="main">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>🛠 Tools Center</h1>
+
+            <p>Collection of Operational Tools</p>
+
+        </div>
+
+        <div class="today">
+
+            <div class="today-icon">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+            </div>
+
+            <div class="today-info">
+
+                <span id="todayDate"></span>
+
+                <small id="todayTime"></small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOOLS -->
+
+    <div class="tools-container">
+
+        <div class="tool-card"
+             onclick="window.open('https://rifqirachmat-blip.github.io/bmrifqitools/','_blank')">
+
+            <div class="tool-icon">
+
+                <i class="fa-solid fa-filter"></i>
+
+            </div>
+
+            <div class="tool-content">
+
+                <h3>Filter Delivery Schedule for ABM</h3>
+
+                <p>
+                    Delivery Schedule Filter khusus Assistant Branch Manager.
+                </p>
+
+                <button class="tool-button">
+
+                    Open Tool
+
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="tool-card"
+             onclick="window.open('https://bdgtools.github.io/mrdiy/','_blank')">
+
+            <div class="tool-icon">
+
+                <i class="fa-solid fa-barcode"></i>
+
+            </div>
+
+            <div class="tool-content">
+
+                <h3>ShortCut SBC & Itemize</h3>
+
+                <p>
+                    Shortcut SBC & Itemize by Firman.
+                </p>
+
+                <button class="tool-button">
+
+                    Open Tool
+
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================== -->
+<!-- LOADING -->
+<!-- ===================================== -->
+
+<div
+id="loadingOverlay"
+class="loading-overlay">
+
+    <div class="loading-card">
+
+        <div class="spinner"></div>
+
+        <p>Kela euy...</p>
+
+    </div>
+
+</div>
+
+<script>
+
+function updateClock(){
+
+    const now = new Date();
+
+    document.getElementById("todayDate").innerHTML =
+        now.toLocaleDateString("id-ID",{
+
+            weekday:"long",
+            day:"2-digit",
+            month:"long",
+            year:"numeric"
+
+        });
+
+    document.getElementById("todayTime").innerHTML =
+        now.toLocaleTimeString("id-ID");
+
+}
+
+updateClock();
+
+setInterval(updateClock,1000);
+
+window.addEventListener("load",()=>{
+
+    const loading =
+    document.getElementById("loadingOverlay");
+
+    loading.style.display="flex";
+
+    setTimeout(()=>{
+
+        loading.style.display="none";
+
+    },600);
+
+});
+
+</script>
+
+</body>
+</html>
