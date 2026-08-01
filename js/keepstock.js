@@ -211,25 +211,72 @@ function renderKeepstock(){
 
             let value = col;
 
-            // Last Update
-            if(index===1 && col){
+            /* ==========================
+   LAST UPDATE
+========================== */
 
-                const d = new Date(col);
+if(index===1){
 
-                if(!isNaN(d)){
+    const updateDate = new Date(col);
 
-                    value = d.toLocaleDateString(
-                        "id-ID",
-                        {
-                            day:"2-digit",
-                            month:"short",
-                            year:"numeric"
-                        }
-                    );
+    if(!isNaN(updateDate)){
 
-                }
+        const today = new Date();
 
-            }
+        today.setHours(0,0,0,0);
+        updateDate.setHours(0,0,0,0);
+
+        const diff =
+            Math.floor(
+                (today-updateDate)/
+                (1000*60*60*24)
+            );
+
+        let color = "#16a34a";
+
+        if(diff>=3 && diff<=7){
+
+            color = "#eab308";
+
+        }
+
+        if(diff>7){
+
+            color = "#dc2626";
+
+        }
+
+        value = `
+
+        <div class="last-update">
+
+            <div class="update-date">
+
+                ${updateDate.toLocaleDateString("id-ID",{
+
+                    day:"2-digit",
+                    month:"long",
+                    year:"numeric"
+
+                })}
+
+            </div>
+
+            <div class="update-day"
+
+                 style="color:${color}">
+
+                ${diff} hari yang lalu
+
+            </div>
+
+        </div>
+
+        `;
+
+    }
+
+}
 
             /* ==========================
    QTY MINUS
