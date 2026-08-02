@@ -4,83 +4,37 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Monitoring Training</title>
 
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/training.css">
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 </head>
 
 <body>
 
-<!-- ===================================== -->
-<!-- SIDEBAR -->
-<!-- ===================================== -->
+<!-- =========================
+SIDEBAR
+========================= -->
 
 <div class="sidebar">
 
-    <div class="logo">
-
-        <h2>BM Rifqi DR</h2>
-
-        <span>Performance Dashboard</span>
-
-    </div>
-
-    <ul>
-
-        <li onclick="location.href='index.html'">
-            <i class="fa-solid fa-chart-column"></i>
-            Dashboard Sales KPI
-        </li>
-
-        <li onclick="location.href='mtd.html'">
-            <i class="fa-solid fa-chart-line"></i>
-            Sales Month To Date
-        </li>
-
-        <li onclick="location.href='stockloss.html'">
-            <i class="fa-solid fa-boxes-stacked"></i>
-            Stock Take Center
-        </li>
-
-        <li onclick="location.href='data-loss.html'">
-            <i class="fa-solid fa-chart-line"></i>
-            Data Loss
-        </li>
-
-        <li onclick="location.href='manpower.html'">
-            <i class="fa-solid fa-users"></i>
-            Data Manpower
-        </li>
-
-        <li onclick="location.href='keepstock.html'">
-            <i class="fa-solid fa-store"></i>
-            Monitoring Keepstock
-        </li>
-
-        <li class="active">
-            <i class="fa-solid fa-graduation-cap"></i>
-            Monitoring Training
-        </li>
-
-        <li onclick="location.href='tools.html'">
-            <i class="fa-solid fa-screwdriver-wrench"></i>
-            Tools
-        </li>
-
-    </ul>
+    <!-- gunakan sidebar project kamu -->
 
 </div>
 
-<!-- ===================================== -->
-<!-- MAIN -->
-<!-- ===================================== -->
+<!-- =========================
+MAIN
+========================= -->
 
 <div class="main">
 
@@ -92,7 +46,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
             <h1>🎓 Monitoring Training</h1>
 
-            <p>Training Schedule Dashboard</p>
+            <p>Employee Training Schedule</p>
 
         </div>
 
@@ -116,55 +70,37 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
     </div>
 
-    <!-- KPI -->
+    <!-- TAB -->
 
-    <div class="cards">
+    <div class="training-tabs">
 
-        <div class="card">
+        <button
+            id="btnToday"
+            class="tab-btn active">
 
-            <small>Today's Training</small>
+            <i class="fa-solid fa-calendar-day"></i>
 
-            <h2 id="todayTraining">0</h2>
+            Today Training
 
-        </div>
+        </button>
 
-        <div class="card">
+        <button
+            id="btnAll"
+            class="tab-btn">
 
-            <small>Confirmed</small>
+            <i class="fa-solid fa-calendar-week"></i>
 
-            <h2 id="confirmedTraining">0</h2>
+            Full Training Schedule
 
-        </div>
-
-        <div class="card">
-
-            <small>Waiting</small>
-
-            <h2 id="waitingTraining">0</h2>
-
-        </div>
+        </button>
 
     </div>
 
-    <!-- TAB -->
+    <!-- KPI SUPERIOR -->
 
-    <div class="tab-wrapper">
-
-        <button
-            class="tab-btn active"
-            id="btnToday">
-
-            TODAY'S TRAINING
-
-        </button>
-
-        <button
-            class="tab-btn"
-            id="btnAll">
-
-            ALL TRAINING
-
-        </button>
+    <div
+        class="cards"
+        id="superiorKPI">
 
     </div>
 
@@ -173,10 +109,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     <div class="search-box">
 
         <input
+
             id="searchTraining"
+
             type="text"
-            placeholder="🔍 Search participant, store, superior..."
-            autocomplete="off">
+
+            placeholder="🔍 Search Employee / Store / Training"
+
+        >
 
     </div>
 
@@ -184,40 +124,30 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
     <div id="trainingContent">
 
-        <div class="table-box">
-
-            <div class="empty-box">
-
-                Loading Training...
-
-            </div>
-
-        </div>
-
     </div>
 
 </div>
 
-<!-- ===================================== -->
-<!-- LOADING -->
-<!-- ===================================== -->
+<!-- =========================
+LOADING
+========================= -->
 
 <div
 id="loadingOverlay"
 class="loading-overlay">
 
-<div class="loading-card">
+    <div class="loading-card">
 
-<div class="spinner"></div>
+        <div class="spinner"></div>
 
-<p>Loading Training...</p>
+        <p>Loading...</p>
+
+    </div>
 
 </div>
 
-</div>
-
+<script src="js/helper.js"></script>
 <script src="js/training.js"></script>
 
 </body>
-
 </html>

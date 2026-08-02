@@ -1,102 +1,546 @@
+/* =========================================================
+   HEADER
+========================================================= */
+
+.toolbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:20px;
+margin:20px 0;
+flex-wrap:wrap;
+}
+
+.tab-group{
+display:flex;
+gap:10px;
+}
+
+.tab-group button{
+border:none;
+padding:10px 20px;
+border-radius:10px;
+cursor:pointer;
+background:#ececec;
+font-weight:600;
+transition:.25s;
+}
+
+.tab-group button.active{
+background:#009879;
+color:#fff;
+}
+
+#searchTraining{
+width:320px;
+padding:12px 16px;
+border-radius:10px;
+border:1px solid #ddd;
+font-size:14px;
+outline:none;
+}
+
+/* =========================================================
+   GROUP
+========================================================= */
+
+.superior-group{
+background:#fff;
+border-radius:14px;
+padding:18px;
+margin-bottom:22px;
+box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.superior-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+padding-bottom:10px;
+border-bottom:1px solid #eee;
+}
+
+.superior-header h3{
+margin:0;
+font-size:18px;
+color:#222;
+}
+
+.superior-count{
+background:#009879;
+color:#fff;
+padding:6px 12px;
+border-radius:30px;
+font-size:12px;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.training-card{
+display:grid;
+grid-template-columns:
+1.5fr
+1fr
+2fr
+1fr
+1fr;
+gap:15px;
+align-items:center;
+padding:15px;
+margin-bottom:12px;
+background:#fafafa;
+border-radius:12px;
+border:1px solid #eee;
+transition:.25s;
+}
+
+.training-card:hover{
+background:#f4fffb;
+transform:translateY(-2px);
+}
+
+.participant h4{
+margin:0;
+font-size:16px;
+}
+
+.participant small{
+display:block;
+color:#666;
+margin-top:3px;
+}
+
+.training-info{
+font-size:14px;
+color:#444;
+}
+
+.training-title{
+font-weight:600;
+color:#222;
+}
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.badge-success{
+display:inline-block;
+padding:6px 12px;
+background:#27ae60;
+color:#fff;
+border-radius:20px;
+font-size:12px;
+font-weight:600;
+}
+
+.badge-wait{
+display:inline-block;
+padding:6px 12px;
+background:#f39c12;
+color:#fff;
+border-radius:20px;
+font-size:12px;
+font-weight:600;
+}
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+.status-select{
+width:130px;
+padding:8px 10px;
+border-radius:8px;
+border:1px solid #ddd;
+background:#fff;
+}
+
+/* =========================================================
+   BUTTON WA
+========================================================= */
+
+.btn-wa{
+background:#25D366;
+color:#fff;
+border:none;
+padding:10px 16px;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+transition:.25s;
+}
+
+.btn-wa:hover{
+background:#1fae56;
+}
+
+.btn-wa i{
+margin-right:6px;
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty-box{
+padding:70px;
+text-align:center;
+color:#888;
+background:#fff;
+border-radius:12px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:900px){
+
+.training-card{
+
+grid-template-columns:1fr;
+
+gap:10px;
+
+}
+
+#searchTraining{
+
+width:100%;
+
+}
+
+.toolbar{
+
+flex-direction:column;
+align-items:stretch;
+
+}
+
+.tab-group{
+
+width:100%;
+
+}
+
+.tab-group button{
+
+flex:1;
+
+}
+
+}
 /* ==========================================
-   KPI
+   ACCORDION
 ========================================== */
 
-.cards{
+.superior-header{
 
-    display:grid;
+cursor:pointer;
 
-    grid-template-columns:repeat(3,1fr);
-
-    gap:20px;
-
-    margin-bottom:25px;
+transition:.25s;
 
 }
 
-.card{
+.superior-header:hover{
 
-    background:#fff;
+background:#f5f5f5;
 
-    border-radius:16px;
-
-    padding:22px;
-
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-
-    text-align:center;
+border-radius:10px;
 
 }
 
-.card small{
+.superior-title{
 
-    display:block;
+display:flex;
 
-    color:#777;
+align-items:center;
 
-    font-size:13px;
-
-    margin-bottom:8px;
+gap:10px;
 
 }
 
-.card h2{
+.arrow{
 
-    font-size:34px;
+transition:.25s;
 
-    color:#222;
+font-size:14px;
 
-    font-weight:700;
+color:#666;
+
+width:18px;
 
 }
 
+.superior-body{
+
+display:none;
+
+padding-top:15px;
+
+animation:fadeAccordion .25s ease;
+
+}
+
+.superior-body.open{
+
+display:block;
+
+}
+
+@keyframes fadeAccordion{
+
+from{
+
+opacity:0;
+
+transform:translateY(-6px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
 /* ==========================================
-   TAB
+   DOWNLOAD BUTTON
 ========================================== */
 
-.tab-wrapper{
+.superior-action{
 
-    display:flex;
+display:flex;
 
-    gap:12px;
+align-items:center;
 
-    margin-bottom:20px;
+gap:10px;
+
+}
+
+.btn-download{
+
+border:none;
+
+background:#009879;
+
+color:#fff;
+
+padding:8px 12px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-size:13px;
+
+font-weight:600;
+
+transition:.25s;
+
+}
+
+.btn-download:hover{
+
+background:#007f66;
+
+}
+
+.btn-download i{
+
+margin-right:6px;
+
+}
+/* ==========================================
+   TAB MENU
+========================================== */
+
+.training-tabs{
+
+display:flex;
+
+gap:12px;
+
+margin:20px 0 25px;
 
 }
 
 .tab-btn{
 
-    border:none;
+border:none;
 
-    background:#efefef;
+background:#fff;
 
-    color:#666;
+padding:14px 22px;
 
-    padding:12px 24px;
+border-radius:14px;
 
-    border-radius:12px;
+font-size:15px;
 
-    cursor:pointer;
+font-weight:600;
 
-    font-weight:600;
+cursor:pointer;
 
-    transition:.25s;
+transition:.25s;
 
-}
+box-shadow:0 5px 18px rgba(0,0,0,.08);
 
-.tab-btn:hover{
-
-    background:#FFD500;
-
-    color:#111;
+color:#666;
 
 }
 
 .tab-btn.active{
 
-    background:#FFD500;
+background:#ffd400;
 
-    color:#111;
+color:#111;
+
+}
+
+.tab-btn:hover{
+
+transform:translateY(-2px);
+
+}
+
+/* ==========================================
+   KPI SUPERIOR
+========================================== */
+
+.cards{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+gap:20px;
+
+margin-bottom:25px;
+
+}
+
+.card{
+
+background:#fff;
+
+border-radius:20px;
+
+padding:22px;
+
+box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.card small{
+
+display:block;
+
+font-size:15px;
+
+font-weight:600;
+
+margin-bottom:18px;
+
+color:#444;
+
+}
+
+.card h2{
+
+font-size:44px;
+
+margin:0;
+
+font-weight:700;
+
+}
+
+.card span{
+
+display:block;
+
+margin-top:10px;
+
+font-size:18px;
+
+font-weight:500;
+
+color:#444;
+
+}
+
+.card::after{
+
+content:"";
+
+position:absolute;
+
+right:20px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+width:58px;
+
+height:58px;
+
+border-radius:50%;
+
+background:#eef8d8;
+
+}
+
+.card::before{
+
+content:"\f007";
+
+font-family:"Font Awesome 6 Free";
+
+font-weight:900;
+
+position:absolute;
+
+right:39px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+font-size:22px;
+
+color:#7bb43d;
+
+z-index:2;
+
+}
+
+.success{
+
+color:#10a34a;
+
+}
+
+.warning{
+
+color:#f0a500;
+
+}
+
+.danger{
+
+color:#d52d2d;
 
 }
 
@@ -106,33 +550,25 @@
 
 .search-box{
 
-    margin-bottom:25px;
+margin-bottom:25px;
 
 }
 
 .search-box input{
 
-    width:100%;
+width:100%;
 
-    padding:15px 18px;
+padding:16px 20px;
 
-    border-radius:14px;
+border:none;
 
-    border:1px solid #ddd;
+border-radius:14px;
 
-    font-size:15px;
+background:#fff;
 
-    outline:none;
+box-shadow:0 5px 18px rgba(0,0,0,.08);
 
-    transition:.25s;
-
-}
-
-.search-box input:focus{
-
-    border-color:#FFD500;
-
-    box-shadow:0 0 0 3px rgba(255,213,0,.2);
+font-size:15px;
 
 }
 
@@ -142,228 +578,196 @@
 
 .superior-group{
 
-    margin-bottom:30px;
+background:#fff;
+
+border-radius:18px;
+
+box-shadow:0 6px 20px rgba(0,0,0,.08);
+
+margin-bottom:22px;
+
+overflow:hidden;
 
 }
 
 .superior-header{
 
-    background:#111;
+display:flex;
 
-    color:#fff;
+justify-content:space-between;
 
-    padding:12px 18px;
+align-items:center;
 
-    border-radius:12px;
+padding:20px 24px;
 
-    display:flex;
+cursor:pointer;
 
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:15px;
+transition:.2s;
 
 }
 
-.superior-header h3{
+.superior-header:hover{
 
-    margin:0;
+background:#fafafa;
 
-    font-size:18px;
+}
+
+.superior-title{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+}
+
+.superior-title h3{
+
+margin:0;
+
+font-size:28px;
+
+font-weight:700;
+
+}
+
+.arrow{
+
+font-size:18px;
+
+transition:.25s;
+
+}
+
+.superior-action{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
 
 }
 
 .superior-count{
 
-    background:#FFD500;
+background:#ffe58a;
 
-    color:#111;
+padding:6px 14px;
 
-    padding:5px 12px;
+border-radius:30px;
 
-    border-radius:20px;
+font-size:14px;
 
-    font-size:13px;
+font-weight:600;
 
-    font-weight:700;
+}
+
+.btn-download{
+
+background:#ffd400;
+
+border:none;
+
+padding:9px 15px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-weight:600;
+
+transition:.25s;
+
+}
+
+.btn-download:hover{
+
+background:#f5c800;
+
+}
+
+.superior-body{
+
+display:none;
+
+padding:0 20px 20px;
+
+}
+
+.superior-body.open{
+
+display:block;
+
+animation:fadeAccordion .25s;
+
+}
+
+@keyframes fadeAccordion{
+
+from{
+
+opacity:0;
+
+transform:translateY(-8px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
 
 }
 
 /* ==========================================
-   TRAINING CARD
+   TABLE
 ========================================== */
 
-.training-card{
+.table-box{
 
-    background:#fff;
-
-    border-radius:16px;
-
-    padding:18px;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-
-    margin-bottom:15px;
-
-    display:grid;
-
-    grid-template-columns:2fr 1fr 1fr 1.5fr auto;
-
-    gap:18px;
-
-    align-items:center;
-
-    transition:.25s;
+overflow-x:auto;
 
 }
 
-.training-card:hover{
+.training-table{
 
-    transform:translateY(-3px);
+width:100%;
 
-    box-shadow:0 12px 25px rgba(0,0,0,.12);
+min-width:1450px;
 
-}
-
-.participant h4{
-
-    margin:0;
-
-    font-size:17px;
-
-    color:#222;
+border-collapse:collapse;
 
 }
 
-.participant small{
+.training-table th{
 
-    color:#777;
+background:#f8f8f8;
 
-    display:block;
+padding:16px;
 
-    margin-top:4px;
+font-size:14px;
 
-}
-
-.training-info{
-
-    font-size:14px;
-
-    color:#555;
+text-align:left;
 
 }
 
-.training-title{
+.training-table td{
 
-    font-weight:600;
+padding:15px;
 
-    color:#111;
+border-top:1px solid #eee;
 
-}
-
-/* ==========================================
-   STATUS
-========================================== */
-
-.status-select{
-
-    width:100%;
-
-    padding:10px;
-
-    border-radius:10px;
-
-    border:1px solid #ddd;
-
-    font-size:13px;
-
-    outline:none;
+font-size:14px;
 
 }
 
-/* ==========================================
-   WHATSAPP BUTTON
-========================================== */
+.training-table tr:hover{
 
-.btn-wa{
-
-    background:#25D366;
-
-    color:#fff;
-
-    border:none;
-
-    border-radius:10px;
-
-    padding:10px 16px;
-
-    font-size:13px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    transition:.25s;
-
-}
-
-.btn-wa:hover{
-
-    background:#1fb958;
-
-}
-
-/* ==========================================
-   EMPTY
-========================================== */
-
-.empty-box{
-
-    background:#fff;
-
-    padding:60px;
-
-    text-align:center;
-
-    border-radius:16px;
-
-    color:#777;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-
-}
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
-@media(max-width:1000px){
-
-.cards{
-
-    grid-template-columns:1fr;
-
-}
-
-.training-card{
-
-    grid-template-columns:1fr;
-
-}
-
-.btn-wa{
-
-    justify-content:center;
-
-    width:100%;
-
-}
+background:#fafafa;
 
 }

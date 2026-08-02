@@ -17,6 +17,18 @@ document.getElementById("trainingContent");
 const loading =
 document.getElementById("loadingOverlay");
 
+const searchInput =
+document.getElementById("searchTraining");
+
+const btnToday =
+document.getElementById("btnToday");
+
+const btnAll =
+document.getElementById("btnAll");
+
+const superiorKPI =
+document.getElementById("superiorKPI");
+
 /* ==========================================
    GLOBAL
 ========================================== */
@@ -32,13 +44,13 @@ let currentMode = "today";
 
 function showLoading(){
 
-    loading.style.display = "flex";
+    loading.style.display="flex";
 
 }
 
 function hideLoading(){
 
-    loading.style.display = "none";
+    loading.style.display="none";
 
 }
 
@@ -79,35 +91,35 @@ async function loadTraining(){
 
         showLoading();
 
-        const response =
-        await fetch(API_BASE + "?action=training");
+        const res =
+        await fetch(
+            API_BASE + "?action=training"
+        );
 
         const data =
-        await response.json();
-
-        console.log(data);
+        await res.json();
 
         if(!data.success){
 
-            content.innerHTML = `
-            <div class="empty-box">
+            content.innerHTML=
+
+            `<div class="empty-box">
 
                 ${data.message}
 
-            </div>
-            `;
+            </div>`;
 
             return;
 
         }
 
-        trainingHeader = data.header;
+        trainingHeader =
+        data.header;
 
-        trainingRows = data.rows;
+        trainingRows =
+        data.rows;
 
-        updateKPI();
-
-        renderTraining();
+        renderPage();
 
     }
 
@@ -115,13 +127,13 @@ async function loadTraining(){
 
         console.error(err);
 
-        content.innerHTML = `
-        <div class="empty-box">
+        content.innerHTML=
+
+        `<div class="empty-box">
 
             Failed Load Data
 
-        </div>
-        `;
+        </div>`;
 
     }
 
@@ -132,7 +144,6 @@ async function loadTraining(){
     }
 
 }
-
 /* ==========================================
    TODAY FILTER
 ========================================== */
@@ -140,62 +151,57 @@ async function loadTraining(){
 function getTodayRows(){
 
     const today =
-    new Date();
+    new Date().toLocaleDateString("en-CA");
 
-    const todayStr =
-    today.toLocaleDateString("en-CA");
-
-    return trainingRows.filter(row=>{
+    return trainingRows.filter(r=>{
 
         const d =
-        new Date(row[3]);
+        new Date(r[3]);
 
         if(isNaN(d)) return false;
 
-        return d.toLocaleDateString("en-CA")
-        === todayStr;
+        return (
+            d.toLocaleDateString("en-CA")
+            === today
+        );
 
     });
 
 }
 
 /* ==========================================
-   KPI
+   FILTER DATA
 ========================================== */
 
-function updateKPI(){
+function getRows(){
 
-    const rows =
-    getTodayRows();
+    let rows =
+    currentMode==="today"
+    ? getTodayRows()
+    : [...trainingRows];
 
-    document.getElementById("todayTraining").innerHTML =
-    rows.length;
+    const keyword =
+    searchInput.value
+    .toLowerCase()
+    .trim();
 
-    let confirmed = 0;
-    let waiting = 0;
+    if(keyword==="") return rows;
 
-    rows.forEach(r=>{
+    return rows.filter(r=>{
 
-        const status =
-        String(r[7]).toLowerCase();
+        return(
 
-        if(status.includes("hadir")){
+            String(r[1]).toLowerCase().includes(keyword) ||
 
-            confirmed++;
+            String(r[2]).toLowerCase().includes(keyword) ||
 
-        }else{
+            String(r[5]).toLowerCase().includes(keyword) ||
 
-            waiting++;
+            String(r[9]).toLowerCase().includes(keyword)
 
-        }
+        );
 
     });
-
-    document.getElementById("confirmedTraining").innerHTML =
-    confirmed;
-
-    document.getElementById("waitingTraining").innerHTML =
-    waiting;
 
 }
 
@@ -203,375 +209,444 @@ function updateKPI(){
    TAB
 ========================================== */
 
-document
-.getElementById("btnToday")
-.onclick=function(){
+btnToday.onclick=()=>{
 
     currentMode="today";
 
-    this.classList.add("active");
+    btnToday.classList.add("active");
+    btnAll.classList.remove("active");
 
-    document
-    .getElementById("btnAll")
-    .classList.remove("active");
-
-    renderTraining();
+    renderPage();
 
 }
 
-document
-.getElementById("btnAll")
-.onclick=function(){
+btnAll.onclick=()=>{
 
     currentMode="all";
 
-    this.classList.add("active");
+    btnAll.classList.add("active");
+    btnToday.classList.remove("active");
 
-    document
-    .getElementById("btnToday")
-    .classList.remove("active");
+    renderPage();
 
-    renderTraining();
+}
+
+searchInput.onkeyup=()=>{
+
+    renderPage();
 
 }
 
 /* ==========================================
-   SEARCH
+   KPI SUPERIOR
 ========================================== */
 
-document
-.getElementById("searchTraining")
-.addEventListener("keyup",()=>{
+function renderKPI(rows){
 
-    renderTraining();
-
-});
-/* ==========================================
-   RENDER
-========================================== */
-
-function renderTraining(){
-
-    const keyword =
-    document
-    .getElementById("searchTraining")
-    .value
-    .toLowerCase()
-    .trim();
-
-    let rows =
-    currentMode==="today"
-    ? getTodayRows()
-    : [...trainingRows];
-
-    if(keyword){
-
-        rows =
-        rows.filter(r=>{
-
-            return (
-
-                String(r[1]).toLowerCase().includes(keyword) ||
-                String(r[2]).toLowerCase().includes(keyword) ||
-                String(r[5]).toLowerCase().includes(keyword) ||
-                String(r[9]).toLowerCase().includes(keyword)
-
-            );
-
-        });
-
-    }
-
-    if(rows.length===0){
-
-        content.innerHTML=`
-
-        <div class="empty-box">
-
-            No Training Schedule
-
-        </div>
-
-        `;
-
-        return;
-
-    }
-
-    /* ==========================
-       GROUP SUPERIOR
-    ========================== */
-
-    const groups={};
+    const group={};
 
     rows.forEach(r=>{
 
-        const spv =
-        r[9] || "-";
+        const sp =
+        r[9] || "No Superior";
 
-        if(!groups[spv]){
+        if(!group[sp]){
 
-            groups[spv]=[];
+            group[sp]={
+
+                hadir:0,
+
+                total:0
+
+            };
 
         }
 
-        groups[spv].push(r);
+        group[sp].total++;
+
+        if(
+            String(r[7])
+            .toLowerCase()
+            .includes("hadir")
+        ){
+
+            group[sp].hadir++;
+
+        }
 
     });
 
     let html="";
 
-    Object.keys(groups)
-    .sort()
-    .forEach(superior=>{
+    Object.keys(group).forEach(sp=>{
+
+        const total =
+        group[sp].total;
+
+        const hadir =
+        group[sp].hadir;
+
+        const percent =
+        Math.round(hadir/total*100);
+
+        let color="danger";
+
+        if(percent>=80){
+
+            color="success";
+
+        }else if(percent>=50){
+
+            color="warning";
+
+        }
+
+        html+=`
+
+        <div class="card">
+
+            <small>${sp}</small>
+
+            <h2 class="${color}">
+
+                ${percent}%
+
+            </h2>
+
+            <span>
+
+                ${hadir}/${total} Hadir
+
+            </span>
+
+        </div>
+
+        `;
+
+    });
+
+    superiorKPI.innerHTML=html;
+
+}
+
+/* ==========================================
+   MAIN RENDER
+========================================== */
+
+function renderPage(){
+
+    const rows =
+    getRows();
+
+    renderKPI(rows);
+
+    renderSuperior(rows);
+
+}
+/* ==========================================
+   GROUP BY SUPERIOR
+========================================== */
+
+function groupSuperior(rows){
+
+    const groups={};
+
+    rows.forEach(r=>{
+
+        const sp =
+        r[9] || "No Superior";
+
+        if(!groups[sp]){
+
+            groups[sp]=[];
+
+        }
+
+        groups[sp].push(r);
+
+    });
+
+    return groups;
+
+}
+
+/* ==========================================
+   RENDER SUPERIOR
+========================================== */
+
+function renderSuperior(rows){
+
+    const groups =
+    groupSuperior(rows);
+
+    let html="";
+
+    Object.keys(groups).forEach((sp,index)=>{
+
+        const opened =
+        index<2;
 
         html+=`
 
         <div class="superior-group">
 
-            <div class="superior-header">
+            <div
+                class="superior-header"
+                onclick="toggleSuperior(this)">
 
-                <h3>${superior}</h3>
+                <div class="superior-title">
 
-                <span class="superior-count">
+                    <i class="fa-solid fa-chevron-${opened?"down":"right"} arrow"></i>
 
-                    ${groups[superior].length} Employee
+                    <h3>${sp}</h3>
 
-                </span>
+                </div>
+
+                <div class="superior-action">
+
+                    <span class="superior-count">
+
+                        ${groups[sp].length} Participant
+
+                    </span>
+
+                    <button
+
+                        class="btn-download"
+
+                        onclick="downloadSuperior(event,this)">
+
+                        <i class="fa-solid fa-image"></i>
+
+                        JPG
+
+                    </button>
+
+                </div>
 
             </div>
 
+            <div class="superior-body ${opened?"open":""}">
+
+                <div class="table-box">
+
+                    <table class="training-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Peserta</th>
+                                <th>Store</th>
+                                <th>Tanggal</th>
+                                <th>Jam</th>
+                                <th>Training</th>
+                                <th>Status</th>
+                                <th>Whatsapp</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
         `;
 
-        groups[superior]
-        .forEach(r=>{
+        groups[sp].forEach(r=>{
 
-            html+=buildTrainingCard(r);
+            html+=`
+
+            <tr>
+
+                <td>
+
+                    <b>${r[1]}</b><br>
+
+                    <small>${r[0]}</small>
+
+                </td>
+
+                <td>${r[2]}</td>
+
+                <td>${formatDate(r[3])}</td>
+
+                <td>${r[4]}</td>
+
+                <td>${r[5]}</td>
+
+                <td>
+
+                    <select
+                        class="status-select"
+                        data-nik="${r[0]}">
+
+                        <option
+                            value="Waiting"
+                            ${String(r[7]).toLowerCase().includes("waiting")?"selected":""}>
+
+                            Waiting
+
+                        </option>
+
+                        <option
+                            value="Hadir"
+                            ${String(r[7]).toLowerCase().includes("hadir")?"selected":""}>
+
+                            Hadir
+
+                        </option>
+
+                    </select>
+
+                </td>
+
+                <td>
+
+                    <button
+
+                        class="btn-wa"
+
+                        onclick="window.open('${r[12]}','_blank')">
+
+                        <i class="fa-brands fa-whatsapp"></i>
+
+                        Kirim Pesan
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+            `;
 
         });
 
-        html+=`</div>`;
+        html+=`
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
 
     });
 
     content.innerHTML=html;
 
-    bindStatusDropdown();
+    bindStatus();
 
 }
 /* ==========================================
-   BUILD TRAINING CARD
+   ACCORDION
 ========================================== */
 
-function buildTrainingCard(r){
+function toggleSuperior(header){
 
-    const nik = r[0];
-    const peserta = r[1];
-    const store = r[2];
-    const tanggal = r[3];
-    const jam = r[4];
-    const judul = r[5];
-    const link = r[6];
-    const status = r[7];
-    const wa = r[12];
+    const body =
+    header.nextElementSibling;
 
-    let tanggalText = "";
+    const arrow =
+    header.querySelector(".arrow");
 
-    if(tanggal){
+    body.classList.toggle("open");
 
-        const d = new Date(tanggal);
-
-        if(!isNaN(d)){
-
-            tanggalText =
-            d.toLocaleDateString("id-ID",{
-
-                weekday:"short",
-                day:"2-digit",
-                month:"short",
-                year:"numeric"
-
-            });
-
-        }
-
-    }
-
-    let badge = "";
-
-    if(String(status).toLowerCase().includes("hadir")){
-
-        badge = `
-        <span class="badge-success">
-
-            Hadir
-
-        </span>
-        `;
-
-    }else{
-
-        badge = `
-        <span class="badge-wait">
-
-            Waiting
-
-        </span>
-        `;
-
-    }
-
-    return `
-
-    <div class="training-card">
-
-        <div class="participant">
-
-            <h4>${peserta}</h4>
-
-            <small>${nik}</small>
-
-            <small>${store}</small>
-
-        </div>
-
-        <div class="training-info">
-
-            <strong>${tanggalText}</strong>
-
-            <br>
-
-            ${jam}
-
-        </div>
-
-        <div class="training-title">
-
-            ${judul}
-
-        </div>
-
-        <div>
-
-            ${badge}
-
-            <br><br>
-
-            <select
-                class="status-select"
-                data-nik="${nik}">
-
-                <option
-                    value="Waiting"
-                    ${status=="Waiting"?"selected":""}>
-
-                    Waiting
-
-                </option>
-
-                <option
-                    value="Hadir"
-                    ${status=="Hadir"?"selected":""}>
-
-                    Hadir
-
-                </option>
-
-            </select>
-
-        </div>
-
-        <div>
-
-            <button
-                class="btn-wa"
-                onclick="window.open('${wa}','_blank')">
-
-                <i class="fa-brands fa-whatsapp"></i>
-
-                Kirim Pesan
-
-            </button>
-
-        </div>
-
-    </div>
-
-    `;
+    arrow.classList.toggle("fa-chevron-down");
+    arrow.classList.toggle("fa-chevron-right");
 
 }
+
+/* ==========================================
+   DOWNLOAD JPG
+========================================== */
+
+function downloadSuperior(e,btn){
+
+    e.stopPropagation();
+
+    const group =
+    btn.closest(".superior-group");
+
+    const title =
+    group.querySelector("h3").innerText;
+
+    html2canvas(group,{
+
+        scale:2,
+
+        backgroundColor:"#ffffff",
+
+        useCORS:true
+
+    }).then(canvas=>{
+
+        const a =
+        document.createElement("a");
+
+        a.download =
+        title + " Training.jpg";
+
+        a.href =
+        canvas.toDataURL("image/jpeg",1);
+
+        a.click();
+
+    });
+
+}
+
 /* ==========================================
    UPDATE STATUS
 ========================================== */
 
-function bindStatusDropdown(){
+function bindStatus(){
 
     document
     .querySelectorAll(".status-select")
     .forEach(item=>{
 
-        item.onchange = async function(){
-
-            const nik =
-            this.dataset.nik;
-
-            const status =
-            this.value;
+        item.onchange=async function(){
 
             try{
 
                 showLoading();
 
-                const response =
+                const res =
                 await fetch(API_BASE,{
 
                     method:"POST",
 
                     headers:{
-                        "Content-Type":
-                        "application/x-www-form-urlencoded"
+
+                        "Content-Type":"application/x-www-form-urlencoded"
+
                     },
 
                     body:new URLSearchParams({
 
                         action:"updateTraining",
 
-                        nik:nik,
+                        nik:this.dataset.nik,
 
-                        status:status
+                        status:this.value
 
                     })
 
                 });
 
-                const result =
-                await response.json();
+                const data =
+                await res.json();
 
-                if(!result.success){
+                if(!data.success){
 
-                    alert(result.message);
-
-                    loadTraining();
-
-                    return;
+                    alert(data.message);
 
                 }
-
-                /* update local data */
-
-                trainingRows.forEach(r=>{
-
-                    if(r[0]==nik){
-
-                        r[7]=status;
-
-                    }
-
-                });
-
-                updateKPI();
-
-                renderTraining();
 
             }
 
@@ -579,9 +654,7 @@ function bindStatusDropdown(){
 
                 console.error(err);
 
-                alert("Failed update status");
-
-                loadTraining();
+                alert("Update Failed");
 
             }
 
@@ -591,7 +664,30 @@ function bindStatusDropdown(){
 
             }
 
-        };
+        }
+
+    });
+
+}
+
+/* ==========================================
+   FORMAT DATE
+========================================== */
+
+function formatDate(date){
+
+    const d =
+    new Date(date);
+
+    if(isNaN(d)) return date;
+
+    return d.toLocaleDateString("id-ID",{
+
+        day:"2-digit",
+
+        month:"short",
+
+        year:"numeric"
 
     });
 
