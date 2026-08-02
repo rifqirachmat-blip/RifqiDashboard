@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Monitoring Training</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/training.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- ===================================== -->
+<!-- SIDEBAR -->
+<!-- ===================================== -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <h2>BM Rifqi DR</h2>
+
+        <span>Performance Dashboard</span>
+
+    </div>
+
+    <ul>
+
+        <li onclick="location.href='index.html'">
+            <i class="fa-solid fa-chart-column"></i>
+            Dashboard Sales KPI
+        </li>
+
+        <li onclick="location.href='mtd.html'">
+            <i class="fa-solid fa-chart-line"></i>
+            Sales Month To Date
+        </li>
+
+        <li onclick="location.href='stockloss.html'">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            Stock Take Center
+        </li>
+
+        <li onclick="location.href='data-loss.html'">
+            <i class="fa-solid fa-chart-line"></i>
+            Data Loss
+        </li>
+
+        <li onclick="location.href='manpower.html'">
+            <i class="fa-solid fa-users"></i>
+            Data Manpower
+        </li>
+
+        <li onclick="location.href='keepstock.html'">
+            <i class="fa-solid fa-store"></i>
+            Monitoring Keepstock
+        </li>
+
+        <li class="active">
+            <i class="fa-solid fa-graduation-cap"></i>
+            Monitoring Training
+        </li>
+
+        <li onclick="location.href='tools.html'">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            Tools
+        </li>
+
+    </ul>
+
+</div>
+
+<!-- ===================================== -->
+<!-- MAIN -->
+<!-- ===================================== -->
+
+<div class="main">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>🎓 Monitoring Training</h1>
+
+            <p>Training Schedule Dashboard</p>
+
+        </div>
+
+        <div class="today">
+
+            <div class="today-icon">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+            </div>
+
+            <div class="today-info">
+
+                <span id="todayDate"></span>
+
+                <small id="todayTime"></small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- KPI -->
+
+    <div class="cards">
+
+        <div class="card">
+
+            <small>Today's Training</small>
+
+            <h2 id="todayTraining">0</h2>
+
+        </div>
+
+        <div class="card">
+
+            <small>Confirmed</small>
+
+            <h2 id="confirmedTraining">0</h2>
+
+        </div>
+
+        <div class="card">
+
+            <small>Waiting</small>
+
+            <h2 id="waitingTraining">0</h2>
+
+        </div>
+
+    </div>
+
+    <!-- TAB -->
+
+    <div class="tab-wrapper">
+
+        <button
+            class="tab-btn active"
+            id="btnToday">
+
+            TODAY'S TRAINING
+
+        </button>
+
+        <button
+            class="tab-btn"
+            id="btnAll">
+
+            ALL TRAINING
+
+        </button>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input
+            id="searchTraining"
+            type="text"
+            placeholder="🔍 Search participant, store, superior..."
+            autocomplete="off">
+
+    </div>
+
+    <!-- CONTENT -->
+
+    <div id="trainingContent">
+
+        <div class="table-box">
+
+            <div class="empty-box">
+
+                Loading Training...
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================== -->
+<!-- LOADING -->
+<!-- ===================================== -->
+
+<div
+id="loadingOverlay"
+class="loading-overlay">
+
+<div class="loading-card">
+
+<div class="spinner"></div>
+
+<p>Loading Training...</p>
+
+</div>
+
+</div>
+
+<script src="js/training.js"></script>
+
+</body>
+
+</html>
