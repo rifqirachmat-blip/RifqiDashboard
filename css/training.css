@@ -1071,3 +1071,452 @@ background:#fafafa;
     filter: none !important;
 
 }
+/* ==========================================================
+   MOBILE RESPONSIVE
+========================================================== */
+
+@media (max-width: 768px){
+
+    /* =========================
+       MAIN CONTENT
+    ========================= */
+
+    .main-content,
+    .content,
+    .page-content {
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        padding: 16px !important;
+
+        box-sizing: border-box;
+
+    }
+
+
+    /* =========================
+       PAGE TITLE
+    ========================= */
+
+    .page-header,
+    .training-header {
+
+        display: block !important;
+
+    }
+
+
+    .page-header h1,
+    .training-header h1 {
+
+        font-size: 24px !important;
+
+        line-height: 1.2;
+
+    }
+
+
+    /* =========================
+       TRAINING TABS
+    ========================= */
+
+    .training-tabs {
+
+        display: flex !important;
+
+        width: 100% !important;
+
+        gap: 8px;
+
+        margin-bottom: 14px;
+
+    }
+
+
+    .training-tabs .tab-btn {
+
+        flex: 1;
+
+        min-width: 0;
+
+        padding: 10px 8px !important;
+
+        font-size: 12px !important;
+
+        white-space: normal;
+
+    }
+
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .search-container,
+    .training-search {
+
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+    }
+
+
+    .search-container input,
+    .training-search input {
+
+        width: 100% !important;
+
+        box-sizing: border-box;
+
+    }
+
+
+    /* =========================
+       SUPERIOR GROUP
+    ========================= */
+
+    .superior-group {
+
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        margin-bottom: 14px;
+
+    }
+
+
+    .superior-header {
+
+        padding: 12px !important;
+
+    }
+
+
+    .superior-title h3 {
+
+        font-size: 16px !important;
+
+    }
+
+
+    .superior-title span {
+
+        font-size: 11px !important;
+
+    }
+
+
+    .superior-actions {
+
+        flex-shrink: 0;
+
+    }
+
+
+    .btn-download {
+
+        padding: 7px 9px !important;
+
+        font-size: 11px !important;
+
+    }
+
+
+    /* ======================================================
+       TABLE → MOBILE CARD
+    ====================================================== */
+
+    .table-wrapper {
+
+        width: 100% !important;
+
+        overflow: visible !important;
+
+    }
+
+
+    .training-table {
+
+        width: 100% !important;
+
+        display: block !important;
+
+        table-layout: auto !important;
+
+        border: 0 !important;
+
+    }
+
+
+    .training-table thead {
+
+        display: none !important;
+
+    }
+
+
+    .training-table tbody {
+
+        display: block !important;
+
+        width: 100% !important;
+
+    }
+
+
+    .training-table tbody tr {
+
+        display: grid !important;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 0;
+
+        width: 100% !important;
+
+        margin-bottom: 12px;
+
+        padding: 10px;
+
+        box-sizing: border-box;
+
+        background: #ffffff;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 10px;
+
+        box-shadow: 0 2px 6px rgba(
+            0,
+            0,
+            0,
+            0.04
+        );
+
+    }
+
+
+    .training-table tbody td {
+
+        display: block !important;
+
+        width: auto !important;
+
+        padding: 8px 6px !important;
+
+        border: 0 !important;
+
+        font-size: 12px !important;
+
+        min-width: 0;
+
+        box-sizing: border-box;
+
+        overflow-wrap: anywhere;
+
+    }
+
+
+    /* ======================================================
+       LABEL SETIAP FIELD
+    ====================================================== */
+
+    .training-table tbody td::before {
+
+        display: block;
+
+        margin-bottom: 3px;
+
+        font-size: 9px;
+
+        font-weight: 700;
+
+        text-transform: uppercase;
+
+        letter-spacing: .4px;
+
+        color: #8a8a8a;
+
+    }
+
+
+    /* PESERTA */
+
+    .training-table tbody td:nth-child(1)::before {
+
+        content: "Peserta";
+
+    }
+
+
+    /* STORE */
+
+    .training-table tbody td:nth-child(2)::before {
+
+        content: "Store";
+
+    }
+
+
+    /* TANGGAL */
+
+    .training-table tbody td:nth-child(3)::before {
+
+        content: "Tanggal";
+
+    }
+
+
+    /* JAM */
+
+    .training-table tbody td:nth-child(4)::before {
+
+        content: "Jam";
+
+    }
+
+
+    /* TRAINING */
+
+    .training-table tbody td:nth-child(5) {
+
+        grid-column: 1 / -1;
+
+    }
+
+
+    .training-table tbody td:nth-child(5)::before {
+
+        content: "Training";
+
+    }
+
+
+    /* LINK */
+
+    .training-table tbody td:nth-child(6)::before {
+
+        content: "Link Training";
+
+    }
+
+
+    /* STATUS */
+
+    .training-table tbody td:nth-child(7)::before {
+
+        content: "Status";
+
+    }
+
+
+    /* PESAN */
+
+    .training-table tbody td:nth-child(8)::before {
+
+        content: "Pesan";
+
+    }
+
+
+    /* ======================================================
+       PARTICIPANT
+    ====================================================== */
+
+    .participant-name {
+
+        display: block !important;
+
+    }
+
+
+    .participant-name strong {
+
+        display: block;
+
+        font-size: 13px !important;
+
+        line-height: 1.3;
+
+        color: #222 !important;
+
+    }
+
+
+    /* ======================================================
+       TRAINING NAME
+    ====================================================== */
+
+    .training-name {
+
+        line-height: 1.4;
+
+        font-size: 12px !important;
+
+    }
+
+
+    /* ======================================================
+       STATUS DROPDOWN
+    ====================================================== */
+
+    .status-select {
+
+        width: 100% !important;
+
+        min-height: 38px;
+
+        font-size: 12px !important;
+
+    }
+
+
+    /* ======================================================
+       LINK BUTTON
+    ====================================================== */
+
+    .btn-training-link {
+
+        display: inline-flex !important;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-height: 34px;
+
+        padding: 7px 10px !important;
+
+        font-size: 11px !important;
+
+        box-sizing: border-box;
+
+    }
+
+
+    /* ======================================================
+       WHATSAPP BUTTON
+    ====================================================== */
+
+    .btn-wa {
+
+        display: inline-flex !important;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-height: 34px;
+
+        padding: 7px 10px !important;
+
+        font-size: 11px !important;
+
+        box-sizing: border-box;
+
+    }
+
+}
