@@ -538,9 +538,9 @@ if(btnToday){
                 "active"
             );
 
-            if(btnAll){
+            if(btnFull){
 
-                btnAll.classList.remove(
+                btnFull.classList.remove(
                     "active"
                 );
 
@@ -558,15 +558,15 @@ if(btnToday){
    TAB - FULL SCHEDULE
 ========================================================== */
 
-if(btnAll){
+if(btnFull){
 
-    btnAll.addEventListener(
+    btnFull.addEventListener(
         "click",
         ()=>{
 
             currentMode = "all";
 
-            btnAll.classList.add(
+            btnFull.classList.add(
                 "active"
             );
 
