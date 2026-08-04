@@ -1520,3 +1520,48 @@ background:#fafafa;
     }
 
 }
+@media screen and (max-width: 768px) {
+
+    .sidebar {
+
+        width: 68px !important;
+
+        min-width: 68px !important;
+
+        max-width: 68px !important;
+    }
+
+
+    .sidebar .brand-text,
+    .sidebar .menu-text,
+    .sidebar .subtitle {
+
+        display: none !important;
+    }
+
+
+    .sidebar .menu-item {
+
+        justify-content: center !important;
+
+        padding:
+            13px 5px !important;
+    }
+
+
+    .sidebar .menu-item i {
+
+        margin: 0 !important;
+
+        font-size: 15px !important;
+    }
+
+
+    .main-content {
+
+        width: calc(100vw - 68px) !important;
+
+        max-width: calc(100vw - 68px) !important;
+    }
+
+}

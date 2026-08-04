@@ -24,8 +24,8 @@ document.getElementById("searchTraining");
 const btnToday =
 document.getElementById("btnToday");
 
-const btnAll =
-document.getElementById("btnAll");
+const btnFull =
+document.getElementById("btnFull");
 
 const superiorKPI =
 document.getElementById("superiorKPI");
