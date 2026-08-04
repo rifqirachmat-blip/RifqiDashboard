@@ -1225,99 +1225,121 @@ background:#fafafa;
     }
 
 
-    /* ======================================================
-       TABLE → MOBILE CARD
-    ====================================================== */
+   /* ======================================================
+   MOBILE TABLE - HORIZONTAL SCROLL
+====================================================== */
 
-    .table-wrapper {
+.table-wrapper {
 
-        width: 100% !important;
+    width: 100% !important;
 
-        overflow: visible !important;
+    max-width: 100% !important;
 
-    }
+    overflow-x: auto !important;
 
+    overflow-y: hidden !important;
 
-    .training-table {
+    -webkit-overflow-scrolling: touch !important;
 
-        width: 100% !important;
+    box-sizing: border-box !important;
 
-        display: block !important;
-
-        table-layout: auto !important;
-
-        border: 0 !important;
-
-    }
+}
 
 
-    .training-table thead {
+.training-table {
 
-        display: none !important;
+    display: table !important;
 
-    }
+    width: max-content !important;
 
+    min-width: 900px !important;
 
-    .training-table tbody {
+    table-layout: auto !important;
 
-        display: block !important;
+    border-collapse: collapse !important;
 
-        width: 100% !important;
+    white-space: nowrap !important;
 
-    }
-
-
-    .training-table tbody tr {
-
-        display: grid !important;
-
-        grid-template-columns: 1fr 1fr;
-
-        gap: 0;
-
-        width: 100% !important;
-
-        margin-bottom: 12px;
-
-        padding: 10px;
-
-        box-sizing: border-box;
-
-        background: #ffffff;
-
-        border: 1px solid #e5e7eb;
-
-        border-radius: 10px;
-
-        box-shadow: 0 2px 6px rgba(
-            0,
-            0,
-            0,
-            0.04
-        );
-
-    }
+}
 
 
-    .training-table tbody td {
+.training-table thead {
 
-        display: block !important;
+    display: table-header-group !important;
 
-        width: auto !important;
+}
 
-        padding: 8px 6px !important;
 
-        border: 0 !important;
+.training-table tbody {
 
-        font-size: 12px !important;
+    display: table-row-group !important;
 
-        min-width: 0;
+    width: auto !important;
 
-        box-sizing: border-box;
+}
 
-        overflow-wrap: anywhere;
 
-    }
+.training-table tbody tr {
+
+    display: table-row !important;
+
+}
+
+
+.training-table tbody td,
+.training-table thead th {
+
+    display: table-cell !important;
+
+    width: auto !important;
+
+    min-width: auto !important;
+
+    max-width: none !important;
+
+    white-space: nowrap !important;
+
+    overflow: visible !important;
+
+    word-break: normal !important;
+
+    overflow-wrap: normal !important;
+
+    padding: 9px 12px !important;
+
+}
+
+
+.participant-name {
+
+    white-space: nowrap !important;
+
+}
+
+
+.participant-name strong {
+
+    white-space: nowrap !important;
+
+}
+
+
+.status-select {
+
+    min-width: 100px !important;
+
+    width: 100px !important;
+
+}
+
+
+.btn-wa {
+
+    min-width: 80px !important;
+
+    white-space: nowrap !important;
+
+}
 
 
     /* ======================================================
