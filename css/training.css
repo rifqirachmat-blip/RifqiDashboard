@@ -771,3 +771,303 @@ font-size:14px;
 background:#fafafa;
 
 }
+/* ==========================================================
+   TRAINING TABLE HORIZONTAL SCROLL
+========================================================== */
+
+.superior-body {
+    width: 100%;
+    overflow: hidden;
+}
+
+.table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.training-table {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: collapse;
+}
+
+.training-table th,
+.training-table td {
+    white-space: nowrap;
+}
+.training-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.training-table th,
+.training-table td {
+    padding: 8px 6px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.training-table th:nth-child(1) {
+    width: 17%;
+}
+
+.training-table th:nth-child(2) {
+    width: 9%;
+}
+
+.training-table th:nth-child(3) {
+    width: 9%;
+}
+
+.training-table th:nth-child(4) {
+    width: 7%;
+}
+
+.training-table th:nth-child(5) {
+    width: 25%;
+}
+
+.training-table th:nth-child(6) {
+    width: 10%;
+}
+
+.training-table th:nth-child(7) {
+    width: 12%;
+}
+
+.training-table th:nth-child(8) {
+    width: 11%;
+}
+
+.training-name {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.training-link-cell,
+.training-table td:last-child {
+    text-align: center;
+}
+
+.btn-training-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.no-link,
+.no-message {
+    opacity: 0.5;
+}
+/* ==========================================================
+   EXPORT / DOWNLOAD JPG
+   Khusus untuk hasil screenshot training
+========================================================== */
+
+.superior-group.exporting-jpg {
+    opacity: 1 !important;
+    filter: none !important;
+    background: #ffffff !important;
+    color: #222222 !important;
+    box-shadow: none !important;
+}
+
+
+/* =========================
+   HEADER SUPERIOR
+========================= */
+
+.superior-group.exporting-jpg
+.superior-header {
+
+    opacity: 1 !important;
+    filter: none !important;
+    background: #ffffff !important;
+    color: #222222 !important;
+    box-shadow: none !important;
+
+}
+
+
+/* =========================
+   JUDUL SUPERIOR
+========================= */
+
+.superior-group.exporting-jpg
+.superior-title h3 {
+
+    color: #222222 !important;
+    opacity: 1 !important;
+
+}
+
+
+.superior-group.exporting-jpg
+.superior-title span {
+
+    color: #555555 !important;
+    opacity: 1 !important;
+
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.superior-group.exporting-jpg
+.training-table {
+
+    opacity: 1 !important;
+    filter: none !important;
+    background: #ffffff !important;
+    color: #222222 !important;
+
+}
+
+
+.superior-group.exporting-jpg
+.training-table thead th {
+
+    background: #ffd400 !important;
+    color: #222222 !important;
+    opacity: 1 !important;
+    font-weight: 700 !important;
+
+}
+
+
+.superior-group.exporting-jpg
+.training-table tbody tr {
+
+    background: #ffffff !important;
+    opacity: 1 !important;
+
+}
+
+
+.superior-group.exporting-jpg
+.training-table td {
+
+    background: #ffffff !important;
+    color: #333333 !important;
+    opacity: 1 !important;
+    border-color: #dddddd !important;
+
+}
+
+
+/* =========================
+   PESERTA
+========================= */
+
+.superior-group.exporting-jpg
+.participant-name strong {
+
+    color: #222222 !important;
+    opacity: 1 !important;
+
+}
+
+
+.superior-group.exporting-jpg
+.participant-name small {
+
+    color: #666666 !important;
+    opacity: 1 !important;
+
+}
+
+
+/* =========================
+   TRAINING
+========================= */
+
+.superior-group.exporting-jpg
+.training-name {
+
+    color: #333333 !important;
+    opacity: 1 !important;
+
+}
+
+
+/* =========================
+   LINK TRAINING
+========================= */
+
+.superior-group.exporting-jpg
+.btn-training-link {
+
+    color: #3157c7 !important;
+    opacity: 1 !important;
+    background: transparent !important;
+
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.superior-group.exporting-jpg
+.status-select {
+
+    color: #222222 !important;
+    background: #ffffff !important;
+    border: 1px solid #cccccc !important;
+    opacity: 1 !important;
+
+}
+
+
+/* =========================
+   WHATSAPP
+========================= */
+
+.superior-group.exporting-jpg
+.btn-wa {
+
+    background: #25D366 !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    filter: none !important;
+
+}
+
+
+/* =========================
+   BUTTON JPG
+========================= */
+
+.superior-group.exporting-jpg
+.btn-download {
+
+    background: #ffd400 !important;
+    color: #222222 !important;
+    opacity: 1 !important;
+    filter: none !important;
+
+}
+
+
+/* =========================
+   SEMUA CHILD
+========================= */
+
+.superior-group.exporting-jpg * {
+
+    opacity: 1 !important;
+    filter: none !important;
+
+}

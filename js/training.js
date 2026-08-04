@@ -1,15 +1,16 @@
 console.log("training.js loaded");
 
-/* ==========================================
+/* ==========================================================
    CONFIG
-========================================== */
+========================================================== */
 
 const API_BASE =
 "https://script.google.com/macros/s/AKfycbzXFHd09dlhGgmWJkaRKn-tup6LMSdeMR0Mxzw2TL_4c_UdAxqHA7K46pFrw7hNU1J9/exec";
 
-/* ==========================================
+
+/* ==========================================================
    ELEMENT
-========================================== */
+========================================================== */
 
 const content =
 document.getElementById("trainingContent");
@@ -29,61 +30,299 @@ document.getElementById("btnAll");
 const superiorKPI =
 document.getElementById("superiorKPI");
 
-/* ==========================================
-   GLOBAL
-========================================== */
+const todayDate =
+document.getElementById("todayDate");
+
+const todayTime =
+document.getElementById("todayTime");
+
+
+/* ==========================================================
+   GLOBAL DATA
+========================================================== */
 
 let trainingHeader = [];
+
 let trainingRows = [];
 
 let currentMode = "today";
 
-/* ==========================================
+
+/* ==========================================================
    LOADING
-========================================== */
+========================================================== */
 
 function showLoading(){
 
-    loading.style.display="flex";
+    if(loading){
+
+        loading.style.display = "flex";
+
+    }
 
 }
+
 
 function hideLoading(){
 
-    loading.style.display="none";
+    if(loading){
+
+        loading.style.display = "none";
+
+    }
 
 }
 
-/* ==========================================
+
+/* ==========================================================
+   TOAST
+========================================================== */
+
+function showToast(message, type = "success"){
+
+    let toast =
+    document.getElementById("trainingToast");
+
+    if(!toast){
+
+        toast =
+        document.createElement("div");
+
+        toast.id = "trainingToast";
+
+        toast.style.position = "fixed";
+        toast.style.right = "25px";
+        toast.style.bottom = "25px";
+        toast.style.zIndex = "99999";
+        toast.style.padding = "14px 20px";
+        toast.style.borderRadius = "10px";
+        toast.style.color = "#fff";
+        toast.style.fontWeight = "600";
+        toast.style.boxShadow =
+        "0 8px 25px rgba(0,0,0,.18)";
+
+        document.body.appendChild(toast);
+
+    }
+
+    toast.style.background =
+    type === "error"
+    ? "#dc2626"
+    : "#16a34a";
+
+    toast.innerHTML =
+    type === "error"
+    ? `<i class="fa-solid fa-circle-xmark"></i> ${message}`
+    : `<i class="fa-solid fa-circle-check"></i> ${message}`;
+
+    toast.style.opacity = "1";
+
+    clearTimeout(toast._timer);
+
+    toast._timer =
+    setTimeout(()=>{
+
+        toast.style.opacity = "0";
+
+    },3000);
+
+}
+
+
+/* ==========================================================
    CLOCK
-========================================== */
+========================================================== */
 
 function updateClock(){
 
     const now = new Date();
 
-    document.getElementById("todayDate").innerHTML =
-    now.toLocaleDateString("id-ID",{
+    if(todayDate){
 
-        weekday:"long",
-        day:"2-digit",
-        month:"long",
-        year:"numeric"
+        todayDate.innerHTML =
+        now.toLocaleDateString(
+            "id-ID",
+            {
+                weekday:"long",
+                day:"2-digit",
+                month:"long",
+                year:"numeric"
+            }
+        );
 
-    });
+    }
 
-    document.getElementById("todayTime").innerHTML =
-    now.toLocaleTimeString("id-ID");
+    if(todayTime){
+
+        todayTime.innerHTML =
+        now.toLocaleTimeString(
+            "id-ID",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
+            }
+        );
+
+    }
 
 }
 
-updateClock();
 
-setInterval(updateClock,1000);
+/* ==========================================================
+   SAFE STRING
+========================================================== */
 
-/* ==========================================
-   LOAD DATA
-========================================== */
+function safeString(value){
+
+    if(value === null ||
+       value === undefined){
+
+        return "";
+
+    }
+
+    return String(value).trim();
+
+}
+
+
+/* ==========================================================
+   HTML ESCAPE
+========================================================== */
+
+function escapeHtml(value){
+
+    return safeString(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* ==========================================================
+   STATUS CHECK
+========================================================== */
+
+function isHadir(status){
+
+    return (
+        safeString(status)
+        .toLowerCase()
+        === "hadir"
+    );
+
+}
+
+
+function isTidakHadir(status){
+
+    return (
+        safeString(status)
+        .toLowerCase()
+        === "tidak hadir"
+    );
+
+}
+
+
+/* ==========================================================
+   DATE PARSER
+========================================================== */
+
+function parseTrainingDate(value){
+
+    if(!value){
+
+        return null;
+
+    }
+
+    const date =
+    new Date(value);
+
+    if(isNaN(date.getTime())){
+
+        return null;
+
+    }
+
+    return date;
+
+}
+
+
+/* ==========================================================
+   FORMAT DATE
+========================================================== */
+
+function formatDate(value){
+
+    const date =
+    parseTrainingDate(value);
+
+    if(!date){
+
+        return safeString(value) || "-";
+
+    }
+
+    return date.toLocaleDateString(
+        "id-ID",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   IS TODAY
+========================================================== */
+
+function isToday(value){
+
+    const date =
+    parseTrainingDate(value);
+
+    if(!date){
+
+        return false;
+
+    }
+
+    const now =
+    new Date();
+
+    return (
+
+        date.getFullYear()
+        === now.getFullYear()
+
+        &&
+
+        date.getMonth()
+        === now.getMonth()
+
+        &&
+
+        date.getDate()
+        === now.getDate()
+
+    );
+
+}
+
+
+/* ==========================================================
+   LOAD TRAINING DATA
+========================================================== */
 
 async function loadTraining(){
 
@@ -91,49 +330,83 @@ async function loadTraining(){
 
         showLoading();
 
-        const res =
+        const response =
         await fetch(
-            API_BASE + "?action=training"
+            API_BASE +
+            "?action=training"
         );
 
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
         const data =
-        await res.json();
+        await response.json();
 
-        if(!data.success){
+        if(!data ||
+           data.success !== true){
 
-            content.innerHTML=
-
-            `<div class="empty-box">
-
-                ${data.message}
-
-            </div>`;
-
-            return;
+            throw new Error(
+                data?.message ||
+                "Data training gagal dimuat."
+            );
 
         }
 
         trainingHeader =
-        data.header;
+        Array.isArray(data.header)
+        ? data.header
+        : [];
 
         trainingRows =
-        data.rows;
+        Array.isArray(data.rows)
+        ? data.rows
+        : [];
 
         renderPage();
 
     }
 
-    catch(err){
+    catch(error){
 
-        console.error(err);
+        console.error(
+            "loadTraining error:",
+            error
+        );
 
-        content.innerHTML=
+        if(content){
 
-        `<div class="empty-box">
+            content.innerHTML = `
 
-            Failed Load Data
+                <div class="empty-box">
 
-        </div>`;
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    <br>
+
+                    Gagal memuat data training.
+
+                    <br>
+
+                    <small>
+                        ${escapeHtml(error.message)}
+                    </small>
+
+                </div>
+
+            `;
+
+        }
+
+        showToast(
+            "Gagal memuat data training.",
+            "error"
+        );
 
     }
 
@@ -144,225 +417,211 @@ async function loadTraining(){
     }
 
 }
-/* ==========================================
-   TODAY FILTER
-========================================== */
+
+
+/* ==========================================================
+   GET TODAY ROWS
+========================================================== */
 
 function getTodayRows(){
 
-    const today =
-    new Date().toLocaleDateString("en-CA");
+    return trainingRows.filter(row=>{
 
-    return trainingRows.filter(r=>{
-
-        const d =
-        new Date(r[3]);
-
-        if(isNaN(d)) return false;
-
-        return (
-            d.toLocaleDateString("en-CA")
-            === today
-        );
+        return isToday(row[3]);
 
     });
 
 }
+/* ==========================================================
+   FULL SCHEDULE
+   Menampilkan seluruh data training dari Spreadsheet
+========================================================== */
 
-/* ==========================================
-   FILTER DATA
-========================================== */
+function getFullScheduleRows(){
+
+    return [...trainingRows];
+
+}
+
+
+/* ==========================================================
+   GET CURRENT ROWS
+========================================================== */
 
 function getRows(){
 
-    let rows =
-    currentMode==="today"
-    ? getTodayRows()
-    : [...trainingRows];
+    let rows = [];
+
+
+    /* ==========================================
+       TODAY TRAINING
+    ========================================== */
+
+    if(currentMode === "today"){
+
+        rows =
+            getTodayRows();
+
+    }
+
+
+    /* ==========================================
+       FULL SCHEDULE
+    ========================================== */
+
+    else if(currentMode === "full"){
+
+        rows =
+            getFullScheduleRows();
+
+    }
+
+
+    /* ==========================================
+       DEFAULT
+    ========================================== */
+
+    else{
+
+        rows =
+            getTodayRows();
+
+    }
+
+
+    /* ==========================================
+       SEARCH
+    ========================================== */
 
     const keyword =
-    searchInput.value
-    .toLowerCase()
-    .trim();
+        safeString(
+            searchInput?.value
+        ).toLowerCase();
 
-    if(keyword==="") return rows;
 
-    return rows.filter(r=>{
+    if(keyword){
 
-        return(
+        rows =
+            rows.filter(row => {
 
-            String(r[1]).toLowerCase().includes(keyword) ||
+                return row.some(cell => {
 
-            String(r[2]).toLowerCase().includes(keyword) ||
+                    return safeString(cell)
+                        .toLowerCase()
+                        .includes(keyword);
 
-            String(r[5]).toLowerCase().includes(keyword) ||
+                });
 
-            String(r[9]).toLowerCase().includes(keyword)
+            });
 
-        );
+    }
 
-    });
 
-}
-
-/* ==========================================
-   TAB
-========================================== */
-
-btnToday.onclick=()=>{
-
-    currentMode="today";
-
-    btnToday.classList.add("active");
-    btnAll.classList.remove("active");
-
-    renderPage();
+    return rows;
 
 }
 
-btnAll.onclick=()=>{
 
-    currentMode="all";
+/* ==========================================================
+   TAB - TODAY
+========================================================== */
 
-    btnAll.classList.add("active");
-    btnToday.classList.remove("active");
+if(btnToday){
 
-    renderPage();
+    btnToday.addEventListener(
+        "click",
+        ()=>{
 
-}
+            currentMode = "today";
 
-searchInput.onkeyup=()=>{
+            btnToday.classList.add(
+                "active"
+            );
 
-    renderPage();
+            if(btnAll){
 
-}
+                btnAll.classList.remove(
+                    "active"
+                );
 
-/* ==========================================
-   KPI SUPERIOR
-========================================== */
+            }
 
-function renderKPI(rows){
-
-    const group={};
-
-    rows.forEach(r=>{
-
-        const sp =
-        r[9] || "No Superior";
-
-        if(!group[sp]){
-
-            group[sp]={
-
-                hadir:0,
-
-                total:0
-
-            };
+            renderPage();
 
         }
-
-        group[sp].total++;
-
-        if(
-            String(r[7])
-            .toLowerCase()
-            .includes("hadir")
-        ){
-
-            group[sp].hadir++;
-
-        }
-
-    });
-
-    let html="";
-
-    Object.keys(group).forEach(sp=>{
-
-        const total =
-        group[sp].total;
-
-        const hadir =
-        group[sp].hadir;
-
-        const percent =
-        Math.round(hadir/total*100);
-
-        let color="danger";
-
-        if(percent>=80){
-
-            color="success";
-
-        }else if(percent>=50){
-
-            color="warning";
-
-        }
-
-        html+=`
-
-        <div class="card">
-
-            <small>${sp}</small>
-
-            <h2 class="${color}">
-
-                ${percent}%
-
-            </h2>
-
-            <span>
-
-                ${hadir}/${total} Hadir
-
-            </span>
-
-        </div>
-
-        `;
-
-    });
-
-    superiorKPI.innerHTML=html;
+    );
 
 }
 
-/* ==========================================
-   MAIN RENDER
-========================================== */
 
-function renderPage(){
+/* ==========================================================
+   TAB - FULL SCHEDULE
+========================================================== */
 
-    const rows =
-    getRows();
+if(btnAll){
 
-    renderKPI(rows);
+    btnAll.addEventListener(
+        "click",
+        ()=>{
 
-    renderSuperior(rows);
+            currentMode = "all";
+
+            btnAll.classList.add(
+                "active"
+            );
+
+            if(btnToday){
+
+                btnToday.classList.remove(
+                    "active"
+                );
+
+            }
+
+            renderPage();
+
+        }
+    );
 
 }
-/* ==========================================
+
+
+/* ==========================================================
+   SEARCH
+========================================================== */
+
+if(searchInput){
+
+    searchInput.addEventListener(
+        "input",
+        ()=>{
+
+            renderPage();
+
+        }
+    );
+
+}
+/* ==========================================================
    GROUP BY SUPERIOR
-========================================== */
+========================================================== */
 
-function groupSuperior(rows){
+function groupBySuperior(rows){
 
-    const groups={};
+    const groups = {};
 
-    rows.forEach(r=>{
+    rows.forEach(row=>{
 
-        const sp =
-        r[9] || "No Superior";
+        const superior =
+        safeString(row[9]) || "No Superior";
 
-        if(!groups[sp]){
+        if(!groups[superior]){
 
-            groups[sp]=[];
+            groups[superior] = [];
 
         }
 
-        groups[sp].push(r);
+        groups[superior].push(row);
 
     });
 
@@ -370,293 +629,1079 @@ function groupSuperior(rows){
 
 }
 
-/* ==========================================
+
+/* ==========================================================
+   SORT GROUP ROWS
+========================================================== */
+
+function sortRows(rows){
+
+    return [...rows].sort((a,b)=>{
+
+        const dateA =
+        parseTrainingDate(a[3]);
+
+        const dateB =
+        parseTrainingDate(b[3]);
+
+        if(!dateA && !dateB){
+
+            return 0;
+
+        }
+
+        if(!dateA){
+
+            return 1;
+
+        }
+
+        if(!dateB){
+
+            return -1;
+
+        }
+
+        return dateA - dateB;
+
+    });
+
+}
+
+
+/* ==========================================================
+   RENDER KPI SUPERIOR
+========================================================== */
+
+/* ==========================================================
+   KPI — SOURCE OF TRUTH = SPREADSHEET
+========================================================== */
+
+function renderKPI(){
+
+    if(!superiorKPI){
+        return;
+    }
+
+
+    /*
+     * Jangan menggunakan getRows().
+     *
+     * trainingRows = data mentah yang baru saja
+     * diterima langsung dari Spreadsheet.
+     */
+
+    let sourceRows = [];
+
+
+    if(currentMode === "today"){
+
+        sourceRows =
+            getTodayRows();
+
+    }
+    else{
+
+        sourceRows =
+            [...trainingRows];
+
+    }
+
+
+    /*
+     * Group berdasarkan Superior
+     */
+
+    const groups = {};
+
+
+    sourceRows.forEach(row=>{
+
+        const superior =
+            safeString(row[9]) ||
+            "No Superior";
+
+
+        if(!groups[superior]){
+
+            groups[superior] = {
+
+                total: 0,
+
+                hadir: 0
+
+            };
+
+        }
+
+
+        groups[superior].total++;
+
+
+        /*
+         * EXACT MATCH.
+         *
+         * "Hadir"       = dihitung
+         * "Tidak Hadir" = TIDAK dihitung
+         */
+
+        if(
+            safeString(row[7])
+            .toLowerCase()
+            === "hadir"
+        ){
+
+            groups[superior].hadir++;
+
+        }
+
+    });
+
+
+    let html = "";
+
+
+    Object.keys(groups)
+    .forEach(superior=>{
+
+        const total =
+            groups[superior].total;
+
+
+        const hadir =
+            groups[superior].hadir;
+
+
+        const percentage =
+            total > 0
+            ? Math.round(
+                (hadir / total) * 100
+            )
+            : 0;
+
+
+        let color =
+            "danger";
+
+
+        if(percentage >= 80){
+
+            color =
+                "success";
+
+        }
+        else if(percentage >= 50){
+
+            color =
+                "warning";
+
+        }
+
+
+        html += `
+
+            <div class="card">
+
+                <small>
+
+                    ${escapeHtml(superior)}
+
+                </small>
+
+
+                <h2
+                    class="${color}"
+                >
+
+                    ${percentage}%
+
+                </h2>
+
+
+                <span>
+
+                    ${hadir}/${total} Hadir
+
+                </span>
+
+            </div>
+
+        `;
+
+    });
+
+
+    superiorKPI.innerHTML =
+        html;
+
+}
+
+
+/* ==========================================================
+   STATUS BADGE
+========================================================== */
+
+function statusBadge(status){
+
+    const normalized =
+    safeString(status)
+    .toLowerCase();
+
+    if(normalized === "hadir"){
+
+        return `
+
+            <span class="status-badge hadir">
+
+                <i
+                    class="fa-solid fa-circle-check"
+                ></i>
+
+                Hadir
+
+            </span>
+
+        `;
+
+    }
+
+    if(normalized === "tidak hadir"){
+
+        return `
+
+            <span class="status-badge tidak-hadir">
+
+                <i
+                    class="fa-solid fa-circle-xmark"
+                ></i>
+
+                Tidak Hadir
+
+            </span>
+
+        `;
+
+    }
+
+    return `
+
+        <span class="status-badge">
+
+            ${escapeHtml(status || "-")}
+
+        </span>
+
+    `;
+
+}
+
+
+/* ==========================================================
+   STATUS SELECT
+========================================================== */
+
+/* ==========================================================
+   STATUS SELECT
+   IDENTIFIER = NIK + TANGGAL + TRAINING
+========================================================== */
+
+function statusSelect(row){
+
+    const status =
+        safeString(row[7]);
+
+    const hadir =
+        isHadir(status);
+
+    const tidakHadir =
+        isTidakHadir(status);
+
+    const nik =
+        safeString(row[0]);
+
+    const trainingDate =
+        safeString(row[3]);
+
+    const trainingTitle =
+        safeString(row[5]);
+
+
+    return `
+
+        <select
+            class="status-select"
+
+            data-nik="${escapeHtml(nik)}"
+
+            data-training-date="${escapeHtml(trainingDate)}"
+
+            data-training-title="${escapeHtml(trainingTitle)}"
+
+            ${hadir ? "disabled" : ""}
+        >
+
+            <option
+                value="Tidak Hadir"
+                ${tidakHadir ? "selected" : ""}
+            >
+                Tidak Hadir
+            </option>
+
+            <option
+                value="Hadir"
+                ${hadir ? "selected" : ""}
+            >
+                Hadir
+            </option>
+
+        </select>
+
+    `;
+
+}
+
+
+/* ==========================================================
    RENDER SUPERIOR
-========================================== */
+========================================================== */
 
 function renderSuperior(rows){
 
+    if(!content){
+        return;
+    }
+
+
     const groups =
-    groupSuperior(rows);
+        groupBySuperior(rows);
 
-    let html="";
 
-    Object.keys(groups).forEach((sp,index)=>{
+    const superiorNames =
+        Object.keys(groups);
 
-        const opened =
-        index<2;
 
-        html+=`
+    if(superiorNames.length === 0){
 
-        <div class="superior-group">
+        content.innerHTML = `
 
-            <div
-                class="superior-header"
-                onclick="toggleSuperior(this)">
+            <div class="empty-box">
 
-                <div class="superior-title">
+                <i class="fa-solid fa-calendar-xmark"></i>
 
-                    <i class="fa-solid fa-chevron-${opened?"down":"right"} arrow"></i>
-
-                    <h3>${sp}</h3>
-
-                </div>
-
-                <div class="superior-action">
-
-                    <span class="superior-count">
-
-                        ${groups[sp].length} Participant
-
-                    </span>
-
-                    <button
-
-                        class="btn-download"
-
-                        onclick="downloadSuperior(event,this)">
-
-                        <i class="fa-solid fa-image"></i>
-
-                        JPG
-
-                    </button>
-
-                </div>
+                <p>
+                    Tidak ada training
+                    untuk periode ini.
+                </p>
 
             </div>
 
-            <div class="superior-body ${opened?"open":""}">
-
-                <div class="table-box">
-
-                    <table class="training-table">
-
-                        <thead>
-
-                            <tr>
-
-                                <th>Peserta</th>
-                                <th>Store</th>
-                                <th>Tanggal</th>
-                                <th>Jam</th>
-                                <th>Training</th>
-                                <th>Status</th>
-                                <th>Whatsapp</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
         `;
 
-        groups[sp].forEach(r=>{
+        return;
 
-            html+=`
+    }
 
-            <tr>
 
-                <td>
+    let html = "";
 
-                    <b>${r[1]}</b><br>
 
-                    <small>${r[0]}</small>
+    superiorNames.forEach(
+        (superior, index) => {
 
-                </td>
+            const participants =
+                sortRows(
+                    groups[superior]
+                );
 
-                <td>${r[2]}</td>
 
-                <td>${formatDate(r[3])}</td>
+            const opened =
+                index === 0;
 
-                <td>${r[4]}</td>
 
-                <td>${r[5]}</td>
+            html += `
 
-                <td>
+                <div
+                    class="superior-group"
+                    data-superior="${escapeHtml(superior)}"
+                >
 
-                    <select
-                        class="status-select"
-                        data-nik="${r[0]}">
+                    <!-- SUPERIOR HEADER -->
 
-                        <option
-                            value="Waiting"
-                            ${String(r[7]).toLowerCase().includes("waiting")?"selected":""}>
+                    <div
+                        class="superior-header"
+                        onclick="toggleSuperior(this)"
+                    >
 
-                            Waiting
+                        <div class="superior-title">
 
-                        </option>
+                            <i
+                                class="
+                                    fa-solid
+                                    fa-chevron-${opened
+                                        ? "down"
+                                        : "right"}
+                                    superior-arrow
+                                "
+                            ></i>
 
-                        <option
-                            value="Hadir"
-                            ${String(r[7]).toLowerCase().includes("hadir")?"selected":""}>
+                            <div>
 
-                            Hadir
+                                <h3>
+                                    ${escapeHtml(superior)}
+                                </h3>
 
-                        </option>
+                                <span>
+                                    ${participants.length}
+                                    Participants
+                                </span>
 
-                    </select>
+                            </div>
 
-                </td>
+                        </div>
 
-                <td>
 
-                    <button
+                        <div class="superior-actions">
 
-                        class="btn-wa"
+                            <button
+                                type="button"
+                                class="btn-download"
+                                onclick="
+                                    downloadSuperior(
+                                        event,
+                                        this
+                                    )
+                                "
+                            >
 
-                        onclick="window.open('${r[12]}','_blank')">
+                                <i class="fa-solid fa-image"></i>
 
-                        <i class="fa-brands fa-whatsapp"></i>
+                                JPG
 
-                        Kirim Pesan
+                            </button>
 
-                    </button>
+                        </div>
 
-                </td>
+                    </div>
 
-            </tr>
+
+                    <!-- SUPERIOR BODY -->
+
+                    <div
+                        class="
+                            superior-body
+                            ${opened ? "open" : ""}
+                        "
+                    >
+
+                        <div class="table-wrapper">
+
+                            <table
+                                class="training-table"
+                            >
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Peserta
+                                        </th>
+
+                                        <th>
+                                            Store
+                                        </th>
+
+                                        <th>
+                                            Tanggal
+                                        </th>
+
+                                        <th>
+                                            Jam
+                                        </th>
+
+                                        <th>
+                                            Training
+                                        </th>
+
+                                        <th>
+                                            Link
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Pesan
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
 
             `;
 
-        });
 
-        html+=`
+            participants.forEach(row => {
 
-                        </tbody>
+                /*
+                 * Spreadsheet:
+                 *
+                 * A = NIK
+                 * B = Nama
+                 * C = Store
+                 * D = Tanggal
+                 * E = Jam
+                 * F = Training
+                 * G = Link Training
+                 * H = Status
+                 * J = Superior
+                 * M = Kirim Pesan
+                 */
 
-                    </table>
+
+                const nik =
+                    safeString(row[0]);
+
+
+                const nama =
+                    safeString(row[1]);
+
+
+                const store =
+                    safeString(row[2]);
+
+
+                const tanggal =
+                    formatDate(row[3]);
+
+
+                const jam =
+                    safeString(row[4]);
+
+
+                const training =
+                    safeString(row[5]);
+
+
+                const trainingUrl =
+    normalizeTrainingUrl(row[6]);
+
+
+                const messageUrl =
+                    safeString(row[12]);
+
+
+                html += `
+
+                    <tr>
+
+                        <!-- PESERTA -->
+
+                        <td>
+
+                            <div class="participant-name">
+
+                                <strong>
+                                    ${escapeHtml(nama)}
+                                </strong>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- STORE -->
+
+                        <td>
+                            ${escapeHtml(store)}
+                        </td>
+
+
+                        <!-- TANGGAL -->
+
+                        <td>
+                            ${escapeHtml(tanggal)}
+                        </td>
+
+
+                        <!-- JAM -->
+
+                        <td>
+                            ${escapeHtml(jam)}
+                        </td>
+
+
+                        <!-- TRAINING -->
+
+                        <td class="training-name">
+
+                            ${escapeHtml(training)}
+
+                        </td>
+
+
+                        <!-- LINK TRAINING -->
+
+                        <td class="training-link-cell">
+                `;
+
+
+                if(trainingUrl){
+
+                    html += `
+
+                            <a
+                                href="${escapeHtml(trainingUrl)}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn-training-link"
+                                title="Buka link training"
+                            >
+
+                                <i
+                                    class="fa-solid fa-link"
+                                ></i>
+
+                                Buka
+
+                            </a>
+
+                    `;
+
+                }
+                else{
+
+                    html += `
+
+                            <span class="no-link">
+                                -
+                            </span>
+
+                    `;
+
+                }
+
+
+                html += `
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            ${statusSelect(row)}
+
+                        </td>
+
+
+                        <!-- WHATSAPP -->
+
+                        <td>
+                `;
+
+
+                if(messageUrl){
+
+                    html += `
+
+                            <a
+                                href="${escapeHtml(messageUrl)}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn-wa"
+                                title="Kirim pesan"
+                            >
+
+                                <i
+                                    class="fa-brands fa-whatsapp"
+                                ></i>
+
+                                Kirim
+
+                            </a>
+
+                    `;
+
+                }
+                else{
+
+                    html += `
+
+                            <span class="no-message">
+                                -
+                            </span>
+
+                    `;
+
+                }
+
+
+                html += `
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+
+            html += `
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-            </div>
+            `;
 
-        </div>
+        }
+    );
 
-        `;
+
+    content.innerHTML =
+        html;
+
+}
+function normalizeTrainingUrl(url){
+
+    url = safeString(url).trim();
+
+    if(!url){
+        return "";
+    }
+
+    if(
+        url.startsWith("http://") ||
+        url.startsWith("https://")
+    ){
+        return url;
+    }
+
+    return "https://" + url;
+
+}
+
+
+/* ==========================================================
+   RENDER PAGE
+========================================================== */
+
+function renderPage(){
+
+    const rows =
+        getRows();
+
+
+    /*
+     * KPI TIDAK menggunakan rows.
+     *
+     * KPI mengambil langsung dari
+     * trainingRows yang berasal dari Spreadsheet.
+     */
+
+    renderKPI();
+
+
+    /*
+     * Tabel tetap menggunakan rows
+     * supaya Search tetap bekerja.
+     */
+
+    renderSuperior(rows);
+
+}
+/* ==========================================================
+   UPDATE LOCAL STATUS
+========================================================== */
+/* ==========================================================
+   UPDATE LOCAL STATUS
+   MATCH RECORD SECARA UNIK
+========================================================== */
+
+function updateLocalStatus(
+    nik,
+    trainingDate,
+    trainingTitle,
+    status
+){
+
+    trainingRows.forEach(row => {
+
+        if(
+            safeString(row[0]) ===
+                safeString(nik) &&
+
+            safeString(row[3]) ===
+                safeString(trainingDate) &&
+
+            safeString(row[5]) ===
+                safeString(trainingTitle)
+        ){
+
+            row[7] = status;
+
+        }
 
     });
 
-    content.innerHTML=html;
-
-    bindStatus();
-
 }
-/* ==========================================
-   ACCORDION
-========================================== */
-
-function toggleSuperior(header){
-
-    const body =
-    header.nextElementSibling;
-
-    const arrow =
-    header.querySelector(".arrow");
-
-    body.classList.toggle("open");
-
-    arrow.classList.toggle("fa-chevron-down");
-    arrow.classList.toggle("fa-chevron-right");
-
-}
-
-/* ==========================================
-   DOWNLOAD JPG
-========================================== */
-
-function downloadSuperior(e,btn){
-
-    e.stopPropagation();
-
-    const group =
-    btn.closest(".superior-group");
-
-    const title =
-    group.querySelector("h3").innerText;
-
-    html2canvas(group,{
-
-        scale:2,
-
-        backgroundColor:"#ffffff",
-
-        useCORS:true
-
-    }).then(canvas=>{
-
-        const a =
-        document.createElement("a");
-
-        a.download =
-        title + " Training.jpg";
-
-        a.href =
-        canvas.toDataURL("image/jpeg",1);
-
-        a.click();
-
-    });
-
-}
-
-/* ==========================================
-   UPDATE STATUS
-========================================== */
+/* ==========================================================
+   BIND STATUS DROPDOWN
+========================================================== */
 
 function bindStatus(){
 
-    document
-    .querySelectorAll(".status-select")
-    .forEach(item=>{
+    const selects =
+        document.querySelectorAll(
+            ".status-select"
+        );
 
-        item.onchange=async function(){
+
+    selects.forEach(select => {
+
+        select.onchange = async function(){
+
+            const dropdown = this;
+
+
+            const nik =
+                safeString(
+                    dropdown.dataset.nik
+                );
+
+
+            const trainingDate =
+                safeString(
+                    dropdown.dataset.trainingDate
+                );
+
+
+            const trainingTitle =
+                safeString(
+                    dropdown.dataset.trainingTitle
+                );
+
+
+            const status =
+                safeString(
+                    dropdown.value
+                );
+
+
+            console.log(
+                "Update training:",
+                {
+                    nik,
+                    trainingDate,
+                    trainingTitle,
+                    status
+                }
+            );
+
+
+            /* ==========================================
+               VALIDASI
+            ========================================== */
+
+            if(
+                !nik ||
+                !trainingDate ||
+                !trainingTitle
+            ){
+
+                showToast(
+                    "Identitas training tidak lengkap.",
+                    "error"
+                );
+
+                renderPage();
+
+                return;
+
+            }
+
+
+            if(
+                status !== "Hadir" &&
+                status !== "Tidak Hadir"
+            ){
+
+                showToast(
+                    "Status tidak valid.",
+                    "error"
+                );
+
+                renderPage();
+
+                return;
+
+            }
+
+
+            /* ==========================================
+               LOCK SELAMA REQUEST
+            ========================================== */
+
+            dropdown.disabled = true;
+
 
             try{
 
                 showLoading();
 
-                const res =
-                await fetch(API_BASE,{
 
-                    method:"POST",
+                /* ======================================
+                   KIRIM KE APPS SCRIPT
+                ====================================== */
 
-                    headers:{
+                const response =
+                    await fetch(
+                        API_BASE,
+                        {
 
-                        "Content-Type":"application/x-www-form-urlencoded"
+                            method: "POST",
 
-                    },
+                            headers: {
 
-                    body:new URLSearchParams({
+                                "Content-Type":
+                                    "application/x-www-form-urlencoded;charset=UTF-8"
 
-                        action:"updateTraining",
+                            },
 
-                        nik:this.dataset.nik,
+                            body:
+                                new URLSearchParams({
 
-                        status:this.value
+                                    action:
+                                        "updateTraining",
 
-                    })
+                                    nik:
+                                        nik,
 
-                });
+                                    trainingDate:
+                                        trainingDate,
 
-                const data =
-                await res.json();
+                                    trainingTitle:
+                                        trainingTitle,
 
-                if(!data.success){
+                                    status:
+                                        status
 
-                    alert(data.message);
+                                })
+
+                        }
+                    );
+
+
+                if(!response.ok){
+
+                    throw new Error(
+                        "HTTP " +
+                        response.status
+                    );
 
                 }
 
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+                    "Update result:",
+                    result
+                );
+
+
+                /* ======================================
+                   SERVER MENOLAK
+                ====================================== */
+
+                if(
+                    !result ||
+                    result.success !== true
+                ){
+
+                    throw new Error(
+                        result.message ||
+                        "Status gagal diperbarui."
+                    );
+
+                }
+
+
+                /* ======================================
+                   UPDATE LOCAL DATA
+                ====================================== */
+
+                updateLocalStatus(
+                    nik,
+                    trainingDate,
+                    trainingTitle,
+                    status
+                );
+
+
+                /* ======================================
+                   SUCCESS
+                ====================================== */
+
+                showToast(
+                    status === "Hadir"
+                        ? "Peserta ditandai Hadir."
+                        : "Status diperbarui."
+                );
+
+
+                /*
+                 * Render ulang.
+                 *
+                 * Dropdown Hadir akan otomatis
+                 * disabled karena status row[7]
+                 * sudah berubah menjadi Hadir.
+                 */
+
+                renderPage();
+
             }
 
-            catch(err){
 
-                console.error(err);
+            catch(error){
 
-                alert("Update Failed");
+                console.error(
+                    "updateTraining error:",
+                    error
+                );
+
+
+                showToast(
+                    error.message ||
+                    "Gagal memperbarui status.",
+                    "error"
+                );
+
+
+                /*
+                 * Jangan update local data
+                 * kalau server gagal.
+                 */
+
+                renderPage();
 
             }
+
 
             finally{
 
@@ -664,41 +1709,939 @@ function bindStatus(){
 
             }
 
+        };
+
+    });
+
+}
+
+
+/* ==========================================================
+   BIND STATUS
+========================================================== */
+
+function bindStatus(){
+
+    document
+        .querySelectorAll(".status-select")
+        .forEach(select => {
+
+            select.onchange = async function(){
+
+                const dropdown =
+                    this;
+
+
+                /* ==========================================
+                   IDENTIFIER RECORD
+                ========================================== */
+
+                const nik =
+                    safeString(
+                        dropdown.dataset.nik
+                    );
+
+
+                const trainingDate =
+                    safeString(
+                        dropdown.dataset.trainingDate
+                    );
+
+
+                const trainingTitle =
+                    safeString(
+                        dropdown.dataset.trainingTitle
+                    );
+
+
+                const status =
+                    safeString(
+                        dropdown.value
+                    );
+
+
+                console.log(
+                    "Updating training record:",
+                    {
+                        nik,
+                        trainingDate,
+                        trainingTitle,
+                        status
+                    }
+                );
+
+
+                /* ==========================================
+                   VALIDASI
+                ========================================== */
+
+                if(
+                    !nik ||
+                    !trainingDate ||
+                    !trainingTitle
+                ){
+
+                    showToast(
+                        "Identitas training tidak lengkap.",
+                        "error"
+                    );
+
+                    renderPage();
+
+                    return;
+
+                }
+
+
+                if(
+                    status !== "Hadir" &&
+                    status !== "Tidak Hadir"
+                ){
+
+                    showToast(
+                        "Status tidak valid.",
+                        "error"
+                    );
+
+                    renderPage();
+
+                    return;
+
+                }
+
+
+                /*
+                 * Cegah double click
+                 */
+
+                dropdown.disabled = true;
+
+
+                try{
+
+                    showLoading();
+
+
+                    /* ======================================
+                       SEND TO APPS SCRIPT
+                    ====================================== */
+
+                    const response =
+                        await fetch(
+                            API_BASE,
+                            {
+
+                                method: "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/x-www-form-urlencoded;charset=UTF-8"
+
+                                },
+
+                                body:
+                                    new URLSearchParams({
+
+                                        action:
+                                            "updateTraining",
+
+                                        nik:
+                                            nik,
+
+                                        trainingDate:
+                                            trainingDate,
+
+                                        trainingTitle:
+                                            trainingTitle,
+
+                                        status:
+                                            status
+
+                                    })
+
+                            }
+                        );
+
+
+                    if(!response.ok){
+
+                        throw new Error(
+                            "HTTP " +
+                            response.status
+                        );
+
+                    }
+
+
+                    const result =
+                        await response.json();
+
+
+                    console.log(
+                        "Update result:",
+                        result
+                    );
+
+
+                    /* ======================================
+                       SERVER REJECT
+                    ====================================== */
+
+                    if(
+                        !result ||
+                        result.success !== true
+                    ){
+
+                        throw new Error(
+                            result?.message ||
+                            "Status gagal diperbarui."
+                        );
+
+                    }
+
+
+                    /* ======================================
+                       UPDATE LOCAL DATA
+                    ====================================== */
+
+                    updateLocalStatus(
+                        nik,
+                        trainingDate,
+                        trainingTitle,
+                        status
+                    );
+
+
+                    /* ======================================
+                       SUCCESS
+                    ====================================== */
+
+                    showToast(
+                        status === "Hadir"
+                            ? "Peserta ditandai Hadir."
+                            : "Status diperbarui."
+                    );
+
+
+                    /*
+                     * Render ulang.
+                     *
+                     * KPI akan mengambil data dari
+                     * trainingRows terbaru.
+                     */
+
+                    renderPage();
+
+                }
+
+                catch(error){
+
+                    console.error(
+                        "Attendance update error:",
+                        error
+                    );
+
+
+                    showToast(
+                        error.message ||
+                        "Gagal memperbarui attendance.",
+                        "error"
+                    );
+
+
+                    /*
+                     * Kalau gagal,
+                     * jangan ubah local data.
+                     */
+
+                    renderPage();
+
+                }
+
+                finally{
+
+                    hideLoading();
+
+                }
+
+            };
+
+        });
+
+}
+
+
+/* ==========================================================
+   RENDER PAGE OVERRIDE
+========================================================== */
+
+function renderPage(){
+
+    const rows =
+    getRows();
+
+
+    /*
+     1. KPI
+    */
+
+    renderKPI(rows);
+
+
+    /*
+     2. Superior + table
+    */
+
+    renderSuperior(rows);
+
+
+    /*
+     3. Pasang event dropdown
+    */
+
+    bindStatus();
+
+}
+/* ==========================================================
+   ACCORDION SUPERIOR
+========================================================== */
+
+function toggleSuperior(header){
+
+    if(!header){
+        return;
+    }
+
+    const group =
+    header.closest(".superior-group");
+
+    if(!group){
+        return;
+    }
+
+    const body =
+    group.querySelector(".superior-body");
+
+    const arrow =
+    group.querySelector(".superior-arrow");
+
+    if(!body){
+        return;
+    }
+
+    const isOpen =
+    body.classList.contains("open");
+
+    body.classList.toggle(
+        "open",
+        !isOpen
+    );
+
+    if(arrow){
+
+        arrow.classList.toggle(
+            "fa-chevron-down",
+            !isOpen
+        );
+
+        arrow.classList.toggle(
+            "fa-chevron-right",
+            isOpen
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+   OPEN WHATSAPP / MESSAGE
+========================================================== */
+
+function openMessage(url){
+
+    if(!url){
+        showToast(
+            "Link pesan tidak tersedia.",
+            "error"
+        );
+
+        return;
+    }
+
+    window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+}
+
+
+/* ==========================================================
+   DOWNLOAD SUPERIOR AS JPG
+========================================================== */
+
+async function downloadSuperior(event, button){
+
+    if(event){
+        event.stopPropagation();
+    }
+
+    const group =
+        button?.closest(".superior-group");
+
+    if(!group){
+
+        showToast(
+            "Superior tidak ditemukan.",
+            "error"
+        );
+
+        return;
+    }
+
+    const title =
+        group.querySelector(
+            ".superior-title h3"
+        );
+
+    const superiorName =
+        safeString(
+            title?.textContent
+        ) || "Training";
+
+    const body =
+        group.querySelector(
+            ".superior-body"
+        );
+
+    const wasOpen =
+        body?.classList.contains("open");
+
+
+    try{
+
+        showLoading();
+
+
+        /* ==========================================
+           BUKA GROUP
+        ========================================== */
+
+        if(body){
+            body.classList.add("open");
         }
 
-    });
+
+        await new Promise(resolve => {
+
+            requestAnimationFrame(() => {
+
+                requestAnimationFrame(resolve);
+
+            });
+
+        });
+
+
+        /* ==========================================
+           HTML2CANVAS
+        ========================================== */
+
+        const canvas =
+            await html2canvas(
+                group,
+                {
+
+                    scale: 2,
+
+                    backgroundColor:
+                        "#ffffff",
+
+                    useCORS: true,
+
+                    allowTaint: false,
+
+                    logging: false,
+
+                    imageTimeout: 15000,
+
+                    removeContainer: true,
+
+
+                    /* ==================================
+                       KHUSUS SAAT SCREENSHOT
+                    ================================== */
+
+                    onclone: function(clonedDocument){
+
+                        const clonedGroup =
+                            clonedDocument.querySelector(
+                                ".superior-group"
+                            );
+
+
+                        if(!clonedGroup){
+                            return;
+                        }
+
+
+                        /*
+                         * Hilangkan efek yang membuat
+                         * hasil screenshot pucat.
+                         */
+
+                        clonedGroup.style.opacity =
+                            "1";
+
+                        clonedGroup.style.filter =
+                            "none";
+
+                        clonedGroup.style.background =
+                            "#ffffff";
+
+                        clonedGroup.style.color =
+                            "#222222";
+
+                        clonedGroup.style.boxShadow =
+                            "none";
+
+
+                        /*
+                         * Semua element di dalam group
+                         * dipaksa full opacity.
+                         */
+
+                        const allElements =
+                            clonedGroup.querySelectorAll("*");
+
+
+                        allElements.forEach(
+                            function(el){
+
+                                el.style.opacity =
+                                    "1";
+
+                                el.style.filter =
+                                    "none";
+
+                            }
+                        );
+
+
+                        /* ==================================
+                           TEXT
+                        ================================== */
+
+                        const textElements =
+                            clonedGroup.querySelectorAll(
+                                "td, th, span, small, strong, h3"
+                            );
+
+
+                        textElements.forEach(
+                            function(el){
+
+                                el.style.opacity =
+                                    "1";
+
+                                el.style.color =
+                                    "#222222";
+
+                            }
+                        );
+
+
+                        /* ==================================
+                           TABLE HEADER
+                        ================================== */
+
+                        const headers =
+                            clonedGroup.querySelectorAll(
+                                ".training-table thead th"
+                            );
+
+
+                        headers.forEach(
+                            function(th){
+
+                                th.style.backgroundColor =
+                                    "#fff0a8";
+
+                                th.style.color =
+                                    "#222222";
+
+                                th.style.fontWeight =
+                                    "700";
+
+                            }
+                        );
+
+
+                        /* ==================================
+                           TABLE
+                        ================================== */
+
+                        const cells =
+                            clonedGroup.querySelectorAll(
+                                ".training-table td"
+                            );
+
+
+                        cells.forEach(
+                            function(td){
+
+                                td.style.backgroundColor =
+                                    "#ffffff";
+
+                                td.style.color =
+                                    "#222222";
+
+                                td.style.borderColor =
+                                    "#e5e5e5";
+
+                            }
+                        );
+
+
+                        /* ==================================
+                           PARTICIPANT
+                        ================================== */
+
+                        const names =
+                            clonedGroup.querySelectorAll(
+                                ".participant-name strong"
+                            );
+
+
+                        names.forEach(
+                            function(el){
+
+                                el.style.color =
+                                    "#222222";
+
+                                el.style.fontWeight =
+                                    "700";
+
+                            }
+                        );
+
+
+                        const nikElements =
+                            clonedGroup.querySelectorAll(
+                                ".participant-name small"
+                            );
+
+
+                        nikElements.forEach(
+                            function(el){
+
+                                el.style.color =
+                                    "#666666";
+
+                            }
+                        );
+
+
+                        /* ==================================
+                           TRAINING
+                        ================================== */
+
+                        const trainingNames =
+                            clonedGroup.querySelectorAll(
+                                ".training-name"
+                            );
+
+
+                        trainingNames.forEach(
+                            function(el){
+
+                                el.style.color =
+                                    "#333333";
+
+                            }
+                        );
+
+
+                        /* ==================================
+                           LINK TRAINING
+                        ================================== */
+
+                        const trainingLinks =
+                            clonedGroup.querySelectorAll(
+                                ".btn-training-link"
+                            );
+
+
+                        trainingLinks.forEach(
+                            function(el){
+
+                                el.style.color =
+                                    "#3157c7";
+
+                                el.style.opacity =
+                                    "1";
+
+                            }
+                        );
+
+
+                        /* ==================================
+                           STATUS DROPDOWN
+                        ================================== */
+
+                        const selects =
+                            clonedGroup.querySelectorAll(
+                                ".status-select"
+                            );
+
+
+                        selects.forEach(
+                            function(select){
+
+                                select.style.color =
+                                    "#222222";
+
+                                select.style.backgroundColor =
+                                    "#ffffff";
+
+                                select.style.borderColor =
+                                    "#d5d5d5";
+
+                                select.style.opacity =
+                                    "1";
+
+                            }
+                        );
+
+
+                        /* ==================================
+                           WHATSAPP BUTTON
+                        ================================== */
+
+                        const waButtons =
+                            clonedGroup.querySelectorAll(
+                                ".btn-wa"
+                            );
+
+
+                        waButtons.forEach(
+                            function(btn){
+
+                                btn.style.opacity =
+                                    "1";
+
+                                btn.style.color =
+                                    "#ffffff";
+
+                                btn.style.backgroundColor =
+                                    "#25D366";
+
+                            }
+                        );
+
+
+                        /* ==================================
+                           SUPERIOR HEADER
+                        ================================== */
+
+                        const superiorHeader =
+                            clonedGroup.querySelector(
+                                ".superior-header"
+                            );
+
+
+                        if(superiorHeader){
+
+                            superiorHeader.style.opacity =
+                                "1";
+
+                            superiorHeader.style.color =
+                                "#222222";
+
+                            superiorHeader.style.backgroundColor =
+                                "#ffffff";
+
+                            superiorHeader.style.boxShadow =
+                                "none";
+
+                        }
+
+
+                        /* ==================================
+                           JPG BUTTON
+                           dibuat lebih jelas
+                        ================================== */
+
+                        const downloadButton =
+                            clonedGroup.querySelector(
+                                ".btn-download"
+                            );
+
+
+                        if(downloadButton){
+
+                            downloadButton.style.opacity =
+                                "1";
+
+                            downloadButton.style.color =
+                                "#222222";
+
+                            downloadButton.style.backgroundColor =
+                                "#ffd400";
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+        /* ==========================================
+           NAMA FILE
+        ========================================== */
+
+        const fileName =
+            superiorName
+                .replace(
+                    /[\\/:*?"<>|]/g,
+                    "_"
+                )
+                .replace(
+                    /\s+/g,
+                    "_"
+                );
+
+
+        /* ==========================================
+           DOWNLOAD JPG
+        ========================================== */
+
+        const link =
+            document.createElement("a");
+
+
+        link.download =
+            `${fileName}_Training.jpg`;
+
+
+        link.href =
+            canvas.toDataURL(
+                "image/jpeg",
+                0.95
+            );
+
+
+        document.body.appendChild(
+            link
+        );
+
+
+        link.click();
+
+
+        link.remove();
+
+
+        showToast(
+            "JPG berhasil dibuat."
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Download JPG error:",
+            error
+        );
+
+
+        showToast(
+            "Gagal membuat JPG.",
+            "error"
+        );
+
+    }
+
+    finally{
+
+        if(
+            body &&
+            !wasOpen
+        ){
+
+            body.classList.remove(
+                "open"
+            );
+
+        }
+
+
+        hideLoading();
+
+    }
 
 }
 
-/* ==========================================
-   FORMAT DATE
-========================================== */
 
-function formatDate(date){
+/* ==========================================================
+   INIT
+========================================================== */
 
-    const d =
-    new Date(date);
+updateClock();
 
-    if(isNaN(d)) return date;
+setInterval(
+    updateClock,
+    1000
+);
 
-    return d.toLocaleDateString("id-ID",{
 
-        day:"2-digit",
+/*
+   Load data pertama kali.
+*/
 
-        month:"short",
+loadTraining();
+/* ==========================================================
+   TRAINING TABS
+========================================================== */
 
-        year:"numeric"
+document
+    .getElementById("btnToday")
+    ?.addEventListener("click", function(){
+
+        currentMode = "today";
+
+        document
+            .getElementById("btnToday")
+            ?.classList.add("active");
+
+        document
+            .getElementById("btnFull")
+            ?.classList.remove("active");
+
+        renderPage();
 
     });
 
-}
 
-/* ==========================================
-   START
-========================================== */
+document
+    .getElementById("btnFull")
+    ?.addEventListener("click", function(){
 
-document.addEventListener("DOMContentLoaded",()=>{
+        currentMode = "full";
 
-    loadTraining();
+        document
+            .getElementById("btnFull")
+            ?.classList.add("active");
 
-});
+        document
+            .getElementById("btnToday")
+            ?.classList.remove("active");
+
+        renderPage();
+
+    });
