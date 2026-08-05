@@ -189,131 +189,213 @@ function setText(id,value){
 
 
 
-// RANKING
+// =====================================================
+// TODAY'S RANKING
 // =====================================================
 
 function renderRankings(){
 
     const topDiv =
-    document.getElementById("topRanking");
+        document.getElementById("topRanking");
 
     const lowDiv =
-    document.getElementById("lowRanking");
+        document.getElementById("lowRanking");
 
     if(!topDiv || !lowDiv) return;
 
-    topDiv.innerHTML="";
-    lowDiv.innerHTML="";
+
+    topDiv.innerHTML = "";
+    lowDiv.innerHTML = "";
+
+
+    // ==========================================
+    // COPY DATA
+    // ==========================================
 
     const sorted =
-    [...stores].sort((a,b)=>b.achievement-a.achievement);
+        [...stores]
+        .sort(
+            (a,b) =>
+                b.achievement - a.achievement
+        );
 
-    const medals = [
 
-        "🥇",
-        "🥈",
-        "🥉",
-        "🏅",
-        "🏅"
+    // ==========================================
+    // JUMLAH RANKING
+    //
+    // OTOMATIS MENGIKUTI JUMLAH STORE
+    // ==========================================
 
-    ];
+    const rankingCount =
+        sorted.length;
 
-    // ============================
-    // TOP 5
-    // ============================
 
-    sorted.slice(0,5).forEach((item,index)=>{
+    // ==========================================
+    // MEDAL / RANK ICON
+    // ==========================================
 
-        topDiv.innerHTML += `
+    function getRankIcon(index){
 
-        <div class="rank-item">
+        if(index === 0){
+            return "🥇";
+        }
 
-            <div class="rank-left">
+        if(index === 1){
+            return "🥈";
+        }
 
-                <span class="medal">
+        if(index === 2){
+            return "🥉";
+        }
 
-                    ${medals[index]}
+        return `
+            <span
+                style="
+                    display:inline-flex;
+                    align-items:center;
+                    justify-content:center;
 
-                </span>
+                    width:24px;
+                    height:24px;
 
-                <div>
+                    border-radius:50%;
 
-                    <b>${item.store}</b>
+                    background:#e5e7eb;
 
-                    <small>
+                    color:#475569;
 
-                        ${formatRp(item.mtd)}
+                    font-size:11px;
 
-                    </small>
+                    font-weight:700;
+                "
+            >
+                ${index + 1}
+            </span>
+        `;
+
+    }
+
+
+    // ==========================================
+    // TOP ACHIEVEMENT
+    // ==========================================
+
+    sorted
+    .slice(0, rankingCount)
+    .forEach(
+        (item,index)=>{
+
+            topDiv.innerHTML += `
+
+                <div class="rank-item">
+
+                    <div class="rank-left">
+
+                        <span class="medal">
+
+                            ${getRankIcon(index)}
+
+                        </span>
+
+
+                        <div>
+
+                            <b>
+                                ${item.store}
+                            </b>
+
+                            <small>
+                                ${formatRp(item.mtd)}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="rank-value"
+                        style="color:#22c55e;"
+                    >
+
+                        ${formatPct(
+                            item.achievement
+                        )}
+
+                    </div>
 
                 </div>
 
-            </div>
+            `;
 
-            <div
-            class="rank-value"
+        }
+    );
 
-            style="color:#22c55e;">
 
-                ${formatPct(item.achievement)}
+    // ==========================================
+    // NEED ATTENTION
+    //
+    // Urut dari achievement TERENDAH
+    // ==========================================
 
-            </div>
+    const lowest =
+        [...stores]
+        .sort(
+            (a,b) =>
+                a.achievement - b.achievement
+        );
 
-        </div>
 
-        `;
+    lowest
+    .slice(0, rankingCount)
+    .forEach(
+        item=>{
 
-    });
+            lowDiv.innerHTML += `
 
-    // ============================
-    // BOTTOM 5
-    // ============================
+                <div class="rank-item">
 
-    [...sorted]
-    .reverse()
-    .slice(0,5)
-    .forEach(item=>{
+                    <div class="rank-left">
 
-        lowDiv.innerHTML += `
+                        <span class="medal">
 
-        <div class="rank-item">
+                            ⚠️
 
-            <div class="rank-left">
+                        </span>
 
-                <span class="medal">
 
-                    ⚠️
+                        <div>
 
-                </span>
+                            <b>
+                                ${item.store}
+                            </b>
 
-                <div>
+                            <small>
+                                ${formatRp(item.minus)}
+                            </small>
 
-                    <b>${item.store}</b>
+                        </div>
 
-                    <small>
+                    </div>
 
-                        ${formatRp(item.minus)}
 
-                    </small>
+                    <div
+                        class="rank-value"
+                        style="color:#ef4444;"
+                    >
+
+                        ${formatPct(
+                            item.achievement
+                        )}
+
+                    </div>
 
                 </div>
 
-            </div>
+            `;
 
-            <div
-            class="rank-value"
-
-            style="color:#ef4444;">
-
-                ${formatPct(item.achievement)}
-
-            </div>
-
-        </div>
-
-        `;
-
-    });
+        }
+    );
 
 }
 // =====================================================

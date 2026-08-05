@@ -565,51 +565,205 @@ function addFilterEvents(){
 
 function updateDetailTable() {
 
-    const tbody = document.getElementById("detailTable");
+    const tbody =
+        document.getElementById("detailTable");
+
+    if (!tbody) return;
 
     tbody.innerHTML = "";
 
-    const stores = [...new Set(filteredData.map(item => item.storeName))];
+    const stores =
+        [...new Set(
+            filteredData.map(
+                item => item.storeName
+            )
+        )];
+
 
     stores.forEach(store => {
 
-        const current = filteredData.filter(item => item.storeName === store);
-        console.log("STORE :", store);
-console.log(compareData);
+        const current =
+            filteredData.filter(
+                item =>
+                    item.storeName === store
+            );
 
-        const compare = compareData.filter(item => item.storeName === store);
 
-        const sales = current.reduce((sum, item) => sum + Number(item.sales), 0);
+        const compare =
+            compareData.filter(
+                item =>
+                    item.storeName === store
+            );
 
-        const trx = current.reduce((sum, item) => sum + Number(item.trx), 0);
 
-        const previousSales = compare.reduce((sum, item) => sum + Number(item.sales), 0);
-        console.log(store, sales, previousSales);
+        // =====================================
+        // SALES
+        // =====================================
 
-        const atv = trx > 0 ? sales / trx : 0;
+        const sales =
+            current.reduce(
+                (sum, item) =>
+                    sum + Number(item.sales || 0),
+                0
+            );
 
-        const growth = previousSales > 0
-            ? ((sales - previousSales) / previousSales) * 100
-            : 0;
 
-        const dm = current.length ? current[0].dm : "";
-        const bm = current.length ? current[0].bm : "";
-        const abm = current.length ? current[0].abm : "";
+        // =====================================
+        // TRANSACTION
+        // =====================================
+
+        const trx =
+            current.reduce(
+                (sum, item) =>
+                    sum + Number(item.trx || 0),
+                0
+            );
+
+
+        // =====================================
+        // ATV
+        // =====================================
+
+        const atv =
+            trx > 0
+                ? sales / trx
+                : 0;
+
+
+        // =====================================
+        // PREVIOUS SALES
+        // =====================================
+
+        const previousSales =
+            compare.reduce(
+                (sum, item) =>
+                    sum + Number(item.sales || 0),
+                0
+            );
+
+
+        // =====================================
+        // GROWTH
+        // =====================================
+
+        const growth =
+            previousSales > 0
+                ? (
+                    (sales - previousSales)
+                    / previousSales
+                ) * 100
+                : 0;
+
+
+        // =====================================
+        // MASTER DATA
+        // =====================================
+
+        const dm =
+            current.length
+                ? current[0].dm
+                : "";
+
+        const bm =
+            current.length
+                ? current[0].bm
+                : "";
+
+        const abm =
+            current.length
+                ? current[0].abm
+                : "";
+
+
+        // =====================================
+        // ACHIEVEMENT
+        // =====================================
+
+        const achievement =
+            current.length
+                ? current[0].achievement
+                : "-";
+
+
+        // =====================================
+        // RENDER ROW
+        // =====================================
 
         tbody.innerHTML += `
+
             <tr>
-                <td>${store}</td>
-                <td>${dm}</td>
-                <td>${bm}</td>
-                <td>${abm}</td>
-                <td>Rp${sales.toLocaleString("id-ID")}</td>
-                <td>${trx.toLocaleString()}</td>
-                <td>Rp${Math.round(atv).toLocaleString("id-ID")}</td>
-                <td style="font-weight:bold;color:${growth >= 0 ? "#16a34a" : "#dc2626"}">
+
+                <td>
+                    ${store}
+                </td>
+
+                <td>
+                    ${dm}
+                </td>
+
+                <td>
+                    ${bm}
+                </td>
+
+                <td>
+                    ${abm}
+                </td>
+
+                <td>
+                    Rp${sales.toLocaleString("id-ID")}
+                </td>
+
+                <td class="achievement-cell">
+
+    <span class="
+        achievement-badge
+        ${
+            achievement === "Failure"
+                ? "achievement-failure"
+                : achievement === "Level 1"
+                ? "achievement-level-1"
+                : achievement === "Level 2"
+                ? "achievement-level-2"
+                : achievement === "Level 3"
+                ? "achievement-level-3"
+                : achievement === "Level 4"
+                ? "achievement-level-4"
+                : "achievement-unknown"
+        }
+    ">
+
+        ${achievement || "-"}
+
+    </span>
+
+</td>
+
+                <td>
+                    ${trx.toLocaleString("id-ID")}
+                </td>
+
+                <td>
+                    Rp${Math.round(atv)
+                        .toLocaleString("id-ID")}
+                </td>
+
+                <td
+                    style="
+                        font-weight:bold;
+                        color:${
+                            growth >= 0
+                                ? "#16a34a"
+                                : "#dc2626"
+                        };
+                    "
+                >
                     ${growth.toFixed(2)}%
                 </td>
+
             </tr>
+
         `;
+
     });
 
 }
