@@ -849,49 +849,6 @@ body {
 
 }
 
-
-/* =========================================================
-   TABLE CONTAINER
-   IMPORTANT:
-   JS CURRENTLY USES .table-box
-========================================================= */
-
-.table-box {
-
-    width: 100%;
-
-    max-width: 100%;
-
-    overflow-x: auto;
-
-    overflow-y: hidden;
-
-    -webkit-overflow-scrolling: touch;
-
-}
-
-
-/* =========================================================
-   TRAINING TABLE
-========================================================= */
-
-.training-table {
-
-    width: 100%;
-
-    min-width: 1050px;
-
-    border-collapse: collapse;
-
-    border-spacing: 0;
-
-    table-layout: fixed;
-
-    background: #ffffff;
-
-}
-
-
 /* =========================================================
    TABLE HEADER
 ========================================================= */
@@ -1527,23 +1484,6 @@ body {
 .btn-download i {
 
     font-size: 12px;
-
-}
-
-
-/* =========================================================
-   SUPERIOR BODY
-========================================================= */
-
-.superior-body {
-
-    display: none;
-
-    width: 100%;
-
-    padding: 0 20px 20px;
-
-    background: #ffffff;
 
 }
 
@@ -2899,4 +2839,208 @@ body {
         display: table !important;
         table-layout: fixed !important;
     }
+}
+/* =========================================================
+   TABLE — HORIZONTAL SCROLL ALL DEVICES
+========================================================= */
+
+.table-box {
+
+    display: block !important;
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    overflow-x: auto !important;
+
+    overflow-y: hidden !important;
+
+    -webkit-overflow-scrolling: touch !important;
+
+    overscroll-behavior-x: contain;
+
+}
+
+
+/*
+   Tabel sengaja dibuat lebih lebar daripada
+   container supaya horizontal scrollbar muncul.
+*/
+
+.training-table {
+
+    display: table !important;
+
+    width: 1050px !important;
+
+    min-width: 1050px !important;
+
+    max-width: none !important;
+
+    table-layout: fixed !important;
+
+    border-collapse: collapse !important;
+
+}
+
+
+/* Jangan ubah tabel menjadi grid/card */
+
+.training-table thead {
+
+    display: table-header-group !important;
+
+}
+
+
+.training-table tbody {
+
+    display: table-row-group !important;
+
+}
+
+
+.training-table tr {
+
+    display: table-row !important;
+
+}
+
+
+.training-table th,
+.training-table td {
+
+    display: table-cell !important;
+
+    box-sizing: border-box !important;
+
+}
+/* =========================================================
+   FINAL TABLE SCROLL FIX
+========================================================= */
+
+.superior-body {
+    width: 100% !important;
+    overflow: visible !important;
+}
+
+.table-box {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    -webkit-overflow-scrolling: touch !important;
+
+    scrollbar-width: auto !important;
+}
+
+.training-table {
+    display: table !important;
+
+    width: 1450px !important;
+    min-width: 1450px !important;
+    max-width: none !important;
+
+    table-layout: auto !important;
+
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+}
+
+.training-table thead {
+    display: table-header-group !important;
+}
+
+.training-table tbody {
+    display: table-row-group !important;
+}
+
+.training-table tr {
+    display: table-row !important;
+}
+
+.training-table th,
+.training-table td {
+    display: table-cell !important;
+
+    box-sizing: border-box !important;
+
+    white-space: nowrap !important;
+
+    vertical-align: middle !important;
+}
+
+
+/* =========================================================
+   COLUMN WIDTH
+========================================================= */
+
+.training-table th:nth-child(1),
+.training-table td:nth-child(1) {
+    width: 220px !important;
+    min-width: 220px !important;
+}
+
+.training-table th:nth-child(2),
+.training-table td:nth-child(2) {
+    width: 100px !important;
+    min-width: 100px !important;
+}
+
+.training-table th:nth-child(3),
+.training-table td:nth-child(3) {
+    width: 120px !important;
+    min-width: 120px !important;
+}
+
+.training-table th:nth-child(4),
+.training-table td:nth-child(4) {
+    width: 90px !important;
+    min-width: 90px !important;
+}
+
+.training-table th:nth-child(5),
+.training-table td:nth-child(5) {
+    width: 420px !important;
+    min-width: 420px !important;
+}
+
+.training-table th:nth-child(6),
+.training-table td:nth-child(6) {
+    width: 150px !important;
+    min-width: 150px !important;
+}
+
+.training-table th:nth-child(7),
+.training-table td:nth-child(7) {
+    width: 150px !important;
+    min-width: 150px !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    .table-box {
+        width: 100% !important;
+
+        overflow-x: scroll !important;
+        overflow-y: hidden !important;
+
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .training-table {
+        width: 1250px !important;
+        min-width: 1250px !important;
+    }
+
 }
