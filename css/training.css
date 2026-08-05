@@ -2879,3 +2879,24 @@ body {
     z-index: 2;
 
 }
+@media screen and (max-width: 768px) {
+
+    .table-box {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .training-table {
+        width: 1050px !important;
+        min-width: 1050px !important;
+        max-width: none !important;
+
+        display: table !important;
+        table-layout: fixed !important;
+    }
+}
