@@ -1086,18 +1086,38 @@ function renderSuperior(rows){
 
                     <!-- SUPERIOR BODY -->
 
-                    <div
-                        class="
-                            superior-body
-                            ${opened ? "open" : ""}
-                        "
-                    >
+<div
+    class="
+        superior-body
+        ${opened ? "open" : ""}
+    "
+    style="
+        width:100%;
+        overflow:visible;
+    "
+>
 
-                        <div class="table-wrapper">
+    <div
+        class="table-wrapper"
+        style="
+            width:100%;
+            max-width:100%;
+            overflow-x:auto;
+            overflow-y:hidden;
+            -webkit-overflow-scrolling:touch;
+        "
+    >
 
-                            <table
-                                class="training-table"
-                            >
+        <table
+            class="training-table"
+            style="
+                width:max-content;
+                min-width:1450px;
+                max-width:none;
+                table-layout:auto;
+                border-collapse:collapse;
+            "
+        >
 
                                 <thead>
 
