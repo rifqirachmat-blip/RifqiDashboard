@@ -1507,3 +1507,198 @@ background:#fafafa;
     }
 
 }
+/* =========================================================
+   FIX MOBILE TABLE COLUMN WIDTH
+========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    .table-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .training-table {
+        display: table !important;
+
+        width: max-content !important;
+        min-width: 1200px !important;
+
+        table-layout: auto !important;
+
+        border-collapse: collapse !important;
+        border-spacing: 0 !important;
+    }
+
+    .training-table thead {
+        display: table-header-group !important;
+    }
+
+    .training-table tbody {
+        display: table-row-group !important;
+    }
+
+    .training-table tr {
+        display: table-row !important;
+    }
+
+    .training-table th,
+    .training-table td {
+        display: table-cell !important;
+
+        box-sizing: border-box !important;
+
+        white-space: nowrap !important;
+
+        overflow: visible !important;
+
+        word-break: normal !important;
+
+        overflow-wrap: normal !important;
+
+        vertical-align: middle !important;
+    }
+
+
+    /* =========================
+       PESERTA
+    ========================= */
+
+    .training-table th:nth-child(1),
+    .training-table td:nth-child(1) {
+        min-width: 190px !important;
+        width: 190px !important;
+    }
+
+
+    /* =========================
+       STORE
+    ========================= */
+
+    .training-table th:nth-child(2),
+    .training-table td:nth-child(2) {
+        min-width: 90px !important;
+        width: 90px !important;
+    }
+
+
+    /* =========================
+       TANGGAL
+    ========================= */
+
+    .training-table th:nth-child(3),
+    .training-table td:nth-child(3) {
+        min-width: 120px !important;
+        width: 120px !important;
+    }
+
+
+    /* =========================
+       JAM
+    ========================= */
+
+    .training-table th:nth-child(4),
+    .training-table td:nth-child(4) {
+        min-width: 80px !important;
+        width: 80px !important;
+    }
+
+
+    /* =========================
+       TRAINING
+    ========================= */
+
+    .training-table th:nth-child(5),
+    .training-table td:nth-child(5) {
+        min-width: 320px !important;
+        width: 320px !important;
+
+        white-space: normal !important;
+
+        line-height: 1.4 !important;
+    }
+
+
+    /* =========================
+       LINK
+    ========================= */
+
+    .training-table th:nth-child(6),
+    .training-table td:nth-child(6) {
+        min-width: 100px !important;
+        width: 100px !important;
+
+        text-align: center !important;
+    }
+
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    .training-table th:nth-child(7),
+    .training-table td:nth-child(7) {
+        min-width: 130px !important;
+        width: 130px !important;
+    }
+
+
+    /* =========================
+       PESAN
+    ========================= */
+
+    .training-table th:nth-child(8),
+    .training-table td:nth-child(8) {
+        min-width: 100px !important;
+        width: 100px !important;
+    }
+
+
+    /* =========================
+       PARTICIPANT NAME
+    ========================= */
+
+    .participant-name {
+        display: block !important;
+
+        min-width: 170px !important;
+
+        width: max-content !important;
+
+        white-space: nowrap !important;
+    }
+
+    .participant-name strong {
+        white-space: nowrap !important;
+    }
+
+    .participant-name small {
+        white-space: nowrap !important;
+    }
+
+
+    /* =========================
+       STATUS DROPDOWN
+    ========================= */
+
+    .status-select {
+        width: 115px !important;
+        min-width: 115px !important;
+    }
+
+
+    /* =========================
+       BUTTON
+    ========================= */
+
+    .btn-wa,
+    .btn-training-link {
+        white-space: nowrap !important;
+
+        min-width: 80px !important;
+    }
+
+}
