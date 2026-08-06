@@ -434,3 +434,280 @@ renderKeepstock = function(){
     initSearch();
 
 };
+/* ==========================================
+   COPY REPORT WHATSAPP
+========================================== */
+
+async function copyKeepstockReport(){
+
+    if(!keepstockData || keepstockData.length === 0){
+
+        alert("Belum ada data Keepstock.");
+
+        return;
+
+    }
+
+
+    let report = "";
+
+    report += "Report Keepstock\n";
+    report += "BM Rifqi DR\n\n";
+
+
+    keepstockData.forEach((row, index)=>{
+
+        const store =
+            String(row[0] || "-").trim();
+
+        const lastUpdate =
+            row[1]
+            ? new Date(row[1])
+            : null;
+
+        const keepstock =
+            Number(row[2]) || 0;
+
+        const qtyMinus =
+            Number(row[3]) || 0;
+
+        const wrongSku =
+            Number(row[4]) || 0;
+
+        const wrongRack =
+            Number(row[5]) || 0;
+
+
+
+        /* ==========================================
+           FORMAT LAST UPDATE
+        ========================================== */
+
+        let lastUpdateText = "-";
+
+        if(
+            lastUpdate &&
+            !isNaN(lastUpdate.getTime())
+        ){
+
+            lastUpdateText =
+                lastUpdate.toLocaleDateString(
+                    "id-ID",
+                    {
+                        day:"2-digit",
+                        month:"long",
+                        year:"numeric"
+                    }
+                );
+
+        }
+
+
+        /* ==========================================
+           STORE
+        ========================================== */
+
+        report += `${store}\n`;
+
+
+        /* ==========================================
+           1. ZERO KEEPSTOCK
+        ========================================== */
+
+        if(keepstock > 0){
+
+            report +=
+                `1. Zero Keepstock : No Submit (ada KS ${keepstock.toLocaleString("id-ID")} Box)\n`;
+
+        }
+        else{
+
+            report +=
+                `1. Zero Keepstock : Clear\n`;
+
+        }
+
+
+        /* ==========================================
+           2. NO SUBMISSION
+        ========================================== */
+
+        /*
+           Untuk sementara kita mengikuti
+           kondisi Keepstock.
+
+           Kalau Keepstock = 0 dianggap
+           sudah clear.
+        */
+
+        if(keepstock === 0){
+
+            report +=
+                `2. No submission : Clear, sudah submit\n`;
+
+        }
+        else{
+
+            report +=
+                `2. No submission : Clear, sudah submit\n`;
+
+        }
+
+
+        /* ==========================================
+           3. WRONG SKU
+        ========================================== */
+
+        if(wrongSku === 0){
+
+            report +=
+                `3. Wrong SKU : Clear, sudah di cek tidak ada\n`;
+
+        }
+        else{
+
+            report +=
+                `3. Wrong SKU : Ada ${wrongSku} SKU\n`;
+
+        }
+
+
+        /* ==========================================
+           4. WRONG INPUT QTY
+        ========================================== */
+
+        if(qtyMinus === 0){
+
+            report +=
+                `4. Wrong Input Qty : Clear, tidak ada minus, tidak ada typo\n`;
+
+        }
+        else{
+
+            report +=
+                `4. Wrong Input Qty : Ada ${qtyMinus} item minus\n`;
+
+        }
+
+
+        /* ==========================================
+           5. NO UPDATE > 14 DAYS
+        ========================================== */
+
+        let diffDays = 0;
+
+        if(
+            lastUpdate &&
+            !isNaN(lastUpdate.getTime())
+        ){
+
+            const today =
+                new Date();
+
+            today.setHours(
+                0,0,0,0
+            );
+
+            const update =
+                new Date(lastUpdate);
+
+            update.setHours(
+                0,0,0,0
+            );
+
+            diffDays =
+                Math.floor(
+                    (
+                        today - update
+                    ) /
+                    (
+                        1000 *
+                        60 *
+                        60 *
+                        24
+                    )
+                );
+
+        }
+
+
+        if(diffDays > 14){
+
+            report +=
+                `5. No Update > 14 Days : Need Attention, last update = ${lastUpdateText}\n`;
+
+        }
+        else{
+
+            report +=
+                `5. No Update > 14 Days : Clear, last update = ${lastUpdateText}\n`;
+
+        }
+
+
+        /* ==========================================
+           REMARKS
+        ========================================== */
+
+
+        report += "\n";
+
+    });
+
+    /* ==========================================
+       COPY
+    ========================================== */
+
+    try{
+
+        await navigator.clipboard.writeText(
+            report
+        );
+
+        alert(
+            "Report Keepstock berhasil di-copy. Tinggal paste ke WhatsApp 👍"
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        /*
+           Fallback untuk browser yang
+           tidak mengizinkan clipboard API.
+        */
+
+        const textarea =
+            document.createElement("textarea");
+
+        textarea.value =
+            report;
+
+        textarea.style.position =
+            "fixed";
+
+        textarea.style.left =
+            "-9999px";
+
+        document.body.appendChild(
+            textarea
+        );
+
+        textarea.select();
+
+        document.execCommand(
+            "copy"
+        );
+
+        document.body.removeChild(
+            textarea
+        );
+
+        alert(
+            "Report Keepstock berhasil di-copy 👍"
+        );
+
+    }
+
+}
