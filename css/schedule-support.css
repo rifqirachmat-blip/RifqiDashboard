@@ -1,0 +1,1552 @@
+/* =========================================================
+   SCHEDULE SUPPORT BM
+   FULL CSS
+   Sidebar TIDAK DISENTUH
+========================================================= */
+
+
+/* =========================================================
+   PAGE BASE
+========================================================= */
+
+.main {
+    min-height: 100vh;
+    padding: 28px 30px 40px;
+
+    background: #f4f6fa;
+
+    color: #172033;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 24px;
+}
+
+
+.header > div:first-child {
+    min-width: 0;
+}
+
+
+.header h1 {
+    margin: 0;
+
+    font-size: 38px;
+
+    line-height: 1.15;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    letter-spacing: -1px;
+}
+
+
+.header p {
+    margin: 8px 0 0;
+
+    font-size: 15px;
+
+    color: #64748b;
+
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   TODAY BOX - HEADER
+========================================================= */
+
+.today {
+    flex-shrink: 0;
+
+    min-width: 235px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 12px 16px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 15px;
+
+    box-shadow: 0 6px 20px rgba(15,23,42,.06);
+}
+
+
+.today-icon {
+    width: 48px;
+
+    height: 48px;
+
+    min-width: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #ffd400;
+}
+
+
+.today-icon i {
+    font-size: 22px;
+
+    color: #111827;
+}
+
+
+.today-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.today-info span {
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    white-space: nowrap;
+}
+
+
+.today-info small {
+    font-size: 11px;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   MONTH FILTER
+========================================================= */
+
+.schedule-filter {
+    width: 100%;
+
+    min-height: 82px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 15px 18px;
+
+    margin-bottom: 18px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    box-shadow: 0 5px 18px rgba(15,23,42,.05);
+
+    box-sizing: border-box;
+}
+
+
+/* Hide old arrows */
+
+.nav-month-btn {
+    display: none !important;
+}
+
+
+/* =========================================================
+   CURRENT MONTH
+========================================================= */
+
+.current-month {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 220px;
+}
+
+
+.current-month > i {
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #ffd400;
+
+    color: #111827;
+
+    font-size: 21px;
+}
+
+
+.current-month > div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.current-month strong {
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    line-height: 1.2;
+}
+
+
+.current-month small {
+    font-size: 11px;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   TODAY BUTTON
+========================================================= */
+
+.today-btn {
+    height: 46px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #111827;
+
+    color: #ffffff;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+
+.today-btn:hover {
+    background: #ffd400;
+
+    color: #111827;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.schedule-search {
+    height: 46px;
+
+    min-width: 245px;
+
+    margin-left: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 0 14px;
+
+    background: #f8fafc;
+
+    border: 1px solid #dfe4ea;
+
+    border-radius: 11px;
+
+    box-sizing: border-box;
+}
+
+
+.schedule-search i {
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+.schedule-search input {
+    width: 100%;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 12px;
+
+    color: #111827;
+}
+
+
+.schedule-search input::placeholder {
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   KPI CONTAINER
+========================================================= */
+
+.schedule-kpi {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, minmax(0, 1fr));
+
+    gap: 14px;
+
+    margin-bottom: 22px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   KPI CARD
+========================================================= */
+
+.schedule-kpi-card {
+    min-width: 0;
+
+    width: 100%;
+
+    min-height: 205px;
+
+    padding: 15px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 18px rgba(15,23,42,.06);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   KPI HEADER
+========================================================= */
+
+.kpi-card-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 13px;
+}
+
+
+.schedule-kpi-icon {
+    width: 37px;
+
+    height: 37px;
+
+    min-width: 37px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #ffd400;
+}
+
+
+.schedule-kpi-icon i {
+    font-size: 16px;
+
+    color: #111827;
+}
+
+
+.kpi-card-header h3 {
+    margin: 0;
+
+    font-size: 15px;
+
+    line-height: 1.15;
+
+    font-weight: 700;
+
+    color: #111827;
+}
+
+
+.kpi-card-header span {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 10px;
+
+    line-height: 1.2;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   KPI ROW
+========================================================= */
+
+.summary-row {
+    display: flex;
+
+    align-items: center;
+
+    min-height: 32px;
+
+    padding: 5px 0;
+
+    border-bottom: 1px solid #edf0f3;
+
+    box-sizing: border-box;
+}
+
+
+.summary-row:last-of-type {
+    border-bottom: none;
+}
+
+
+.summary-row > span {
+    font-size: 10px;
+
+    color: #475569;
+
+    white-space: nowrap;
+}
+
+
+.summary-row strong {
+    margin-left: auto;
+
+    font-size: 18px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    color: #1455c0;
+}
+
+
+.summary-row small {
+    margin-left: 4px;
+
+    font-size: 8px;
+
+    color: #94a3b8;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   KPI COLORS
+========================================================= */
+
+.work-color {
+    color: #1455c0 !important;
+}
+
+
+.leave-color {
+    color: #dc2626 !important;
+}
+
+
+.visit-color {
+    color: #15803d !important;
+}
+
+
+/* =========================================================
+   TOTAL DAYS
+========================================================= */
+
+.summary-total {
+    display: flex;
+
+    align-items: center;
+
+    padding-top: 10px;
+}
+
+
+.summary-total span {
+    font-size: 10px;
+
+    font-weight: 700;
+
+    color: #111827;
+}
+
+
+.summary-total strong {
+    margin-left: auto;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    color: #111827;
+}
+
+
+.summary-total small {
+    margin-left: 4px;
+
+    font-size: 8px;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   TODAY SUPPORT SECTION
+========================================================= */
+
+.today-support-section,
+.schedule-section,
+.store-summary-section {
+    width: 100%;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 5px 18px rgba(15,23,42,.05);
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-title {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 16px;
+}
+
+
+.section-title > div:first-child {
+    min-width: 0;
+}
+
+
+.section-title h2 {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin: 0;
+
+    font-size: 20px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    color: #111827;
+}
+
+
+.section-title h2 i {
+    color: #111827;
+
+    font-size: 18px;
+}
+
+
+.section-title p {
+    margin: 5px 0 0;
+
+    font-size: 11px;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   STATUS / COUNT
+========================================================= */
+
+.today-status,
+.schedule-count {
+    flex-shrink: 0;
+
+    padding: 7px 11px;
+
+    border-radius: 9px;
+
+    background: #eef4ff;
+
+    color: #174ea6;
+
+    font-size: 10px;
+
+    font-weight: 600;
+}
+
+
+.today-status {
+    background: #eaf8ec;
+
+    color: #15803d;
+}
+
+
+/* =========================================================
+   TODAY SUPPORT GRID
+========================================================= */
+
+.today-support-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 10px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   TODAY SUPPORT CARD
+========================================================= */
+
+.support-card {
+    min-width: 0;
+
+    min-height: 115px;
+
+    padding: 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #e3e7ed;
+
+    border-radius: 13px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: flex-start;
+
+    box-sizing: border-box;
+
+    transition: .2s ease;
+}
+
+
+.support-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(15,23,42,.08);
+}
+
+
+/* BM NAME */
+
+.support-bm {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-bottom: 8px;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    color: #475569;
+}
+
+
+.support-bm i {
+    font-size: 10px;
+
+    color: #111827;
+}
+
+
+/* =========================================================
+   STORE BADGE
+========================================================= */
+
+.support-store,
+.schedule-store,
+.store-summary-card > span {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: fit-content;
+
+    padding: 5px 12px;
+
+    border-radius: 999px;
+
+    font-size: 14px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    letter-spacing: .2px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SUPPORT LABEL
+========================================================= */
+
+.support-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-top: 9px;
+
+    padding: 4px 9px;
+
+    border-radius: 999px;
+
+    background: #fff1b8;
+
+    color: #7a5b00;
+
+    font-size: 8px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   STORE COLORS
+========================================================= */
+
+/* BDIP - BIRU TUA */
+.store-blue {
+    background: #e8efff !important;
+    color: #1746a2 !important;
+    border: 1px solid #8eabeb !important;
+}
+
+
+/* KINN - HIJAU */
+.store-green {
+    background: #e8f7ed !important;
+    color: #16803c !important;
+    border: 1px solid #91cda4 !important;
+}
+
+
+/* XBTU - KUNING */
+.store-orange {
+    background: #fff7d6 !important;
+    color: #a67c00 !important;
+    border: 1px solid #e5c85c !important;
+}
+
+
+/* XKPT - COKLAT */
+.store-purple {
+    background: #f3e8dc !important;
+    color: #8b5a2b !important;
+    border: 1px solid #c9a987 !important;
+}
+
+
+/* FTCT - ORANGE */
+.store-cyan {
+    background: #fff0df !important;
+    color: #e87500 !important;
+    border: 1px solid #f3b66d !important;
+}
+
+
+/* MRIM - UNGU */
+.store-red {
+    background: #f1e7ff !important;
+    color: #7227b8 !important;
+    border: 1px solid #c49be8 !important;
+}
+
+
+/* MIKO - BIRU MUDA */
+.store-pink {
+    background: #e4f5fb !important;
+    color: #1684a5 !important;
+    border: 1px solid #8ccddd !important;
+}
+
+
+/* =========================================================
+   DO / AL - MERAH
+========================================================= */
+
+.leave-store {
+    background: #ffe8e8 !important;
+    color: #dc2626 !important;
+    border: 1px solid #f1a5a5 !important;
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.support-empty {
+    min-height: 100px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    grid-column: 1 / -1;
+
+    color: #94a3b8;
+}
+
+
+.support-empty i {
+    font-size: 24px;
+}
+
+
+.support-empty strong {
+    font-size: 12px;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   SCHEDULE TABLE WRAPPER
+========================================================= */
+
+.schedule-table-wrapper {
+    width: 100%;
+
+    max-height: 460px;
+
+    overflow: auto;
+
+    border: 1px solid #dfe4ea;
+
+    border-radius: 12px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.schedule-table {
+    width: 100%;
+
+    min-width: 760px;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+
+    table-layout: fixed;
+
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* =========================================================
+   TABLE HEADER - FREEZE
+========================================================= */
+
+.schedule-table thead th {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 10;
+
+    height: 42px;
+
+    padding: 8px 10px;
+
+    background: #f3f4f6;
+
+    color: #111827;
+
+    border-bottom: 1px solid #d9dee5;
+
+    border-right: 1px solid #e1e5ea;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+
+.schedule-table thead th:first-child {
+    width: 115px;
+}
+
+
+.schedule-table thead th:nth-child(2) {
+    width: 65px;
+}
+
+
+.schedule-table thead th:last-child {
+    border-right: none;
+}
+
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
+
+.schedule-table tbody td {
+    height: 40px;
+
+    padding: 6px 8px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #edf0f3;
+
+    border-right: 1px solid #edf0f3;
+
+    font-size: 10px;
+
+    text-align: center;
+
+    color: #334155;
+
+    box-sizing: border-box;
+}
+
+
+.schedule-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+.schedule-table tbody td:last-child {
+    border-right: none;
+}
+
+
+.schedule-table tbody tr:hover td {
+    background: #f8fafc;
+}
+
+
+/* DATE */
+
+.schedule-table .date-cell {
+    font-weight: 600;
+
+    color: #334155;
+
+    white-space: nowrap;
+}
+
+
+/* DAY */
+
+.schedule-table .day-cell {
+    color: #64748b;
+
+    font-weight: 500;
+}
+
+
+/* STORE BADGE IN TABLE */
+
+.schedule-table .schedule-store {
+    min-width: 55px;
+
+    padding: 5px 10px;
+
+    font-size: 10px;
+
+    border-radius: 999px;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-cell {
+    height: 150px !important;
+
+    text-align: center !important;
+
+    color: #64748b;
+}
+
+
+.loading-card {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+}
+
+
+.loading-card p {
+    margin: 0;
+
+    font-size: 11px;
+
+    color: #64748b;
+}
+
+
+.spinner {
+    width: 27px;
+
+    height: 27px;
+
+    border: 3px solid #e5e7eb;
+
+    border-top-color: #111827;
+
+    border-radius: 50%;
+
+    animation:
+        scheduleSpin .8s linear infinite;
+}
+
+
+@keyframes scheduleSpin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   STORE SUMMARY GRID
+========================================================= */
+
+.store-summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, minmax(0, 1fr));
+
+    gap: 12px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   STORE SUMMARY CARD
+========================================================= */
+
+.store-summary-card {
+    min-width: 0;
+
+    min-height: 115px;
+
+    padding: 14px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e6ec;
+
+    border-radius: 13px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+}
+
+
+.store-summary-card > span {
+    font-size: 13px;
+
+    padding: 5px 13px;
+}
+
+
+.store-summary-card strong {
+    font-size: 26px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    color: #111827;
+}
+
+
+.store-summary-card small {
+    font-size: 9px;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.schedule-table-wrapper::-webkit-scrollbar {
+    width: 7px;
+
+    height: 7px;
+}
+
+
+.schedule-table-wrapper::-webkit-scrollbar-track {
+    background: #f1f3f5;
+}
+
+
+.schedule-table-wrapper::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+
+    border-radius: 999px;
+}
+
+
+.schedule-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1400px) {
+
+    .main {
+        padding-left: 28px;
+
+        padding-right: 28px;
+    }
+
+    .schedule-kpi {
+        grid-template-columns:
+            repeat(6, minmax(0, 1fr));
+    }
+
+    .today-support-grid {
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+    }
+
+    .store-summary-grid {
+        grid-template-columns:
+            repeat(7, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   NORMAL DESKTOP
+========================================================= */
+
+@media (min-width: 1100px) and (max-width: 1399px) {
+
+    .schedule-kpi {
+        grid-template-columns:
+            repeat(6, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+    .schedule-kpi-card {
+        padding: 13px;
+    }
+
+    .kpi-card-header h3 {
+        font-size: 14px;
+    }
+
+    .kpi-card-header span {
+        font-size: 9px;
+    }
+
+    .summary-row > span {
+        font-size: 9px;
+    }
+
+    .summary-row strong {
+        font-size: 16px;
+    }
+
+    .today-support-grid {
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+    }
+
+    .store-summary-grid {
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   TABLET / SMALL DESKTOP
+========================================================= */
+
+@media (min-width: 769px) and (max-width: 1099px) {
+
+    .header {
+        align-items: flex-start;
+    }
+
+    .header h1 {
+        font-size: 31px;
+    }
+
+    .today {
+        min-width: 200px;
+    }
+
+    .schedule-filter {
+        flex-wrap: wrap;
+    }
+
+    .schedule-search {
+        min-width: 220px;
+    }
+
+    .schedule-kpi {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .today-support-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .store-summary-grid {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .main {
+        padding: 18px 14px 30px;
+    }
+
+
+    .header {
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+
+    .header h1 {
+        font-size: 27px;
+
+        letter-spacing: -.5px;
+    }
+
+
+    .header p {
+        font-size: 12px;
+    }
+
+
+    .today {
+        width: 100%;
+
+        min-width: 0;
+
+        box-sizing: border-box;
+    }
+
+
+    .schedule-filter {
+        flex-wrap: wrap;
+
+        padding: 13px;
+
+        gap: 10px;
+    }
+
+
+    .current-month {
+        width: 100%;
+    }
+
+
+    .schedule-search {
+        width: 100%;
+
+        min-width: 0;
+
+        margin-left: 0;
+    }
+
+
+    .today-btn {
+        flex: 1;
+    }
+
+
+    .schedule-kpi {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+
+    .schedule-kpi-card {
+        min-height: 190px;
+
+        padding: 13px;
+    }
+
+
+    .today-support-section,
+    .schedule-section,
+    .store-summary-section {
+        padding: 14px;
+
+        border-radius: 14px;
+    }
+
+
+    .section-title {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .section-title h2 {
+        font-size: 17px;
+    }
+
+
+    .today-status,
+    .schedule-count {
+        align-self: flex-start;
+    }
+
+
+    .today-support-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .store-summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .schedule-kpi {
+        grid-template-columns: 1fr;
+    }
+
+
+    .today-support-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .store-summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+
+    .current-month strong {
+        font-size: 17px;
+    }
+
+
+    .schedule-kpi-card {
+        min-height: auto;
+    }
+
+
+    .support-card {
+        min-height: 105px;
+    }
+
+}

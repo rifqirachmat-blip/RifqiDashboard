@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Schedule Support BM</title>
+
+    <!-- FAVICON -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="assets/icons/logo3.png?v=2"
+    >
+
+    <!-- MAIN WEBSITE CSS -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <!-- SCHEDULE SUPPORT CSS -->
+    <link
+        rel="stylesheet"
+        href="css/schedule-support.css"
+    >
+
+    <!-- POPPINS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<div class="sidebar">
+
+
+    <!-- LOGO -->
+
+    <div class="logo">
+
+        <h2>
+            BM Rifqi DR
+        </h2>
+
+        <span>
+            Performance Dashboard
+        </span>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <ul>
+
+
+        <!-- DASHBOARD SALES KPI -->
+
+        <li onclick="location.href='index.html'">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            Dashboard Sales KPI
+
+        </li>
+
+
+        <!-- SALES MTD -->
+
+        <li onclick="location.href='mtd.html'">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Sales Month To Date
+
+        </li>
+
+
+        <!-- STOCK TAKE -->
+
+        <li onclick="location.href='stockloss.html'">
+
+            <i class="fa-solid fa-boxes-stacked"></i>
+
+            Stock Take Center
+
+        </li>
+
+
+        <!-- DATA LOSS -->
+
+        <li onclick="location.href='data-loss.html'">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Data Loss
+
+        </li>
+
+
+        <!-- MANPOWER -->
+
+        <li onclick="location.href='manpower.html'">
+
+            <i class="fa-solid fa-users"></i>
+
+            Data Manpower
+
+        </li>
+
+
+        <!-- KEEPSTOCK -->
+
+        <li onclick="location.href='keepstock.html'">
+
+            <i class="fa-solid fa-store"></i>
+
+            Monitoring Keepstock
+
+        </li>
+
+
+        <!-- TRAINING -->
+
+        <li onclick="location.href='training.html'">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+            Monitoring Training
+
+        </li>
+
+
+        <!-- SCHEDULE SUPPORT -->
+
+        <li onclick="location.href='schedule-support.html'">
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+            Schedule Support BM
+
+        </li>
+
+
+        <!-- TOOLS -->
+
+        <li onclick="location.href='tools.html'">
+
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+
+            Tools
+
+        </li>
+
+
+    </ul>
+
+</div>
+
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<main class="main">
+
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <div class="header">
+
+
+        <!-- TITLE -->
+
+        <div>
+
+            <h1>
+                📅 Schedule Support BM
+            </h1>
+
+            <p>
+                BM Support Schedule & Store Coverage
+            </p>
+
+        </div>
+
+
+        <!-- TODAY -->
+
+        <div class="today">
+
+
+            <div class="today-icon">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+            </div>
+
+
+            <div class="today-info">
+
+                <span id="todayDate">
+                    Loading...
+                </span>
+
+                <small id="todayTime">
+                    Loading...
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MONTH FILTER
+    ===================================================== -->
+
+    <div class="schedule-filter">
+
+
+        <!-- PREVIOUS MONTH -->
+
+        <button
+            type="button"
+            id="btnPrevMonth"
+            class="nav-month-btn"
+            title="Previous Month"
+        >
+
+            <i class="fa-solid fa-chevron-left"></i>
+
+        </button>
+
+
+
+        <!-- CURRENT MONTH -->
+
+        <div class="current-month">
+
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+
+            <div>
+
+                <strong id="currentMonth">
+                    Loading...
+                </strong>
+
+                <small id="currentMonthInfo">
+                    Schedule Support
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- NEXT MONTH -->
+
+        <button
+            type="button"
+            id="btnNextMonth"
+            class="nav-month-btn"
+            title="Next Month"
+        >
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+        </button>
+
+
+
+        <!-- TODAY -->
+
+        <button
+            type="button"
+            id="btnToday"
+            class="today-btn"
+        >
+
+            <i class="fa-solid fa-calendar-day"></i>
+
+            Today
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         KPI BM
+    ===================================================== -->
+
+    <div
+        class="schedule-kpi"
+        id="scheduleKPI"
+    >
+
+        <!--
+            CARD AKAN DIBUAT OTOMATIS
+            OLEH schedule-support.js
+        -->
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TODAY SUPPORT
+    ===================================================== -->
+
+    <div class="today-support-section">
+
+
+        <!-- SECTION HEADER -->
+
+        <div class="section-title">
+
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Today's Support
+
+                </h2>
+
+
+                <p>
+                    BM support schedule for today
+                </p>
+
+            </div>
+
+
+            <div
+                class="today-status"
+                id="todayStatus"
+            >
+
+                Loading...
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- TODAY SUPPORT CARDS -->
+
+        <div
+            class="today-support-grid"
+            id="todaySupportGrid"
+        >
+
+
+            <!-- LOADING -->
+
+            <div class="support-card">
+
+
+                <span class="bm-name">
+                    Loading schedule...
+                </span>
+
+
+                <span class="store-name">
+                    ...
+                </span>
+
+
+                <span class="support-label">
+                    Please wait
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+    <!-- =====================================================
+     TOMORROW SUPPORT
+===================================================== -->
+
+<div class="today-support-section">
+
+    <!-- SECTION HEADER -->
+
+    <div class="section-title">
+
+        <div>
+
+            <h2>
+                <i class="fa-solid fa-calendar-plus"></i>
+                Tomorrow's Support
+            </h2>
+
+            <p>
+                BM support schedule for tomorrow
+            </p>
+
+        </div>
+
+
+        <div
+            class="today-status"
+            id="tomorrowStatus"
+        >
+            Loading...
+        </div>
+
+    </div>
+
+
+    <!-- TOMORROW SUPPORT CARDS -->
+
+    <div
+        class="today-support-grid"
+        id="tomorrowSupportGrid"
+    >
+
+        <div class="support-card">
+
+            <span class="bm-name">
+                Loading schedule...
+            </span>
+
+            <span class="store-name">
+                ...
+            </span>
+
+            <span class="support-label">
+                Please wait
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+    <!-- =====================================================
+         FULL SCHEDULE
+    ===================================================== -->
+
+    <div class="schedule-section">
+
+
+        <!-- SECTION HEADER -->
+
+        <div class="section-title">
+
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-calendar-week"></i>
+
+                    Full Support Schedule
+
+                </h2>
+
+
+                <p>
+                    Monthly BM support schedule
+                </p>
+
+            </div>
+
+
+            <div
+                class="schedule-count"
+                id="scheduleCount"
+            >
+
+                0 Days
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- TABLE -->
+
+        <div class="schedule-table-wrapper">
+
+
+            <table
+                class="schedule-table"
+                id="scheduleTable"
+            >
+
+
+                <!-- TABLE HEADER -->
+
+                <thead>
+
+                    <tr id="scheduleHeader">
+
+
+                        <th>
+                            Date
+                        </th>
+
+
+                        <th>
+                            Day
+                        </th>
+
+
+                        <!--
+                            HEADER BM
+                            AKAN DIBUAT JS
+                        -->
+
+
+                    </tr>
+
+                </thead>
+
+
+
+                <!-- TABLE BODY -->
+
+                <tbody
+                    id="scheduleBody"
+                >
+
+
+                    <tr>
+
+
+                        <td
+                            colspan="10"
+                            class="loading-cell"
+                        >
+
+
+                            <div class="loading-card">
+
+
+                                <div class="spinner"></div>
+
+
+                                <p>
+                                    Kela Euy...
+                                </p>
+
+
+                            </div>
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         STORE SUMMARY
+    ===================================================== -->
+
+    <div class="store-summary-section">
+
+
+        <!-- SECTION HEADER -->
+
+        <div class="section-title">
+
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-store"></i>
+
+                    Store Support Summary
+
+                </h2>
+
+
+                <p>
+                    Total support coverage by store
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- STORE CARDS -->
+
+        <div
+            class="store-summary-grid"
+            id="storeSummaryGrid"
+        >
+
+
+            <!--
+                STORE SUMMARY
+                AKAN DIBUAT JS
+            -->
+
+
+            <div class="store-summary-card">
+
+
+                <span>
+                    Loading...
+                </span>
+
+
+                <strong>
+                    -
+                </strong>
+
+
+                <small>
+                    Support Days
+                </small>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script
+    src="js/schedule-support.js"
+></script>
+
+
+</body>
+
+</html>
